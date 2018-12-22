@@ -82,6 +82,10 @@ export default class API {
     return Promise.resolve({})
   }
 
+  public contract(id: string): Promise<object> {
+    return Promise.resolve({})
+  }
+
   private connect() {
     return true
   }
