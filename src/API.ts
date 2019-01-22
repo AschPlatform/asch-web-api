@@ -79,7 +79,7 @@ export default class API {
   }
 
   public get(uri: string, params: object): Promise<object> {
-    return Promise.resolve({})
+    return this._provider.get(uri, params)
   }
 
   public contract(id: string): Promise<object> {
