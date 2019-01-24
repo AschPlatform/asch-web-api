@@ -1,8 +1,7 @@
 export interface Transaction {
   type: number
   timestamp: number
-  id: string
-  account: string
+  id?: string
   message: string
   fee: number
   args: Array<any>
@@ -31,4 +30,22 @@ export interface Account {
 
 export interface ObjectType {
   [key: string]: any
+}
+
+export interface Param {
+  name: string
+  type: { name: string; text: string }
+  index: number
+  require: boolean
+}
+
+export interface Method {
+  name: string
+  returnType: { name: string; text: string }
+  parameters: Array<Param>
+  isConstructor: boolean
+  isPublic: boolean
+  isDefaultPayable: boolean
+  isPayable: boolean
+  isConstant: boolean
 }

@@ -33,14 +33,18 @@ class Version {
   }
 }
 
-export default class API {
+export class API {
   _provider: Provider
-  _privateKey: string
+  // _privateKey: string
   _version: Version
 
-  constructor(p: Provider, key: string = '') {
-    this._provider = p
-    this._privateKey = key
+  constructor(p: Provider | string) {
+    if (typeof p === 'string') {
+      this._provider = new HTTPProvider(p)
+    } else {
+      this._provider = p
+    }
+    // this._privateKey = key
     this._version = new Version()
 
     this.connect()
@@ -70,20 +74,37 @@ export default class API {
     this._provider = new AutoProvider()
   }
 
-  public setPrivateKey(key: string) {
-    this._privateKey = key
-  }
+  // public setPrivateKey(key: string) {
+  //   this._privateKey = key
+  // }
 
-  public broadcastTransaction(confirmsToWait: number = 0): Promise<object> {
-    return Promise.resolve({})
+  public broadcastTransaction(trx) {
+    return this._provider.post(
+      `/peer/transactions`,
+      {
+        transaction: trx
+      },
+      {
+        headers: {
+          magic: '594fe0f3', // local
+          // magic: '5f5b3cf5', // mainnet
+          version: '',
+          'Content-Type': 'application/json'
+        }
+      }
+    )
   }
 
   public get(uri: string, params: object): Promise<object> {
     return this._provider.get(uri, params)
   }
 
-  public contract(id: string): Promise<object> {
-    return Promise.resolve({})
+  // public post(uri: string, params: object): Promise<object> {
+  //   return this._provider.post(uri, params)
+  // }
+
+  public contract(name: string): Promise<object> {
+    return this._provider.get(`/contracts/${name}`, {})
   }
 
   private connect() {

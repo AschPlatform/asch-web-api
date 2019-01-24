@@ -9,7 +9,8 @@ import * as transactionBuilder from './builders'
 
 type Bytes = string | Uint8Array
 const NORMAL_PREFIX = 'A'
-export const ONE_XAS = 100000000
+const ONE_XAS = 100000000
+const EPOCHTIME = new Date(Date.UTC(2016, 5, 27, 20, 0, 0, 0))
 const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 let ALPHABET_MAP: ObjectType = {}
@@ -266,6 +267,54 @@ function toSatoshi(amount: number, precision: number = 8): number {
   return amount * Math.pow(10, precision)
 }
 
+function fullTimestamp(time: number) {
+  let d = EPOCHTIME
+  let t = d.getTime() / 1000
+
+  d = new Date((time + t) * 1000)
+  const month = d.getMonth() + 1
+  let monthStr = month + ''
+  if (month < 10) {
+    monthStr = '0' + month
+  }
+
+  const day = d.getDate()
+  let dayStr = day + ''
+  if (day < 10) {
+    dayStr = '0' + day
+  }
+
+  const h = d.getHours()
+  let hStr = h + ''
+  const m = d.getMinutes()
+  let mStr = m + ''
+  const s = d.getSeconds()
+  let sStr = s + ''
+
+  if (h < 10) {
+    hStr = '0' + h
+  }
+
+  if (m < 10) {
+    mStr = '0' + m
+  }
+
+  if (s < 10) {
+    sStr = '0' + s
+  }
+
+  return d.getFullYear() + '/' + monthStr + '/' + dayStr + ' ' + hStr + ':' + mStr + ':' + sStr
+}
+
+function getTime(time: number | undefined = undefined): number {
+  if (time === undefined) {
+    time = new Date().getTime()
+  }
+  const d = EPOCHTIME
+  const t = d.getTime()
+  return Math.floor((time - t) / 1000)
+}
+
 export {
   sign,
   signBytes,
@@ -278,5 +327,6 @@ export {
   getAddressByPublicKey,
   fromSatoshi,
   toSatoshi,
-  transactionBuilder
+  transactionBuilder,
+  getTime
 }

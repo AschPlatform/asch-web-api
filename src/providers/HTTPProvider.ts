@@ -1,12 +1,14 @@
 import axios from 'axios'
-import { ObjectType } from '../utils/utils'
+import { ObjectType } from '../type'
 import { Provider } from './Provider'
+
 export class HTTPProvider implements Provider {
   _url: string
   _timeout: number
-  _headers: any
-  _instance: any
-  constructor(url: string, timeout: number = 30000, headers = {}) {
+  _headers: ObjectType
+  _instance: ObjectType
+
+  constructor(url: string, timeout: number = 30000, headers: ObjectType = {}) {
     url = url.replace(/\/+$/, '')
 
     this._url = url
@@ -21,7 +23,7 @@ export class HTTPProvider implements Provider {
   }
 
   json2url(json: any) {
-    let arr = []
+    let arr: string[] = []
     let str = ''
     for (let i in json) {
       str = i + '=' + json[i]
@@ -30,14 +32,18 @@ export class HTTPProvider implements Provider {
     return arr.join('&')
   }
 
-  request(url: string, data: ObjectType = {}, method = 'get', postHeaders: ObjectType = {}) {
+  request(
+    url: string,
+    data: ObjectType = {},
+    method: string = 'get',
+    postHeaders: ObjectType = {}
+  ) {
     for (let k in data) {
       if (url.indexOf(':' + k) !== -1) {
         url = url.replace(':' + k, data[k])
         delete data[k]
       }
     }
-    console.info('path:' + url)
     method = method.toLowerCase()
     // var res;
     if (method === 'get') {
@@ -55,7 +61,11 @@ export class HTTPProvider implements Provider {
     return this.request(uri, params)
   }
 
-  async isConnected(statusPage = '/') {
+  post(uri: string, params: ObjectType, headers?: ObjectType) {
+    return this.request(uri, params, 'post')
+  }
+
+  async isConnected(statusPage: string = '/') {
     return this.request(statusPage)
       .then(() => {
         // return utils.hasProperties(data, 'blockID', 'block_header')

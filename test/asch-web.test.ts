@@ -4,15 +4,15 @@ import AschWeb from '../src/asch-web'
  * Dummy test
  */
 describe('Normal test', () => {
-  it('AschWeb must have util and API interface', () => {
-    expect(AschWeb).toHaveProperty('util')
-    expect(AschWeb).toHaveProperty('API')
-    console.log(AschWeb)
+  const host = 'http://mainnet.asch.cn/'
+  let aschWeb = new AschWeb(host)
+  it('AschWeb must have host prop', () => {
+    expect(aschWeb).toHaveProperty('host')
+    console.log(aschWeb)
   })
 
-  it('AschWeb get method', async () => {
-    let api = new AschWeb.API({ get: '' }, '')
-    api.useHttpProvider('http://mainnet.asch.cn/')
+  it('AschWeb get block methon', async () => {
+    let api = aschWeb.api
     let res = await api.get('api/v2/blocks', {})
     expect(res).toHaveProperty('blocks')
   })
