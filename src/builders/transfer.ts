@@ -12,6 +12,8 @@ export function transfer(
     id: 'string',
     message: 'string',
     fee: 1,
-    args: []
+    args: [],
+    senderId: '',
+    senderPublicKey: ''
   }
 }

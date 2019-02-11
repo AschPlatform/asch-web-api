@@ -220,7 +220,11 @@ function isAddress(address: string): boolean {
     if (!base58DecodeUnsafe(address.slice(1))) {
       return false
     }
-    if (['A'].indexOf(address[0]) === -1) {
+    if (
+      ['A'].indexOf(address[0]) === -1 &&
+      ['S'].indexOf(address[0]) === -1 &&
+      ['G'].indexOf(address[0]) === -1
+    ) {
       return false
     }
   }
@@ -328,5 +332,7 @@ export {
   fromSatoshi,
   toSatoshi,
   transactionBuilder,
-  getTime
+  getTime,
+  getKeys,
+  fullTimestamp
 }
