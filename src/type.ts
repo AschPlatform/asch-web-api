@@ -18,7 +18,7 @@ export interface Keypair {
 }
 
 export interface Keys {
-  keypair: nacl.SignKeyPair
+  keypair: any
   privateKey: string
   publicKey: string
 }

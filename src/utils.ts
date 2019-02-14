@@ -4,8 +4,7 @@ import * as RIPEMD160 from 'ripemd160'
 import * as nacl from 'tweetnacl'
 import * as ByteBuffer from 'bytebuffer'
 
-import { Transaction, Keypair, Keys, ObjectType, Account } from './type'
-import * as transactionBuilder from './builders'
+import { Transaction, Keys, ObjectType, Account } from './type'
 
 type Bytes = string | Uint8Array
 const NORMAL_PREFIX = 'A'
@@ -319,8 +318,24 @@ function getTime(time: number | undefined = undefined): number {
   return Math.floor((time - t) / 1000)
 }
 
+function transactionBuilder(params: ObjectType): Transaction {
+  let transaction = {
+    type: params.type,
+    timestamp: getTime() - 5,
+    fee: params.fee,
+    args: params.args,
+    senderPublicKey: params.address,
+    senderId: params.address,
+    signatures: [],
+    secondSecret: params.secondSecret,
+    message: params.message || ''
+  }
+  return transaction
+}
+
 export {
   sign,
+  secondSign,
   signBytes,
   verify,
   verifyBytes,

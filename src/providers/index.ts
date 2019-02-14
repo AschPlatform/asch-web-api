@@ -1,3 +1,3 @@
-export * from './Provider'
-export * from './HTTPProvider'
-export * from './AutoProvider'
+export * from './provider'
+export * from './http-provider'
+export * from './auto-provider'

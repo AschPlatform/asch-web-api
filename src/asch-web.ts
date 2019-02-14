@@ -1,8 +1,7 @@
 import * as utils from './utils'
-import { API } from './API'
+import { API } from './api'
 import { transactionBuilder } from './builders'
-import { Account, ObjectType, Method, Transaction } from './type'
-import { stringify } from 'querystring'
+import { ObjectType, Method, Transaction } from './type'
 
 type CallbackType = (
   trx: Transaction
@@ -13,9 +12,9 @@ export default class AschWeb {
   host: string
   api
   utils
-  constructor(url) {
+  constructor(url: string, headers?: ObjectType) {
     this.host = url
-    this.api = new API(url)
+    this.api = new API(url, headers)
     this.utils = utils
   }
 

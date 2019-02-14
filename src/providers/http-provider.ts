@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ObjectType } from '../type'
-import { Provider } from './Provider'
+import { Provider } from './provider'
 
 export class HTTPProvider implements Provider {
   _url: string
