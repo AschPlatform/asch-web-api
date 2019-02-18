@@ -1,6 +1,6 @@
 import * as utils from './utils'
 import { API } from './api'
-import { transactionBuilder } from './builders'
+import { TransactionBuilder, transactionBuilder } from './builders'
 import { ObjectType, Method, Transaction } from './type'
 
 type CallbackType = (
@@ -9,17 +9,30 @@ type CallbackType = (
 
 export default class AschWeb {
   defaultAccount: any
+  secret: string //12个助记词或者私钥
+  secondSecret: string
   host: string
   api
   utils
-  constructor(url: string, headers?: ObjectType) {
+  constructor(url: string, secret: string, secondSecret: string = '', headers?: ObjectType) {
     this.host = url
+    this.secret = secret
+    this.secondSecret = secondSecret
     this.api = new API(url, headers)
     this.utils = utils
   }
 
   getHost(): string {
     return this.host
+  }
+
+  public transferXAS(amount: number, recipientId: string, message: string) {
+    let trx: Transaction = TransactionBuilder.transferXAS(amount, recipientId, message)
+    trx = utils.sign(trx, this.secret)
+    if (this.secondSecret != null && this.secondSecret.length > 0) {
+      trx = utils.secondSign(trx, this.secondSecret)
+    }
+    this.api.broadcastTransaction(trx)
   }
 
   async contract(name: string): Promise<object> {

@@ -27,6 +27,7 @@ describe('Utils test', () => {
   it('AschWeb get block props', async () => {
     let api = aschWeb.api
     let res = await api.get('api/v2/blocks', {})
+    console.log('response:' + JSON.stringify(res))
     expect(res).toHaveProperty('blocks')
   })
 
