@@ -83,11 +83,6 @@ export class API {
   //   this._privateKey = key
   // }
 
-  public transferXAS(amount: number, recipientId: string, message: string) {
-    let trx: Transaction = TransactionBuilder.transferXAS(amount, recipientId, message)
-    trx = u
-  }
-
   public broadcastTransaction(trx) {
     return this._provider.post(
       `/peer/transactions`,
