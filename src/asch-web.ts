@@ -26,13 +26,27 @@ export default class AschWeb {
     return this.host
   }
 
-  public transferXAS(amount: number, recipientId: string, message: string) {
-    let trx: Transaction = TransactionBuilder.transferXAS(amount, recipientId, message)
-    trx = utils.sign(trx, this.secret)
+  public setSecondSecret(secondSecret: string) {
+    this.secondSecret = secondSecret
+  }
+
+  /**
+   * 所有交易的签名函数
+   * @param unsignedTrx
+   */
+  public fullSign(unsignedTrx: Transaction): Transaction {
+    let trx = utils.sign(unsignedTrx, this.secret)
     if (this.secondSecret != null && this.secondSecret.length > 0) {
       trx = utils.secondSign(trx, this.secondSecret)
     }
-    this.api.broadcastTransaction(trx)
+    trx.id = new Buffer(utils.getId(trx)).toString('hex')
+    return trx
+  }
+
+  public transferXAS(amount: number, recipientId: string, message: string): Promise<object> {
+    let trx: Transaction = TransactionBuilder.transferXAS(amount, recipientId, message)
+    trx = this.fullSign(trx)
+    return this.api.broadcastTransaction(trx)
   }
 
   async contract(name: string): Promise<object> {

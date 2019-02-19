@@ -151,6 +151,10 @@ function hash(bytes: Bytes): string {
   return ''
 }
 
+function getId(transaction: Transaction): Uint8Array {
+  return sha256Bytes(getBytes(transaction))
+}
+
 function base58DecodeUnsafe(str: string) {
   if (str.length === 0) return Buffer.allocUnsafe(0)
 
@@ -337,6 +341,7 @@ export {
   sign,
   secondSign,
   signBytes,
+  getId,
   verify,
   verifyBytes,
   hash,
