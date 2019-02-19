@@ -81,19 +81,22 @@ export class API {
   // }
 
   public broadcastTransaction(trx) {
+    let headers = Object.assign(
+      {
+        magic: '594fe0f3', // local
+        // magic: '5f5b3cf5', // mainnet
+        version: '',
+        'Content-Type': 'application/json'
+      },
+      this._headers
+    )
     return this._provider.post(
       `/peer/transactions`,
       {
         transaction: trx
       },
       {
-        headers: {
-          magic: '594fe0f3', // local
-          // magic: '5f5b3cf5', // mainnet
-          version: '',
-          'Content-Type': 'application/json',
-          ...this._headers
-        }
+        headers: headers
       }
     )
   }

@@ -333,6 +333,14 @@ function transactionBuilder(params: ObjectType): Transaction {
   return transaction
 }
 
+function sha256Hex(data) {
+  return Buffer.from(sha256.hash(data)).toString('hex')
+}
+
+function getId(transaction) {
+  return sha256Hex(getBytes(transaction))
+}
+
 export {
   sign,
   secondSign,
@@ -349,5 +357,7 @@ export {
   transactionBuilder,
   getTime,
   getKeys,
-  fullTimestamp
+  fullTimestamp,
+  getHash,
+  getId
 }

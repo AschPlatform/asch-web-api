@@ -1,10 +1,9 @@
 {
-  "name": "asch-web",
-  "version": "0.0.0",
+  "name": "asch-web-test",
+  "version": "0.0.50",
   "description": "",
   "keywords": [],
-  "main": "dist/asch-web.umd.js",
-  "module": "dist/asch-web.es5.js",
+  "main": "dist/asch-web.js",
   "typings": "dist/types/asch-web.d.ts",
   "files": [
     "dist"
@@ -32,7 +31,8 @@
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
-    "travis-deploy-once": "travis-deploy-once"
+    "travis-deploy-once": "travis-deploy-once",
+    "tsc": "rm -rf ./dist/* && tsc --module commonjs && npm publish"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -82,6 +82,9 @@
     ]
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
     "@types/jest": "^23.3.2",

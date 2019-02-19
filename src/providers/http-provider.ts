@@ -62,7 +62,7 @@ export class HTTPProvider implements Provider {
   }
 
   post(uri: string, params: ObjectType, headers?: ObjectType) {
-    return this.request(uri, params, 'post')
+    return this.request(uri, params, 'post', headers)
   }
 
   async isConnected(statusPage: string = '/') {
