@@ -28,14 +28,18 @@ function sha256Bytes(data: Uint8Array) {
   return sha256.hash(data)
 }
 
-function getHash(transaction: Transaction) {
+function getHash(
+  transaction: Transaction,
+  skipSignature: boolean = false,
+  skipSecondSignature: boolean = false
+) {
   return sha256Bytes(getBytes(transaction))
 }
 
 function getBytes(
-  trs: Transaction
-  // skipSignature: boolean = true,
-  // skipSecondSignature: boolean = true
+  trs: Transaction,
+  skipSignature: boolean = false,
+  skipSecondSignature: boolean = false
 ) {
   let bb = new ByteBuffer(1, true)
   bb.writeInt(trs.type)
@@ -53,21 +57,21 @@ function getBytes(
     bb.writeString(args)
   }
 
-  // if (!skipSignature && trs.signatures) {
-  //   for (let signature of trs.signatures) {
-  //     let signatureBuffer = new Buffer(signature, 'hex')
-  //     for (let idx = 0; idx < signatureBuffer.length; idx++) {
-  //       bb.writeByte(signatureBuffer[idx])
-  //     }
-  //   }
-  // }
+  if (!skipSignature && trs.signatures) {
+    for (let signature of trs.signatures) {
+      let signatureBuffer = new Buffer(signature, 'hex')
+      for (let idx = 0; idx < signatureBuffer.length; idx++) {
+        bb.writeByte(signatureBuffer[idx])
+      }
+    }
+  }
 
-  // if (!skipSecondSignature && trs.secondSignature) {
-  //   let signSignatureBuffer = new Buffer(trs.secondSignature, 'hex')
-  //   for (let idx = 0; idx < signSignatureBuffer.length; idx++) {
-  //     bb.writeByte(signSignatureBuffer[idx])
-  //   }
-  // }
+  if (!skipSecondSignature && trs.secondSignature) {
+    let signSignatureBuffer = new Buffer(trs.secondSignature, 'hex')
+    for (let idx = 0; idx < signSignatureBuffer.length; idx++) {
+      bb.writeByte(signSignatureBuffer[idx])
+    }
+  }
 
   bb.flip()
   return toLocalBuffer(bb)

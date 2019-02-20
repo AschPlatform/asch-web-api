@@ -2,11 +2,11 @@ import AschWeb from '../src/asch-web'
 
 describe('asch-web unit test', () => {
   const host = 'http://mainnet.asch.cn/'
-  let secret = 'marine tell onion breeze cheap sentence umbrella hurt humble tackle parent fantasy'
-  let secondSecret = '11111111a'
+  let secret = 'quantum jelly guilt chase march lazy able repeat enrich fold sweet sketch'
+  let secondSecret = '' //'11111111a'
   let aschWeb = new AschWeb(host, secret, secondSecret)
-  let address = 'A2xBm2AqE2kuye9SDUfgxbvaGZ9YyNwgtB'
-  let to = 'AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb'
+  let address = 'ACFi5K42pVVYxq5rFkFQBa6c6uFLmGFUP2'
+  let to = 'AHcGmYnCyr6jufT5AGbpmRUv55ebwMLCym'
   let publicKey
   let utils = aschWeb.utils
   let trx = {
@@ -21,7 +21,7 @@ describe('asch-web unit test', () => {
 
   it('asch-web transferXAS method test', () => {
     aschWeb
-      .transferXAS(10, to, 'test')
+      .transferXAS(1000000, to, 'test')
       .then(res => {
         console.log('transferXAS response:' + JSON.stringify(res))
       })
