@@ -1,10 +1,12 @@
 import AschWeb from '../src/asch-web'
+import { Provider, HTTPProvider } from '../src/providers'
 
 describe('asch-web unit test', () => {
   const host = 'http://mainnet.asch.cn/'
+  const provider: Provider = new HTTPProvider(host)
   let secret = 'quantum jelly guilt chase march lazy able repeat enrich fold sweet sketch'
   let secondSecret = '' //'11111111a'
-  let aschWeb = new AschWeb(host, secret, secondSecret)
+  let aschWeb = new AschWeb(provider, secret, secondSecret)
   let address = 'ACFi5K42pVVYxq5rFkFQBa6c6uFLmGFUP2'
   let to = 'AHcGmYnCyr6jufT5AGbpmRUv55ebwMLCym'
   let publicKey

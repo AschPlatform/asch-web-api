@@ -1,12 +1,13 @@
 import AschWeb from '../src/asch-web'
-
+import { Provider, HTTPProvider } from '../src/providers'
 /**
  * Dummy test
  */
 describe('Utils test', () => {
   const host = 'http://mainnet.asch.cn/'
+  const provider: Provider = new HTTPProvider(host)
   let secret = 'marine tell onion breeze cheap sentence umbrella hurt humble tackle parent fantasy'
-  let aschWeb = new AschWeb(host, secret)
+  let aschWeb = new AschWeb(provider, secret)
   let address = 'A2xBm2AqE2kuye9SDUfgxbvaGZ9YyNwgtB'
   let publicKey
   let utils = aschWeb.utils
@@ -20,8 +21,8 @@ describe('Utils test', () => {
     senderPublicKey: ''
   }
 
-  it('AschWeb must have host prop', () => {
-    expect(aschWeb).toHaveProperty('host')
+  it('AschWeb must have provider', () => {
+    expect(aschWeb).toHaveProperty('provider')
   })
 
   it('AschWeb get block props', async () => {

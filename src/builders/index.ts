@@ -64,15 +64,15 @@ export class TransactionBuilder {
     return this.buildTransaction(1, [amount, to], message)
   }
 
-  //转账自定义资产
-  static transferUIA(
-    token: string,
-    amount: number | string,
-    to: string,
-    message: string
-  ): Transaction {
-    return this.buildTransaction(103, [token, amount, to])
-  }
+  // //转账自定义资产
+  // static transferUIA(
+  //   token: string,
+  //   amount: number | string,
+  //   to: string,
+  //   message: string
+  // ): Transaction {
+  //   return this.buildTransaction(103, [token, amount, to])
+  // }
 
   // 设置昵称
   static setName(name: string): Transaction {
@@ -80,7 +80,7 @@ export class TransactionBuilder {
   }
 
   // 设置二级密码
-  static setsecondPassword(secondPwd: string): Transaction {
+  static setSecondPassword(secondPwd: string): Transaction {
     let pubkey = this.convertSecondPwd(secondPwd)
     return this.buildTransaction(3, [pubkey])
   }

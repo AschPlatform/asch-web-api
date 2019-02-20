@@ -1,7 +1,9 @@
 import * as utils from './utils'
 import { API } from './api'
+import { AschAPI } from './asch-api'
 import { TransactionBuilder, transactionBuilder } from './builders'
-import { ObjectType, Method, Transaction, Keys } from './type'
+import { ObjectType, Method, Transaction, Keys, Network } from './type'
+import { Provider } from './providers'
 
 type CallbackType = (
   trx: Transaction
@@ -11,24 +13,39 @@ export default class AschWeb {
   defaultAccount: any
   secret: string //12个助记词或者私钥
   secondSecret: string
-  host: string
+  //host: string
   api
   utils
-  constructor(url: string, secret: string, secondSecret: string = '', headers?: ObjectType) {
-    this.host = url
+  // public network: Network
+  public provider: Provider
+  //public api : AschAPI
+  // constructor(url: string, secret: string, secondSecret: string = '', headers?: ObjectType) {
+  //   this.host = url
+  //   this.secret = secret
+  //   this.secondSecret = secondSecret
+  //   this.api = new API(url, headers)
+  //   this.utils = utils
+  //   this.defaultAccount = { address: '' }
+  //   this.network={host:'http://',isMainnet:true}
+  // }
+
+  constructor(provider: Provider, secret: string, secondSecret: string = '') {
+    this.provider = provider
     this.secret = secret
     this.secondSecret = secondSecret
-    this.api = new API(url, headers)
+    // this.api = new API(provider)
+    this.api = new AschAPI(this)
     this.utils = utils
     this.defaultAccount = { address: '' }
+    //this.network={host:'http://',isMainnet:true}
   }
 
-  getHost(): string {
-    return this.host
-  }
-  setHost(url: string) {
-    this.host = url
-  }
+  // getHost(): string {
+  //   return this.host
+  // }
+  // setHost(url: string) {
+  //   this.host = url
+  // }
 
   public setSecondSecret(secondSecret: string) {
     this.secondSecret = secondSecret

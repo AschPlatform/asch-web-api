@@ -49,3 +49,8 @@ export interface Method {
   isPayable: boolean
   isConstant: boolean
 }
+
+export interface Network {
+  host: string
+  isMainnet: boolean
+}
