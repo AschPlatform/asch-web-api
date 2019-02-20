@@ -78,6 +78,7 @@ function sign(transaction: Transaction, secret: string): Transaction {
   let keys = getKeys(secret)
   let signature = nacl.sign.detached(hash, keys.keypair.secretKey)
   let signStr = new Buffer(signature).toString('hex')
+  if (transaction.signatures == null) transaction.signatures = new Array<string>()
   transaction.signatures!.push(signStr)
   return transaction
 }
@@ -93,8 +94,9 @@ function secondSign(transaction: Transaction, secret: string): Transaction {
 
 function getKeys(secret: string): Keys {
   let hash = sha256Bytes(new Buffer(secret))
+  //console.log('get keys hash:'+hash)
   let keypair = nacl.sign.keyPair.fromSeed(hash)
-
+  //console.log('get keys keypair:'+JSON.stringify(keypair))
   return {
     keypair,
     publicKey: new Buffer(keypair.publicKey).toString('hex'),

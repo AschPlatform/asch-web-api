@@ -1,7 +1,7 @@
 import * as utils from './utils'
 import { API } from './api'
 import { TransactionBuilder, transactionBuilder } from './builders'
-import { ObjectType, Method, Transaction } from './type'
+import { ObjectType, Method, Transaction, Keys } from './type'
 
 type CallbackType = (
   trx: Transaction
@@ -35,6 +35,13 @@ export default class AschWeb {
    * @param unsignedTrx
    */
   public fullSign(unsignedTrx: Transaction): Transaction {
+    //console.log('secret:'+this.secret)
+    let keys: Keys = utils.getKeys(this.secret)
+    console.log('Keys:' + JSON.stringify(keys))
+    //let publicKey =utils.getKeys(this.secret).publicKey
+    //let address = utils.getAddressByPublicKey(publicKey)
+    unsignedTrx.senderPublicKey = keys.publicKey
+    unsignedTrx.senderId = utils.getAddressByPublicKey(keys.publicKey)
     let trx = utils.sign(unsignedTrx, this.secret)
     if (this.secondSecret != null && this.secondSecret.length > 0) {
       trx = utils.secondSign(trx, this.secondSecret)
@@ -45,7 +52,9 @@ export default class AschWeb {
 
   public transferXAS(amount: number, recipientId: string, message: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.transferXAS(amount, recipientId, message)
+
     trx = this.fullSign(trx)
+    console.log('+++++transaction:' + JSON.stringify(trx))
     return this.api.broadcastTransaction(trx)
   }
 

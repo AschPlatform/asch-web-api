@@ -39,6 +39,7 @@ export class TransactionBuilder {
       //mode: 0
     }
     transaction = calFee(transaction)
+    //transaction.timestamp =
     return transaction
   }
 

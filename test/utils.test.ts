@@ -5,8 +5,8 @@ import AschWeb from '../src/asch-web'
  */
 describe('Utils test', () => {
   const host = 'http://mainnet.asch.cn/'
-  let aschWeb = new AschWeb(host)
   let secret = 'marine tell onion breeze cheap sentence umbrella hurt humble tackle parent fantasy'
+  let aschWeb = new AschWeb(host, secret)
   let address = 'A2xBm2AqE2kuye9SDUfgxbvaGZ9YyNwgtB'
   let publicKey
   let utils = aschWeb.utils
