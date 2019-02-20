@@ -5,7 +5,8 @@ import { ObjectType, Transaction } from '../type'
 import { getTime } from '../utils'
 import { type } from 'os'
 import calFee from '../asch-fee'
-
+import * as Constants from '../constants'
+import * as Slots from '../slots'
 export function transactionBuilder(params: ObjectType): Transaction {
   let transaction = {
     type: params.type,
@@ -39,7 +40,7 @@ export class TransactionBuilder {
       //mode: 0
     }
     transaction = calFee(transaction)
-    //transaction.timestamp =
+    transaction.timestamp = Slots.getTime() - Constants.CLIENT_DRIFT_SECONDS
     return transaction
   }
 
