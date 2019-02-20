@@ -20,10 +20,14 @@ export default class AschWeb {
     this.secondSecret = secondSecret
     this.api = new API(url, headers)
     this.utils = utils
+    this.defaultAccount = { address: '' }
   }
 
   getHost(): string {
     return this.host
+  }
+  setHost(url: string) {
+    this.host = url
   }
 
   public setSecondSecret(secondSecret: string) {
@@ -58,14 +62,15 @@ export default class AschWeb {
     return this.api.broadcastTransaction(trx)
   }
 
-  async contract(name: string): Promise<object> {
+  contract(name: string): Promise<object> {
     try {
-      let res = await this.api.get(`/contract/${name}`)
-      if (res.data && res.data.contract) {
-        return new Contract(res.data.contract, this.api)
-      } else {
-        return res
-      }
+      return this.api.get(`/contract/${name}`).then(res => {
+        if (res.data && res.data.contract) {
+          return new Contract(res.data.contract, this.api)
+        } else {
+          return res
+        }
+      })
     } catch (e) {
       console.log(e)
       return e
@@ -106,7 +111,7 @@ class Contract {
     return methodsMap
   }
 
-  async call(
+  call(
     methodName: string,
     args: Array<any> = [],
     address: string,
@@ -148,7 +153,7 @@ class Contract {
     }
   }
 
-  async pay(
+  pay(
     methodName: string,
     amount: string,
     currency: string,
@@ -185,15 +190,14 @@ class Contract {
     }
   }
 
-  async constans(methodName: string, args: Array<any>) {
+  constans(methodName: string, args: Array<any>) {
     try {
       if (
         methodName in this.methods &&
         this.methods[methodName].isConstant &&
         args instanceof Array
       ) {
-        let res = await this.api.get(`${this.name}/constant/${methodName}/${JSON.stringify(args)}`)
-        return res
+        return this.api.get(`${this.name}/constant/${methodName}/${JSON.stringify(args)}`)
       } else {
         return `constans get error`
       }
@@ -202,11 +206,10 @@ class Contract {
     }
   }
 
-  async queryStates(path: string) {
+  queryStates(path: string) {
     try {
       if (path) {
-        let res = await this.api.get(`${this.name}/states/${path}`)
-        return res
+        return this.api.get(`${this.name}/states/${path}`)
       } else {
         return `path is required`
       }
