@@ -1,6 +1,6 @@
 import * as utils from './utils'
 import { API } from './api'
-import { AschAPI } from './asch-api'
+import AschAPI from './asch-api'
 import { TransactionBuilder, transactionBuilder } from './builders'
 import { ObjectType, Method, Transaction, Keys, Network } from './type'
 import { Provider } from './providers'
