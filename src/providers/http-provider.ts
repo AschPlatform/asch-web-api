@@ -8,17 +8,28 @@ export class HTTPProvider implements Provider {
   _headers: ObjectType
   _instance: ObjectType
 
-  constructor(url: string, timeout: number = 30000, headers: ObjectType = {}) {
+  constructor(url: string, timeout: number = 30000, type: string) {
     url = url.replace(/\/+$/, '')
 
     this._url = url
     this._timeout = timeout
-    this._headers = headers
+    this._headers =
+      type === NET_TYPE[0]
+        ? {
+            magic: '5f5b3cf5', // mainnet
+            version: '',
+            'Content-Type': 'application/json'
+          }
+        : {
+            magic: '594fe0f3', // local
+            version: '',
+            'Content-Type': 'application/json'
+          }
 
     this._instance = axios.create({
       baseURL: url,
       timeout: timeout,
-      headers: headers
+      headers: this._headers
     })
   }
 

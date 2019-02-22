@@ -1,7 +1,7 @@
 import { Provider, HTTPProvider, AutoProvider } from './providers'
 import { ObjectType } from './type'
 import { TransactionBuilder } from './builders'
-import { Transaction } from './type'
+// import { Transaction } from './type'
 import * as utils from './utils'
 
 class Version {
@@ -43,12 +43,8 @@ export class API {
   _version: Version
   _headers?: ObjectType
 
-  constructor(p: Provider | string, headers?: ObjectType) {
-    if (typeof p === 'string') {
-      this._provider = new HTTPProvider(p)
-    } else {
-      this._provider = p
-    }
+  constructor(p: Provider, headers?: ObjectType) {
+    this._provider = p
     // this._privateKey = key
     this._version = new Version()
     this._headers = headers
@@ -71,9 +67,9 @@ export class API {
     return true
   }
 
-  public useHttpProvider(url: string) {
-    this._provider = new HTTPProvider(url)
-  }
+  // public useHttpProvider(url: string) {
+  //   this._provider = new HTTPProvider(url)
+  // }
 
   public useAutoProvider() {
     this._provider = new AutoProvider()
@@ -86,7 +82,6 @@ export class API {
   public broadcastTransaction(trx) {
     let headers = Object.assign(
       {
-        //magic: '594fe0f3', // local
         magic: '5f5b3cf5', // mainnet
         version: '',
         'Content-Type': 'application/json'

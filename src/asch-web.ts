@@ -2,8 +2,8 @@ import * as utils from './utils'
 import { API } from './api'
 import { AschAPI } from './asch-api'
 import { TransactionBuilder, transactionBuilder } from './builders'
-import { ObjectType, Method, Transaction, Keys, Network } from './type'
-import { Provider } from './providers'
+import { ObjectType, Method, Transaction, Keys, Network, NET_TYPE } from './type'
+import { Provider, HTTPProvider } from './providers'
 
 type CallbackType = (
   trx: Transaction
@@ -17,7 +17,7 @@ export default class AschWeb {
   api
   utils
   // public network: Network
-  public provider: Provider
+  public provider?: Provider
   //public api : AschAPI
   // constructor(url: string, secret: string, secondSecret: string = '', headers?: ObjectType) {
   //   this.host = url
@@ -29,7 +29,7 @@ export default class AschWeb {
   //   this.network={host:'http://',isMainnet:true}
   // }
 
-  constructor(provider: Provider, secret: string, secondSecret: string = '') {
+  constructor(provider?: Provider, secret: string = '', secondSecret: string = '') {
     this.provider = provider
     this.secret = secret
     this.secondSecret = secondSecret
@@ -49,6 +49,12 @@ export default class AschWeb {
 
   public setSecondSecret(secondSecret: string) {
     this.secondSecret = secondSecret
+  }
+
+  public setHttpProvider(url: string, type: string = NET_TYPE[0]) {
+    let provider = new HTTPProvider(url, 3000, type)
+    this.provider = provider
+    this.api.provider = provider
   }
 
   /**

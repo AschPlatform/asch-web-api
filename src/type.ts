@@ -54,3 +54,5 @@ export interface Network {
   host: string
   isMainnet: boolean
 }
+
+export const NET_TYPE = ['MainNet', 'TestNet']
