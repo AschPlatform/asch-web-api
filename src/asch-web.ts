@@ -14,11 +14,11 @@ export default class AschWeb {
   secret: string //12个助记词或者私钥
   secondSecret: string
   //host: string
-  api
-  utils
+  //api
+  utils: any
   // public network: Network
   public provider: Provider
-  //public api : AschAPI
+  public api: AschAPI
   // constructor(url: string, secret: string, secondSecret: string = '', headers?: ObjectType) {
   //   this.host = url
   //   this.secret = secret
@@ -79,159 +79,159 @@ export default class AschWeb {
     return this.api.broadcastTransaction(trx)
   }
 
-  contract(name: string): Promise<object> {
-    try {
-      return this.api.get(`/contract/${name}`).then(res => {
-        if (res.data && res.data.contract) {
-          return new Contract(res.data.contract, this.api)
-        } else {
-          return res
-        }
-      })
-    } catch (e) {
-      console.log(e)
-      return e
-    }
-  }
+  //   contract(name: string): Promise<object> {
+  //     try {
+  //       return this.api.get(`/contract/${name}`,{}).then(res => {
+  //         if (res.data && res.data.contract) {
+  //           return new Contract(res.data.contract, this.api)
+  //         } else {
+  //           return res
+  //         }
+  //       })
+  //     } catch (e) {
+  //       console.log(e)
+  //       return e
+  //     }
+  //   }
 }
 
-class Contract {
-  name: string
-  methods: Map<string, Method>
-  consumeOwnerEnergy: boolean
-  originalContract: ObjectType
-  api: ObjectType
+// class Contract {
+//   name: string
+//   methods: Map<string, Method>
+//   consumeOwnerEnergy: boolean
+//   originalContract: ObjectType
+//   api: ObjectType
 
-  constructor(contract: ObjectType, api: ObjectType) {
-    this.name = contract.name
-    let methods = contract.methods
-    this.consumeOwnerEnergy = contract.consumeOwnerEnergy === 1
-    this.methods = this.initMethods(methods)
-    this.originalContract = contract
-    this.api = api
-  }
-  initMethods(methdos: Array<Method>) {
-    let methodsMap = new Map<string, Method>()
-    // TODO change method data
-    for (let method of methdos) {
-      let { name, returnType, parameters, isPublic, isPayable } = method
-      if (isPublic && returnType) {
-        methodsMap[name] = {
-          name,
-          returnType,
-          parameters,
-          isPayable
-        }
-      }
-    }
-    this.methods = methodsMap
-    return methodsMap
-  }
+//   constructor(contract: ObjectType, api: ObjectType) {
+//     this.name = contract.name
+//     let methods = contract.methods
+//     this.consumeOwnerEnergy = contract.consumeOwnerEnergy === 1
+//     this.methods = this.initMethods(methods)
+//     this.originalContract = contract
+//     this.api = api
+//   }
+//   initMethods(methdos: Array<Method>) {
+//     let methodsMap: Map<string, Method>= new Map<string, Method>()
+//     // TODO change method data
+//     for (let method of methdos) {
+//       let { name, returnType, parameters, isPublic, isPayable } = method
+//       if (isPublic && returnType) {
+//         methodsMap[name] = {
+//           name,
+//           returnType,
+//           parameters,
+//           isPayable
+//         }
+//       }
+//     }
+//     this.methods = methodsMap
+//     return methodsMap
+//   }
 
-  call(
-    methodName: string,
-    args: Array<any> = [],
-    address: string,
-    options: ObjectType = {},
-    callback: CallbackType
-  ) {
-    try {
-      if (methodName in this.methods && !this.methods[methodName].isConstant) {
-        // let method = this.methods[name]
-        // let {
-        //   parameters
-        // } = method
-        // validate
-        let trx = transactionBuilder({
-          type: 601,
-          fee: 0,
-          args: [
-            options.gasLimit || 10000000,
-            options.enablePayGasInXAS || false,
-            this.name,
-            methodName,
-            args
-          ],
-          senderId: address,
-          signatures: []
-        })
+//   call(
+//     methodName: string,
+//     args: Array<any> = [],
+//     address: string,
+//     options: ObjectType = {},
+//     callback: CallbackType
+//   ) {
+//     try {
+//       if (methodName in this.methods && !this.methods[methodName].isConstant) {
+//         // let method = this.methods[name]
+//         // let {
+//         //   parameters
+//         // } = method
+//         // validate
+//         let trx = transactionBuilder({
+//           type: 601,
+//           fee: 0,
+//           args: [
+//             options.gasLimit || 10000000,
+//             options.enablePayGasInXAS || false,
+//             this.name,
+//             methodName,
+//             args
+//           ],
+//           senderId: address,
+//           signatures: []
+//         })
 
-        // return trx
-        let { signatures, secondSignature = '', senderPublicKey } = callback(trx)
-        trx.signatures = signatures
-        trx.secondSignature = secondSignature
-        trx.senderPublicKey = senderPublicKey
-        return this.api.broadcastTransaction(trx)
-      } else {
-        return `contract has no method called ${methodName}`
-      }
-    } catch (e) {
-      return e
-    }
-  }
+//         // return trx
+//         let { signatures, secondSignature = '', senderPublicKey } = callback(trx)
+//         trx.signatures = signatures
+//         trx.secondSignature = secondSignature
+//         trx.senderPublicKey = senderPublicKey
+//         return this.api.broadcastTransaction(trx)
+//       } else {
+//         return `contract has no method called ${methodName}`
+//       }
+//     } catch (e) {
+//       return e
+//     }
+//   }
 
-  pay(
-    methodName: string,
-    amount: string,
-    currency: string,
-    address: string,
-    options: ObjectType = {},
-    callback: CallbackType
-  ) {
-    if (methodName in this.methods && !this.methods[methodName].isConstant) {
-      // let method = this.methods[name]
-      // let {
-      //   parameters
-      // } = method
-      let trx = transactionBuilder({
-        type: 601,
-        fee: 0,
-        args: [
-          options.gasLimit || 10000000,
-          options.enablePayGasInXAS || false,
-          options.receiverPath || this.name,
-          amount,
-          currency
-        ],
-        senderId: address,
-        signatures: []
-      })
-      let { signatures, secondSignature = '', senderPublicKey } = callback(trx)
-      trx.signatures = signatures
-      trx.secondSignature = secondSignature
-      trx.senderPublicKey = senderPublicKey
-      return this.api.broadcastTransaction(trx)
-      // return trx
-    } else {
-      return `contract has no method called ${name}`
-    }
-  }
+//   pay(
+//     methodName: string,
+//     amount: string,
+//     currency: string,
+//     address: string,
+//     options: ObjectType = {},
+//     callback: CallbackType
+//   ) {
+//     if (methodName in this.methods && !this.methods[methodName].isConstant) {
+//       // let method = this.methods[name]
+//       // let {
+//       //   parameters
+//       // } = method
+//       let trx = transactionBuilder({
+//         type: 601,
+//         fee: 0,
+//         args: [
+//           options.gasLimit || 10000000,
+//           options.enablePayGasInXAS || false,
+//           options.receiverPath || this.name,
+//           amount,
+//           currency
+//         ],
+//         senderId: address,
+//         signatures: []
+//       })
+//       let { signatures, secondSignature = '', senderPublicKey } = callback(trx)
+//       trx.signatures = signatures
+//       trx.secondSignature = secondSignature
+//       trx.senderPublicKey = senderPublicKey
+//       return this.api.broadcastTransaction(trx)
+//       // return trx
+//     } else {
+//       return `contract has no method called ${name}`
+//     }
+//   }
 
-  constans(methodName: string, args: Array<any>) {
-    try {
-      if (
-        methodName in this.methods &&
-        this.methods[methodName].isConstant &&
-        args instanceof Array
-      ) {
-        return this.api.get(`${this.name}/constant/${methodName}/${JSON.stringify(args)}`)
-      } else {
-        return `constans get error`
-      }
-    } catch (e) {
-      return e
-    }
-  }
+//   constans(methodName: string, args: Array<any>) {
+//     try {
+//       if (
+//         methodName in this.methods &&
+//         this.methods[methodName].isConstant &&
+//         args instanceof Array
+//       ) {
+//         return this.api.get(`${this.name}/constant/${methodName}/${JSON.stringify(args)}`)
+//       } else {
+//         return `constans get error`
+//       }
+//     } catch (e) {
+//       return e
+//     }
+//   }
 
-  queryStates(path: string) {
-    try {
-      if (path) {
-        return this.api.get(`${this.name}/states/${path}`)
-      } else {
-        return `path is required`
-      }
-    } catch (e) {
-      return e
-    }
-  }
-}
+//   queryStates(path: string) {
+//     try {
+//       if (path) {
+//         return this.api.get(`${this.name}/states/${path}`)
+//       } else {
+//         return `path is required`
+//       }
+//     } catch (e) {
+//       return e
+//     }
+//   }
+// }

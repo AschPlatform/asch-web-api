@@ -48,13 +48,15 @@ function getBytes(
   bb.writeString(trs.senderId)
   if (trs.message) bb.writeString(trs.message)
   if (trs.args) {
-    let args
+    let args: string | undefined
     if (typeof trs.args === 'string') {
       args = trs.args
     } else if (Array.isArray(trs.args)) {
       args = JSON.stringify(trs.args)
     }
-    bb.writeString(args)
+    if (args != undefined && args.length > 0) {
+      bb.writeString(args)
+    }
   }
 
   if (!skipSignature && trs.signatures) {
@@ -343,7 +345,7 @@ function transactionBuilder(params: ObjectType): Transaction {
   return transaction
 }
 
-function sha256Hex(data) {
+function sha256Hex(data: Uint8Array) {
   return Buffer.from(sha256.hash(data)).toString('hex')
 }
 

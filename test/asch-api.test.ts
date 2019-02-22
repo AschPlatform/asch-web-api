@@ -11,7 +11,7 @@ describe('asch-api unit test', () => {
   let address = 'ACFi5K42pVVYxq5rFkFQBa6c6uFLmGFUP2'
   let to = 'AHcGmYnCyr6jufT5AGbpmRUv55ebwMLCym'
   let dappId = '25be71c296430a409cfeaf1ffaa957d18793f3695db07a846c22a7c467c45994'
-  let publicKey
+  let publicKey: string
   let utils = aschWeb.utils
   let trx = {
     type: 601,

@@ -1,37 +1,33 @@
 
-## What is AschWeb?
+## 什么事asch-web?
 
-__[Asch Web - Developer Document](https://github.com/AschPlatform/asch-docs/blob/master/http_api/zh-cn.md)__
+__[asch-web - Developer Document](https://github.com/AschPlatform/asch-docs/blob/master/http_api/zh-cn.md)__
+asch-web是一个通过HTTP请求与ASCH节点进行通信的js库。asch-web提供常用的交易写操作API和常用的工具函数，诸如XAS转账，合约执行，账户创建，助记词，公钥和地址转和交易离线签名等等，asch-web受到Ethereum的[web3.js](https://github.com/ethereum/web3.js/)库的设计思想，提供统一的，无缝的开发体验。我们用核心思想对其进行了扩展，集成了ASCH常用的API，asch-web用typescript语言进行编写，可以build生成浏览器环境和node环境的js库，也可以直接在typescript项目中直接引用使用，对于DAapps与asch节点的交互提供了极大的方便。
 
-AschWeb aims to deliver a unified, seamless development experience influenced by Ethereum's [Web3](https://github.com/ethereum/web3.js/) implementation. We have taken the core ideas and expanded upon it to unlock the functionality of ASCH's unique feature set along with offering new tools for integrating DApps in the browser, Node.js and IoT devices.
+## 兼容性
+- 支持Node.js v8及更高版本构建的版本
+- 支持Chrome浏览器环境
 
-## Compatibility
-- Version built for Node.js v6 and above
-- Version built for chrome browsers  
+您可以从`dist /`文件夹中专门访问这两个版本。
+asch-web还兼容前端框架，如Angular，React和Vue。
+您也可以在Chrome扩展程序中集成asch-web。
 
-You can access either version specifically from the `dist/` folder.
-
-AschWeb is also compatible with frontend frameworks such as Angular, React and Vue.
-
-You can also ship AschWeb in a Chrome extension.
-
-## Installation
+## 安装
 
 <!-- ```
 npm install aschweb
 ``` -->
 
-## Example
+## 实例
 
-To look at the examples, first clone this repo, install the dependencies and run the example:
+首先使用git克隆asch-web项目, 安装依赖并且运行示例：
 ```
-git clone https://github.com/kimziv/AschWeb.git
-cd AschWeb
-yarn
-yarn build -d
-yarn example
+git clone https://github.com/AschPlatform/asch-web
+cd asch-web
+npm install
+npm run example
 ```
-The example is at `examples/server/index.js`.
+实例源码在`examples/server/index.js`.
 
 <!-- ## ASCH provides a private network to test with
 

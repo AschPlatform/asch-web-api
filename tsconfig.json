@@ -1,19 +1,17 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "target": "es6",
-    "module": "CommonJS",
-    "lib": ["dom", "es6", "dom.iterable", "scripthost"],
+    "target": "es5",
+    "module":"es2015",
+    "lib": ["es2015", "es2016", "es2017", "dom"],
     "strict": true,
     "sourceMap": true,
-    "allowJs": true,
-    // "declaration": true,
+    "declaration": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    // "declarationDir": "dist/types",
-    "outDir": "dist/",
-    "noImplicitAny": false,
+    "declarationDir": "dist/types",
+    "outDir": "dist/lib",
     "typeRoots": [
       "node_modules/@types"
     ]
@@ -22,3 +20,28 @@
     "src"
   ]
 }
+
+// {
+//   "compilerOptions": {
+//     "moduleResolution": "node",
+//     "target": "es6",
+//     "module": "CommonJS",
+//     "lib": ["dom", "es6", "dom.iterable", "scripthost"],
+//     "strict": true,
+//     "sourceMap": true,
+//     "allowJs": true,
+//     // "declaration": true,
+//     "allowSyntheticDefaultImports": true,
+//     "experimentalDecorators": true,
+//     "emitDecoratorMetadata": true,
+//     // "declarationDir": "dist/types",
+//     "outDir": "dist/",
+//     "noImplicitAny": false,
+//     "typeRoots": [
+//       "node_modules/@types"
+//     ]
+//   },
+//   "include": [
+//     "src"
+//   ]
+// }

@@ -83,7 +83,7 @@ export class API {
   //   this._privateKey = key
   // }
 
-  public broadcastTransaction(trx) {
+  public broadcastTransaction(trx: Transaction) {
     let headers = Object.assign(
       {
         //magic: '594fe0f3', // local
