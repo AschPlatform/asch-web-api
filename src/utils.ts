@@ -33,7 +33,7 @@ function getHash(
   skipSignature: boolean = false,
   skipSecondSignature: boolean = false
 ) {
-  return sha256Bytes(getBytes(transaction))
+  return sha256Bytes(getBytes(transaction, skipSignature, skipSecondSignature))
 }
 
 function getBytes(
@@ -78,7 +78,7 @@ function getBytes(
 }
 
 function sign(transaction: Transaction, secret: string): Transaction {
-  let hash = getHash(transaction)
+  let hash = getHash(transaction, true, true)
   let keys = getKeys(secret)
   let signature = nacl.sign.detached(hash, keys.keypair.secretKey)
   let signStr = new Buffer(signature).toString('hex')
@@ -88,7 +88,7 @@ function sign(transaction: Transaction, secret: string): Transaction {
 }
 
 function secondSign(transaction: Transaction, secret: string): Transaction {
-  let hash = getHash(transaction)
+  let hash = getHash(transaction, true, true)
   let keys = getKeys(secret)
   let signature = nacl.sign.detached(hash, keys.keypair.secretKey)
   let signStr = new Buffer(signature).toString('hex')
@@ -98,9 +98,9 @@ function secondSign(transaction: Transaction, secret: string): Transaction {
 
 function getKeys(secret: string): Keys {
   let hash = sha256Bytes(new Buffer(secret))
-  //console.log('get keys hash:'+hash)
+  // console.log('get keys hash:'+hash)
   let keypair = nacl.sign.keyPair.fromSeed(hash)
-  //console.log('get keys keypair:'+JSON.stringify(keypair))
+  // console.log('get keys keypair:'+JSON.stringify(keypair))
   return {
     keypair,
     publicKey: new Buffer(keypair.publicKey).toString('hex'),
@@ -181,7 +181,7 @@ function base58DecodeUnsafe(str: string) {
     }
   }
 
-  // deal with leading zeros
+  //  deal with leading zeros
   for (let k = 0; str[k] === LEADER && k < str.length - 1; ++k) {
     bytes.push(0)
   }
@@ -210,11 +210,11 @@ function base58Encode(payload: Uint8Array) {
 
   let str = ''
 
-  // deal with leading zeros
+  //  deal with leading zeros
   for (let k = 0; source[k] === 0 && k < source.length - 1; ++k) {
     str += ALPHABET[0]
   }
-  // convert digits to a string
+  //  convert digits to a string
   for (let q = digits.length - 1; q >= 0; --q) {
     str += ALPHABET[digits[q]]
   }
@@ -252,7 +252,7 @@ function generateBase58CheckAddress(publicKey: Bytes): string {
 function createAccount(): Account {
   const mnemonic = generateMnemonic()
   const publicKey = getKeys(mnemonic).publicKey
-  // let password = base64EncodeToString(priKeyBytes)
+  //  let password = base64EncodeToString(priKeyBytes)
   return {
     privateKey: mnemonic,
     address: getAddressByPublicKey(publicKey)

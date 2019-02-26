@@ -1,6 +1,6 @@
 {
-  "name": "asch-web-test",
-  "version": "0.0.50",
+  "name": "asch-web",
+  "version": "0.1.17",
   "description": "",
   "keywords": [],
   "main": "dist/asch-web.js",

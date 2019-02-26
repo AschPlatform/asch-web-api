@@ -7,20 +7,20 @@ import { type } from 'os'
 import calFee from '../asch-fee'
 import * as Constants from '../constants'
 import * as Slots from '../slots'
-export function transactionBuilder(params: ObjectType): Transaction {
-  let transaction = {
-    type: params.type,
-    timestamp: getTime() - 5,
-    fee: params.fee,
-    args: params.args,
-    senderPublicKey: params.address,
-    senderId: params.address,
-    signatures: [],
-    secondSecret: params.secondSecret,
-    message: params.message || ''
-  }
-  return transaction
-}
+// export function transactionBuilder(params: ObjectType): Transaction {
+//   let transaction = {
+//     type: params.type,
+//     timestamp: getTime() - 5,
+//     fee: params.fee,
+//     args: params.args,
+//     senderPublicKey: params.address,
+//     senderId: params.address,
+//     signatures: [],
+//     secondSecret: params.secondSecret,
+//     message: params.message || ''
+//   }
+//   return transaction
+// }
 
 export class TransactionBuilder {
   static buildTransaction(
@@ -37,7 +37,6 @@ export class TransactionBuilder {
       message: '',
       senderPublicKey: '',
       senderId: ''
-      //mode: 0
     }
     transaction = calFee(transaction)
     transaction.timestamp = Slots.getTime() - Constants.CLIENT_DRIFT_SECONDS
@@ -59,7 +58,7 @@ export class TransactionBuilder {
     return ''
   }
 
-  //转账XAS
+  // 转账XAS
   static transferXAS(amount: number | string, to: string, message: string): Transaction {
     return this.buildTransaction(1, [amount, to], message)
   }
@@ -232,5 +231,29 @@ export class TransactionBuilder {
     fee: number
   ): Transaction {
     return this.buildTransaction(403, [address, gateway, currency, amount, fee])
+  }
+
+  // 智能合约调用
+  static callContract(
+    gasLimit: string | number,
+    enablePayGasInXAS: boolean,
+    contractName: string,
+    methodName: string,
+    args: string[],
+    fee: number = 0
+  ): Transaction {
+    return this.buildTransaction(601, [gasLimit, enablePayGasInXAS, contractName, methodName, args])
+  }
+
+  // 智能合约支付
+  static payContract(
+    gasLimit: string | number,
+    enablePayGasInXAS: boolean,
+    path: string,
+    amount: string | number,
+    currency: string,
+    fee: number = 0
+  ): Transaction {
+    return this.buildTransaction(602, [gasLimit, enablePayGasInXAS, path, amount, currency])
   }
 }

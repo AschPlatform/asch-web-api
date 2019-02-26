@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ObjectType } from '../type'
+import { ObjectType, NET_TYPE } from '../type'
 import { Provider } from './provider'
 
 export class HTTPProvider implements Provider {
@@ -59,7 +59,7 @@ export class HTTPProvider implements Provider {
     // var res;
     if (method === 'get') {
       return this._instance
-        .get(url + '?' + this.json2url(data))
+        .get(this.json2url(data) ? url + '?' + this.json2url(data) : url)
         .then(({ data }: ObjectType) => data)
     } else if (method === 'post') {
       return this._instance.post(url, data, postHeaders).then(({ data }: ObjectType) => data)
@@ -72,8 +72,8 @@ export class HTTPProvider implements Provider {
     return this.request(uri, params)
   }
 
-  post(uri: string, params: ObjectType, headers?: ObjectType) {
-    return this.request(uri, params, 'post', headers)
+  post(uri: string, params: ObjectType) {
+    return this.request(uri, params, 'post')
   }
 
   async isConnected(statusPage: string = '/') {

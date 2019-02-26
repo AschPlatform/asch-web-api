@@ -1,7 +1,7 @@
 import * as utils from './utils'
 import { API } from './api'
 import { AschAPI } from './asch-api'
-import { TransactionBuilder, transactionBuilder } from './builders'
+import { TransactionBuilder } from './builders'
 import { ObjectType, Method, Transaction, Keys, Network, NET_TYPE } from './type'
 import { Provider, HTTPProvider } from './providers'
 
@@ -11,41 +11,41 @@ type CallbackType = (
 
 export default class AschWeb {
   defaultAccount: any
-  secret: string //12个助记词或者私钥
+  secret: string // 12个助记词或者私钥
   secondSecret: string
-  //host: string
+  // host: string
   api
   utils
-  // public network: Network
-  public provider?: Provider
-  //public api : AschAPI
-  // constructor(url: string, secret: string, secondSecret: string = '', headers?: ObjectType) {
-  //   this.host = url
-  //   this.secret = secret
-  //   this.secondSecret = secondSecret
-  //   this.api = new API(url, headers)
-  //   this.utils = utils
-  //   this.defaultAccount = { address: '' }
-  //   this.network={host:'http://',isMainnet:true}
-  // }
+  //  public network: Network
+  public provider: Provider
+  // public api : AschAPI
+  //  constructor(url: string, secret: string, secondSecret: string = '', headers?: ObjectType) {
+  //    this.host = url
+  //    this.secret = secret
+  //    this.secondSecret = secondSecret
+  //    this.api = new API(url, headers)
+  //    this.utils = utils
+  //    this.defaultAccount = { address: '' }
+  //    this.network={host:'http://',isMainnet:true}
+  //  }
 
-  constructor(provider?: Provider, secret: string = '', secondSecret: string = '') {
+  constructor(provider: Provider, secret: string = '', secondSecret: string = '') {
     this.provider = provider
     this.secret = secret
     this.secondSecret = secondSecret
-    // this.api = new API(provider)
+    //  this.api = new API(provider)
     this.api = new AschAPI(this)
     this.utils = utils
     this.defaultAccount = { address: '' }
-    //this.network={host:'http://',isMainnet:true}
+    // this.network={host:'http://',isMainnet:true}
   }
 
-  // getHost(): string {
-  //   return this.host
-  // }
-  // setHost(url: string) {
-  //   this.host = url
-  // }
+  //  getHost(): string {
+  //    return this.host
+  //  }
+  //  setHost(url: string) {
+  //    this.host = url
+  //  }
 
   public setSecondSecret(secondSecret: string) {
     this.secondSecret = secondSecret
@@ -62,11 +62,11 @@ export default class AschWeb {
    * @param unsignedTrx
    */
   public fullSign(unsignedTrx: Transaction): Transaction {
-    //console.log('secret:'+this.secret)
+    // console.log('secret:'+this.secret)
     let keys: Keys = utils.getKeys(this.secret)
     console.log('Keys:' + JSON.stringify(keys))
-    //let publicKey =utils.getKeys(this.secret).publicKey
-    //let address = utils.getAddressByPublicKey(publicKey)
+    // let publicKey =utils.getKeys(this.secret).publicKey
+    // let address = utils.getAddressByPublicKey(publicKey)
     unsignedTrx.senderPublicKey = keys.publicKey
     unsignedTrx.senderId = utils.getAddressByPublicKey(keys.publicKey)
     let trx = utils.sign(unsignedTrx, this.secret)
@@ -81,15 +81,14 @@ export default class AschWeb {
     let trx: Transaction = TransactionBuilder.transferXAS(amount, recipientId, message)
 
     trx = this.fullSign(trx)
-    console.log('+++++transaction:' + JSON.stringify(trx))
     return this.api.broadcastTransaction(trx)
   }
 
   contract(name: string): Promise<object> {
     try {
-      return this.api.get(`/contract/${name}`).then(res => {
-        if (res.data && res.data.contract) {
-          return new Contract(res.data.contract, this.api)
+      return this.api.get(`/api/v2/contracts/${name}`).then(res => {
+        if (res && res.contract) {
+          return new Contract(res.contract, this.api)
         } else {
           return res
         }
@@ -107,10 +106,12 @@ class Contract {
   consumeOwnerEnergy: boolean
   originalContract: ObjectType
   api: ObjectType
+  metadata: ObjectType
 
   constructor(contract: ObjectType, api: ObjectType) {
     this.name = contract.name
-    let methods = contract.methods
+    let methods = contract.metadata.methods
+    this.metadata = contract.metadata
     this.consumeOwnerEnergy = contract.consumeOwnerEnergy === 1
     this.methods = this.initMethods(methods)
     this.originalContract = contract
@@ -118,7 +119,7 @@ class Contract {
   }
   initMethods(methdos: Array<Method>) {
     let methodsMap = new Map<string, Method>()
-    // TODO change method data
+    //  TODO change method data
     for (let method of methdos) {
       let { name, returnType, parameters, isPublic, isPayable } = method
       if (isPublic && returnType) {
@@ -133,41 +134,32 @@ class Contract {
     this.methods = methodsMap
     return methodsMap
   }
-
+  //  TODO
   call(
     methodName: string,
     args: Array<any> = [],
     address: string,
     options: ObjectType = {},
-    callback: CallbackType
+    callback: any
   ) {
     try {
       if (methodName in this.methods && !this.methods[methodName].isConstant) {
-        // let method = this.methods[name]
-        // let {
-        //   parameters
-        // } = method
-        // validate
-        let trx = transactionBuilder({
-          type: 601,
-          fee: 0,
-          args: [
-            options.gasLimit || 10000000,
-            options.enablePayGasInXAS || false,
-            this.name,
-            methodName,
-            args
-          ],
-          senderId: address,
-          signatures: []
+        //  let method = this.methods[name]
+        //  let {
+        //    parameters
+        //  } = method
+        //  validate
+        let trx = TransactionBuilder.callContract(
+          options.gasLimit || 10000000,
+          options.enablePayGasInXAS || false,
+          this.name,
+          methodName,
+          args
+        )
+        trx.senderId = address
+        callback(trx, trans => {
+          return this.api.broadcastTransaction(trans)
         })
-
-        // return trx
-        let { signatures, secondSignature = '', senderPublicKey } = callback(trx)
-        trx.signatures = signatures
-        trx.secondSignature = secondSignature
-        trx.senderPublicKey = senderPublicKey
-        return this.api.broadcastTransaction(trx)
       } else {
         return `contract has no method called ${methodName}`
       }
@@ -176,40 +168,41 @@ class Contract {
     }
   }
 
-  pay(
-    methodName: string,
+  async pay(
+    path: string,
     amount: string,
     currency: string,
     address: string,
     options: ObjectType = {},
-    callback: CallbackType
+    callback: any
   ) {
-    if (methodName in this.methods && !this.methods[methodName].isConstant) {
-      // let method = this.methods[name]
-      // let {
-      //   parameters
-      // } = method
-      let trx = transactionBuilder({
-        type: 601,
-        fee: 0,
-        args: [
+    try {
+      let pathPrefix = path.split('/')[0]
+      let pathSuffix = path.split('/')[1] || ''
+      if (
+        (pathSuffix && pathSuffix in this.methods && !this.methods[pathPrefix].isPayable) ||
+        (!pathSuffix && pathPrefix === this.name)
+      ) {
+        //  let method = this.methods[name]
+        //  let {
+        //    parameters
+        //  } = method
+        let trx = TransactionBuilder.payContract(
           options.gasLimit || 10000000,
           options.enablePayGasInXAS || false,
-          options.receiverPath || this.name,
+          path,
           amount,
           currency
-        ],
-        senderId: address,
-        signatures: []
-      })
-      let { signatures, secondSignature = '', senderPublicKey } = callback(trx)
-      trx.signatures = signatures
-      trx.secondSignature = secondSignature
-      trx.senderPublicKey = senderPublicKey
-      return this.api.broadcastTransaction(trx)
-      // return trx
-    } else {
-      return `contract has no method called ${name}`
+        )
+        trx.senderId = address
+        callback(trx, trans => {
+          return this.api.broadcastTransaction(trans)
+        })
+      } else {
+        return `contract has no method called ${name}`
+      }
+    } catch (e) {
+      return e
     }
   }
 
