@@ -64,20 +64,25 @@ let unsignedTrx =
 }
 
 //utils用法
+
+//生成keypair
 let keys: Keys = Utils.getKeys(secret)
 console.log('keys:' + JSON.stringify(keys))
 
+//从公钥算出地址
 let addr: string = Utils.getAddressByPublicKey(keys.publicKey)
 console.log('get address by publicKey:' + addr)
 
-
+//对交易进行完全签名：主密钥签名，二级密码签名，生成交易id等
 let signedTrx: Transaction = Utils.fullSign(unsignedTrx, secret, secondSecret)
 console.log('full sign transaction:' + JSON.stringify(signedTrx))
 
-
+//创建provider
 const provider: Provider = new HTTPProvider(host, net)
+//初始化AschWeb
 let aschWeb = new AschWeb(provider, secret, secondSecret)
 
+//调用转账接口
 aschWeb.api
     .transferXAS(1000000, to, 'test')
     .then(res => {
@@ -87,12 +92,14 @@ aschWeb.api
         console.error(err)
     })
 
+
 const host2 = 'http://mainnet.asch.cn/'
 const net2 = Network.Main
 const provider2: Provider = new HTTPProvider(host, net)
 //切换provider
 aschWeb.setProvider(provider2)
 
+//调用get api接口
 aschWeb.api
     .get('api/v2/blocks', {})
     .then(res => {
