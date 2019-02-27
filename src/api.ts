@@ -1,57 +1,52 @@
 import { Provider, HTTPProvider, AutoProvider } from './providers'
-import { ObjectType } from './type'
+import { ObjectType, Network } from './type'
 import { TransactionBuilder } from './builders'
 import { Transaction } from './type'
-import * as utils from './utils'
 
-class Version {
-  _apiVersion: string = ''
-  _nodeVersion: string = ''
-  _networkVersion: string = ''
-  _consensusVersion: string = ''
+// class Version {
+//   _apiVersion: string = ''
+//   _nodeVersion: string = ''
+//   _networkVersion: string = ''
+//   _consensusVersion: string = ''
 
-  get api() {
-    return this._apiVersion
-  }
-  get node() {
-    return this._nodeVersion
-  }
-  get network() {
-    return this._networkVersion
-  }
-  get consensus() {
-    return this._consensusVersion
-  }
+//   get api() {
+//     return this._apiVersion
+//   }
+//   get node() {
+//     return this._nodeVersion
+//   }
+//   get network() {
+//     return this._networkVersion
+//   }
+//   get consensus() {
+//     return this._consensusVersion
+//   }
 
-  protected setApi(v: string) {
-    this._apiVersion = v
-  }
-  protected setNode(v: string) {
-    this._apiVersion = v
-  }
-  protected setNetwork(v: string) {
-    this._apiVersion = v
-  }
-  protected setConsensus(v: string) {
-    this._apiVersion = v
-  }
-}
+//   protected setApi(v: string) {
+//     this._apiVersion = v
+//   }
+//   protected setNode(v: string) {
+//     this._apiVersion = v
+//   }
+//   protected setNetwork(v: string) {
+//     this._apiVersion = v
+//   }
+//   protected setConsensus(v: string) {
+//     this._apiVersion = v
+//   }
+// }
 
 export class API {
   _provider: Provider
-  // _privateKey: string
-  _version: Version
-  _headers?: ObjectType
-
-  constructor(p: Provider | string, headers?: ObjectType) {
+  constructor(p: Provider | string) {
     if (typeof p === 'string') {
-      this._provider = new HTTPProvider(p)
+      this._provider = new HTTPProvider(p, Network.Test)
     } else {
       this._provider = p
     }
     // this._privateKey = key
-    this._version = new Version()
-    this._headers = headers
+    // this._version = new Version()
+    // this._headers = headers
     this.connect()
   }
 
@@ -71,6 +66,10 @@ export class API {
     return true
   }
 
+  // public setProvider(provider: Provider){
+  //   this.provider=provider
+  // }
+
   public useHttpProvider(url: string) {
     this._provider = new HTTPProvider(url)
   }
@@ -84,23 +83,32 @@ export class API {
   // }
 
   public broadcastTransaction(trx: Transaction) {
-    let headers = Object.assign(
-      {
-        //magic: '594fe0f3', // local
-        magic: '5f5b3cf5', // mainnet
-        version: '',
-        'Content-Type': 'application/json'
-      },
-      this._headers
-    )
+    // this._headers =
+    //   {
+    //     //magic: '594fe0f3', // local
+    //     magic: '5f5b3cf5', // mainnet
+    //     version: '',
+    //     'Content-Type': 'application/json'
+    //   }
+
+    // // let headers = Object.assign(
+    // //   {
+    // //     //magic: '594fe0f3', // local
+    // //     magic: '5f5b3cf5', // mainnet
+    // //     version: '',
+    // //     'Content-Type': 'application/json'
+    // //   },
+    // //   this._headers
+    // // )
     return this._provider.post(
       `/peer/transactions`,
       {
         transaction: trx
-      },
-      {
-        headers: headers
       }
+      // ,
+      // {
+      //   headers: this._headers
+      // }
     )
   }
 

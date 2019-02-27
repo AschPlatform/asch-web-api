@@ -1,43 +1,28 @@
-import * as utils from './utils'
+import * as Utils from './utils'
 import { API } from './api'
 import AschAPI from './asch-api'
 import { TransactionBuilder, transactionBuilder } from './builders'
 import { ObjectType, Method, Transaction, Keys, Network } from './type'
-import { Provider } from './providers'
+import { Provider, HTTPProvider, AutoProvider } from './providers'
 
 type CallbackType = (
   trx: Transaction
 ) => { signatures: string[]; secondSignature?: string; senderPublicKey: string }
 
 export default class AschWeb {
+  utils: any
   defaultAccount: any
   secret: string //12个助记词或者私钥
   secondSecret: string
-  //host: string
-  //api
-  utils: any
-  // public network: Network
   public provider: Provider
   public api: AschAPI
-  // constructor(url: string, secret: string, secondSecret: string = '', headers?: ObjectType) {
-  //   this.host = url
-  //   this.secret = secret
-  //   this.secondSecret = secondSecret
-  //   this.api = new API(url, headers)
-  //   this.utils = utils
-  //   this.defaultAccount = { address: '' }
-  //   this.network={host:'http://',isMainnet:true}
-  // }
-
   constructor(provider: Provider, secret: string, secondSecret: string = '') {
     this.provider = provider
     this.secret = secret
     this.secondSecret = secondSecret
-    // this.api = new API(provider)
     this.api = new AschAPI(this)
-    this.utils = utils
+    this.utils = Utils
     this.defaultAccount = { address: '' }
-    //this.network={host:'http://',isMainnet:true}
   }
 
   // getHost(): string {
@@ -46,6 +31,15 @@ export default class AschWeb {
   // setHost(url: string) {
   //   this.host = url
   // }
+
+  public setProvider(provider: Provider) {
+    this.provider = provider
+    this.api.provider = provider
+  }
+
+  public setSecret(secret: string) {
+    this.secret = secret
+  }
 
   public setSecondSecret(secondSecret: string) {
     this.secondSecret = secondSecret
@@ -56,27 +50,7 @@ export default class AschWeb {
    * @param unsignedTrx
    */
   public fullSign(unsignedTrx: Transaction): Transaction {
-    //console.log('secret:'+this.secret)
-    let keys: Keys = utils.getKeys(this.secret)
-    console.log('Keys:' + JSON.stringify(keys))
-    //let publicKey =utils.getKeys(this.secret).publicKey
-    //let address = utils.getAddressByPublicKey(publicKey)
-    unsignedTrx.senderPublicKey = keys.publicKey
-    unsignedTrx.senderId = utils.getAddressByPublicKey(keys.publicKey)
-    let trx = utils.sign(unsignedTrx, this.secret)
-    if (this.secondSecret != null && this.secondSecret.length > 0) {
-      trx = utils.secondSign(trx, this.secondSecret)
-    }
-    trx.id = new Buffer(utils.getId(trx)).toString('hex')
-    return trx
-  }
-
-  public transferXAS(amount: number, recipientId: string, message: string): Promise<object> {
-    let trx: Transaction = TransactionBuilder.transferXAS(amount, recipientId, message)
-
-    trx = this.fullSign(trx)
-    console.log('+++++transaction:' + JSON.stringify(trx))
-    return this.api.broadcastTransaction(trx)
+    return Utils.fullSign(unsignedTrx, this.secret, this.secondSecret)
   }
 
   //   contract(name: string): Promise<object> {
@@ -234,4 +208,9 @@ export default class AschWeb {
 //       return e
 //     }
 //   }
+// }
+
+// export {
+//   utils,
+//   HTTPProvider
 // }

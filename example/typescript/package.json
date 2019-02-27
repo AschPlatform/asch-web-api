@@ -1,0 +1,17 @@
+{
+  "name": "asch-web-tsdemo",
+  "version": "1.0.0",
+  "description": "asch web typescript demo",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "tsc --module commonjs",
+    "start": "node dist/index",
+    "buildAndStart": "tsc --module commonjs && node dist/index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^3.3.3333"
+  }
+}

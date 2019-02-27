@@ -1,10 +1,11 @@
 import AschWeb from '../src/asch-web'
 import AschAPI from '../src/asch-api'
+import { Network } from '../src/type'
 import { Provider, HTTPProvider } from '../src/providers'
 
 describe('asch-api unit test', () => {
   const host = 'http://mainnet.asch.cn/'
-  const provider: Provider = new HTTPProvider(host)
+  const provider: Provider = new HTTPProvider(host, Network.Main)
   let secret = 'quantum jelly guilt chase march lazy able repeat enrich fold sweet sketch'
   let secondSecret = '' //'11111111a'
   let aschWeb = new AschWeb(provider, secret, secondSecret)

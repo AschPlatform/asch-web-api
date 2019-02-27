@@ -14,122 +14,92 @@ asch-web还兼容前端框架，如Angular，React和Vue。
 
 ## 安装
 
-<!-- ```
-npm install aschweb
-``` -->
-
-## 实例
-
 首先使用git克隆asch-web项目, 安装依赖并且运行示例：
+
 ```
 git clone https://github.com/AschPlatform/asch-web
 cd asch-web
 npm install
-npm run example
-```
-实例源码在`examples/server/index.js`.
-
-<!-- ## ASCH provides a private network to test with
-
-* Test Node - http://testnet.asch.io
-
-* You can also set up your own private network, but you need to solve cross-domain CORS. The following example in Node reads from a full node listening on 16667 and a solidity node listening on 16668, and exposes the ports 8090 and 8091 with the needed headers.
+npm run build
 
 ```
-var express = require('express');
-var proxy = require('http-proxy-middleware');
+生成的.js文件和.d.ts都在dist目录下, 可供不同环境的项目使用。
 
-function onProxyRes(proxyRes, req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Accept')
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
-  console.log(req.originalUrl)
+## 实例
+
+实例源码在`examples`目录下，这个目录分有三个子目录：typescript, browser和server,分别对应typescript, 浏览器和node三种不同运行环境的实例。
+
+
+### typescript项目实例
+
+```
+cd  example/typescript
+npm install
+npm run build #生成js文件
+npm run start #运行js文件
+
+```
+
+import { Utils, Keys, AschWeb, Provider, HTTPProvider, Network, Transaction } from '../../../dist'
+const host = 'http://testnet.asch.io'// 'http://mainnet.asch.cn/'
+const net = Network.Test//   Network.Main
+
+let secret = 'quantum jelly guilt chase march lazy able repeat enrich fold sweet sketch'
+let secondSecret = '' //'11111111a'
+
+let address = 'ACFi5K42pVVYxq5rFkFQBa6c6uFLmGFUP2'
+let to = 'AHcGmYnCyr6jufT5AGbpmRUv55ebwMLCym'
+let dappId = '25be71c296430a409cfeaf1ffaa957d18793f3695db07a846c22a7c467c45994'
+let publicKey: string
+let unsignedTrx =
+{
+    type: 1,
+    fee: 10000000,
+    args: [1000000, 'AHcGmYnCyr6jufT5AGbpmRUv55ebwMLCym'],
+    timestamp: 84190767,
+    message: '',
+    senderPublicKey: '',
+    senderId: 'ACFi5K42pVVYxq5rFkFQBa6c6uFLmGFUP2',
 }
 
-var fullnode = express();
-fullnode.use('/', proxy({
-  target: 'http://127.0.0.1:16667',
-  changeOrigin: true,
-  onProxyRes
-}));
-fullnode.listen(8090);
+//utils用法
+let keys: Keys = Utils.getKeys(secret)
+console.log('keys:' + JSON.stringify(keys))
 
-var soliditynode = express();
-soliditynode.use('/', proxy({
-  target: 'http://127.0.0.1:16668',
-  changeOrigin: true,
-  onProxyRes,
-  onError
-}));
-soliditynode.listen(8091); -->
-```
+let addr: string = Utils.getAddressByPublicKey(keys.publicKey)
+console.log('get address by publicKey:' + addr)
 
 
-## Creating an Instance
+let signedTrx: Transaction = Utils.fullSign(unsignedTrx, secret, secondSecret)
+console.log('full sign transaction:' + JSON.stringify(signedTrx))
 
-First off, in your javascript file, define AschWeb:
 
-```js
-const AschWeb = require('aschWeb')
-```
-Specify the API endpoints:
-```js
-const HttpProvider = AschWeb.providers.HttpProvider;
-const fullNode = new HttpProvider(' http://testnet.asch.io'); // Full node http endpoint
-```
-The provider above is optional, you can just use a url for the nodes instead, like here:
+const provider: Provider = new HTTPProvider(host, net)
+let aschWeb = new AschWeb(provider, secret, secondSecret)
 
-```js
-const fullNode = 'http://testnet.asch.io';
-```
-Now, instance a aschWeb object:
-```js
-const mnemonic = 'define wise club transfer top crystal enrich rely nice scout talent romance';
+aschWeb.api
+    .transferXAS(1000000, to, 'test')
+    .then(res => {
+        console.log('transfer XAS response:' + JSON.stringify(res))
+    })
+    .catch(err => {
+        console.error(err)
+    })
 
-const aschWeb = new AschWeb(
-    fullNode,
-    mnemonic,
-    false
-);
+const host2 = 'http://mainnet.asch.cn/'
+const net2 = Network.Main
+const provider2: Provider = new HTTPProvider(host, net)
+//切换provider
+aschWeb.setProvider(provider2)
+
+aschWeb.api
+    .get('api/v2/blocks', {})
+    .then(res => {
+        console.log('get blocks response:' + JSON.stringify(res))
+    })
+    .catch(err => {
+        console.error(err)
+    })
+
 
 ```
-#### A full example:
-```js
-const AschWeb = require('aschweb')
-const HttpProvider = AschWeb.providers.HttpProvider; // This provider is optional, you can just use a url for the nodes instead
-const mnemonic = 'define wise club transfer top crystal enrich rely nice scout talent romance';
-
-const aschWeb = new AschWeb(
-    fullNode,
-    mnemonic,
-    false
-);
-
-
-async function getAccount() {
-    // The majority of the function calls are asynchronus,
-    // meaning that they cannot return the result instantly.
-    // These methods therefore return a promise, which you can await.
-    const account = await aschWeb.asch.accounts(address);
-    console.log('account info:',account);
-
-    // You can also bind a `then` and `catch` method.
-    aschWeb.asch.accounts(address).then(account => {
-        console.log({account});
-    }).catch(err => console.error(err));
-
-    // If you'd like to use a similar API to Web3, provide a callback function.
-    aschWeb.asch.accounts(address, (err, account) => {
-        if (err)
-            return console.error(err);
-
-        console.log({account});
-    });
-}
-
-getAccount();
-
-```
-#### Note:
-
-For testing AschWeb API functions, it would be best to setup a private network on your local machine using the <a href="https://developers.asch.network/docs/getting-started-1" target="_blank">ASCH Docker Quickstart guide</a>. The guide sets up a node server on your machine. You can then deploy smart contracts on your network and interact with them via AschWeb. If you wish to test AschWeb with other users, it would be best to deploy your contracts/DApps on the test network and interact from there.  

@@ -5,7 +5,7 @@
   "keywords": [],
   "main": "dist/asch-web.umd.js",
   "module": "dist/asch-web.es5.js",
-  "typings": "dist/types/asch-web.d.ts",
+  "typings": "dist/asch-web.d.ts",
   "files": [
     "dist"
   ],
@@ -34,7 +34,8 @@
     "precommit": "lint-staged",
     "travis-deploy-once": "travis-deploy-once",
     "tsc": "rm -rf ./dist/* && tsc --module commonjs && npm publish",
-    "build2": "rm -rf ./dist/* && tsc --module commonjs && rollup -c rollup.config.ts"
+    "build2": "rm -rf ./dist/* && tsc --module commonjs && typedoc --out docs --target es6 --theme minimal --mode file src",
+    "browserify": "browserify ./dist/lib/asch-web.js -o ./dist/browserify-asch-web.js"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -91,6 +92,7 @@
     "@commitlint/config-conventional": "^7.1.2",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.11.0",
+    "browserify": "^16.2.3",
     "colors": "^1.3.2",
     "commitizen": "^3.0.7",
     "coveralls": "^3.0.2",
@@ -108,6 +110,8 @@
     "rollup": "^0.67.0",
     "rollup-plugin-commonjs": "^9.1.8",
     "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-typescript2": "^0.19.2",
@@ -123,12 +127,14 @@
   },
   "dependencies": {
     "@types/bip39": "=2.4.1",
+    "@types/bytebuffer": "^5.0.40",
     "@types/ripemd160": "=2.0.0",
-    "@types/bytebuffer": "^5.0.38",
     "axios": "=0.18.0",
     "bip39": "=2.5.0",
-    "bytebuffer": "=5.0.1",
+    "bitcoin-ts": "^1.4.0",
+    "bytebuffer": "^5.0.1",
     "fast-sha256": "=1.1.0",
+    "js-sha256": "^0.9.0",
     "ripemd160": "=2.0.2",
     "tweetnacl": "=1.0.0"
   }

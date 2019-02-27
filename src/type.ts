@@ -55,7 +55,8 @@ export interface Method {
   isConstant: boolean
 }
 
-export interface Network {
-  host: string
-  isMainnet: boolean
+export enum Network {
+  Local,
+  Test,
+  Main
 }
