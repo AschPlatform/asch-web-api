@@ -17,7 +17,7 @@ let baseConfig = {
     libraryTarget: 'commonjs',
   },
 
-  devtool: "source-map",
+  devtool: 'inline-source-map',
   resolve: {
     // mainFields: ['browser', 'module', 'main'],
     // modules: ['node_modules'],
@@ -35,10 +35,11 @@ let baseConfig = {
 }
 
 let targets = ['web', 'node', 'async-node'].map((target) => {
+  
   let config = webpackMerge(baseConfig, {
     target: target,
     output: {
-      filename: libName + '.' + target + '.js',
+      filename: libName + '.' + target,
       path: path.resolve(__dirname, 'dist'),
       libraryTarget: 'commonjs',
     }

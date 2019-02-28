@@ -38,7 +38,8 @@
     "build2": "rm -rf ./dist/* && tsc --module commonjs && typedoc --out docs --target es6 --theme minimal --mode file src",
     "browserify": "browserify ./dist/lib/asch-web.js -o ./dist/browserify-asch-web.js",
     "rollup": "rollup -c rollup.config.ts",
-    "webpack": "webpack --config webpack.config.js"
+    "webpack-dev": "rm -rf ./dist/* && webpack --colors --config  webpack.config.dev.js",
+    "webpack-prod": "rm -rf ./dist/* && webpack --colors --config  webpack.config.prod.js"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
