@@ -1,4 +1,4 @@
-import axios from 'axios'
+import Axios from 'axios'
 import { ObjectType, Network } from '../type'
 import { Provider } from './provider'
 import { LOCAL_NET_MAGIC, TEST_NET_MAGIC, MAIN_NET_MAGIC } from '../constants'
@@ -17,7 +17,7 @@ export class HTTPProvider implements Provider {
       this._net = Network.Test
     }
     this._net = net
-    this._instance = axios.create({
+    this._instance = Axios.create({
       baseURL: url,
       timeout: timeout,
       headers: this.headerForNet(net)
