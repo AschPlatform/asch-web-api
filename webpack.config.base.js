@@ -41,7 +41,7 @@ let targets = ['web', 'node', 'async-node'].map((target) => {
     output: {
       filename: libName + '.' + target,
       path: path.resolve(__dirname, 'dist'),
-      libraryTarget: 'commonjs',
+      libraryTarget: target==='web'?'umd':'commonjs',
     }
   })
   return config
