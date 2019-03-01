@@ -3,9 +3,9 @@
   "version": "0.0.50",
   "description": "",
   "keywords": [],
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "dist/tsc/index.js",
+  "module": "dist/tsc/index.js",
+  "typings": "dist/tsc/index.d.ts",
   "files": [
     "dist"
   ],
@@ -21,9 +21,13 @@
   "scripts": {
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
-    "postinstall": "tsc --module commonjs && typedoc --out docs --target es6 --theme minimal --mode file src",
-    "start": "rollup -c rollup.config.ts -w",
+    "postinstall": "npm run build",
+    "start": "npm run webpack-dev",
+    "tsc": "rm -rf ./dist/tsc/* && tsc --module commonjs && typedoc --out docs --target es6 --theme minimal --mode file src",
+    "webpack-dev": "find ./dist/webpack/ ! -name '*.min.*' -type f -print -exec rm -rf {} \\; ; webpack --colors --config  webpack.config.dev.js",
+    "webpack-prod": "find ./dist/webpack/ -name '*.min.*' -type f -print -exec rm -rf {} \\; ; webpack --colors --config  webpack.config.prod.js",
+    "webpack": "npm run webpack-dev && npm run webpack-prod",
+    "build": "npm run tsc && npm run webpack",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",
     "test:prod": "npm run lint && npm run test -- --no-cache",
@@ -33,13 +37,7 @@
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
-    "travis-deploy-once": "travis-deploy-once",
-    "tsc": "rm -rf ./dist/* && tsc --module commonjs && npm publish",
-    "build2": "rm -rf ./dist/* && tsc --module commonjs && typedoc --out docs --target es6 --theme minimal --mode file src",
-    "browserify": "browserify ./dist/lib/asch-web.js -o ./dist/browserify-asch-web.js",
-    "rollup": "rollup -c rollup.config.ts",
-    "webpack-dev": "rm -rf ./dist/* && webpack --colors --config  webpack.config.dev.js",
-    "webpack-prod": "rm -rf ./dist/* && webpack --colors --config  webpack.config.prod.js"
+    "travis-deploy-once": "travis-deploy-once"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [

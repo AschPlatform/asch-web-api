@@ -13,7 +13,7 @@ let baseConfig = {
   target: 'node',
   output: {
     filename: libName,
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist/webpack'),
     libraryTarget: 'commonjs',
   },
 
@@ -40,7 +40,7 @@ let targets = ['web', 'node', 'async-node'].map((target) => {
     target: target,
     output: {
       filename: libName + '.' + target,
-      path: path.resolve(__dirname, 'dist'),
+      // path: path.resolve(__dirname, 'dist'),
       libraryTarget: target==='web'?'umd':'commonjs',
     }
   })

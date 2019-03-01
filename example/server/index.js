@@ -1,6 +1,6 @@
 
 // import { Utils, Keys, AschWeb, Provider, HTTPProvider, Network, Transaction } from '../../dist/bundle'
-var AschWeb = require('../../dist/asch-web.async-node.min')
+var AschWeb = require('../../dist/wepack/asch-web.async-node.min')
 var Utils = AschWeb.Utils
 var Keys = AschWeb.keys
 var AW = AschWeb.AschWeb
