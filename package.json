@@ -18,7 +18,7 @@
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "rm -rf ./dist/* && tsc --module commonjs",
-    "postinstall": "npm build",
+    "postinstall": "npm run-script build",
     "start": "rollup -c rollup.config.ts -w",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",
