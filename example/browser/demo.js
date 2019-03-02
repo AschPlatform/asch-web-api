@@ -1,10 +1,11 @@
-const Utils = window.Utils
-const Keys = window.keys
-const AW = window.AschWeb
-const Provider = window.Provider
-const HTTPProvider = window.HTTPProvider
-const Network = window.Network
-const Transaction = window.Transaction
+const Asch = window.Asch
+const Utils = Asch.Utils
+const Keys = Asch.keys
+const AW = Asch.AschWeb
+const Provider = Asch.Provider
+const HTTPProvider = Asch.HTTPProvider
+const Network = Asch.Network
+const Transaction = Asch.Transaction
 
 const host = 'http://testnet.asch.io'// 'http://mainnet.asch.cn/'
 const net = Network.Test//   Network.Main
@@ -57,7 +58,7 @@ aschWeb.api
 
 const host2 = 'http://mainnet.asch.cn/'
 const net2 = Network.Main
-const provider2 = new HTTPProvider(host, net)
+const provider2 = new HTTPProvider(host2, net2)
 //切换provider
 aschWeb.setProvider(provider2)
 

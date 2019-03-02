@@ -6,4 +6,4 @@ import * as Utils from './utils'
 export * from './type'
 
 const Asch = { AschWeb, Provider, HTTPProvider, Network, TransactionBuilder, Constants, Utils }
-export { Asch, AschWeb, Provider, HTTPProvider, Network, TransactionBuilder, Constants, Utils }
+export { Asch }

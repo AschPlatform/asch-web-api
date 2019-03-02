@@ -387,7 +387,7 @@ export {
   getAddressByPublicKey,
   fromSatoshi,
   toSatoshi,
-  transactionBuilder,
+  // transactionBuilder,
   getTime,
   getKeys,
   fullTimestamp,

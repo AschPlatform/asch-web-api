@@ -1,9 +1,7 @@
-import * as Utils from './utils'
-import { API } from './api'
+import * as utils from './utils'
 import AschAPI from './asch-api'
-import { TransactionBuilder, transactionBuilder } from './builders'
-import { ObjectType, Method, Transaction, Keys, Network } from './type'
-import { Provider, HTTPProvider, AutoProvider } from './providers'
+import { Transaction } from './type'
+import { Provider } from './providers'
 
 type CallbackType = (
   trx: Transaction
@@ -21,7 +19,7 @@ export default class AschWeb {
     this.secret = secret
     this.secondSecret = secondSecret
     this.api = new AschAPI(this)
-    this.utils = Utils
+    this.utils = utils
     this.defaultAccount = { address: '' }
   }
 
@@ -50,7 +48,7 @@ export default class AschWeb {
    * @param unsignedTrx
    */
   public fullSign(unsignedTrx: Transaction): Transaction {
-    return Utils.fullSign(unsignedTrx, this.secret, this.secondSecret)
+    return utils.fullSign(unsignedTrx, this.secret, this.secondSecret)
   }
 
   //   contract(name: string): Promise<object> {

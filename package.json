@@ -1,18 +1,16 @@
 {
   "name": "asch-web",
-  "version": "0.0.50",
-  "description": "",
-  "keywords": [],
+  "version": "0.0.56",
+  "description": "Asch typscript library, support typescript, node and web(browser) ports",
+  "keywords": ["asch","ts","js","lib","library","typescript","javascript","node","web","browser"],
   "main": "dist/tsc/index.js",
   "module": "dist/tsc/index.js",
   "typings": "dist/tsc/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "author": "sqfasd <sqf1225@foxmail.com>",
+  "contributors":["kimziv <kimziv@qq.com>"],
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/AschPlatform/asch-web.git"
   },
   "license": "MIT",
   "engines": {
@@ -21,13 +19,14 @@
   "scripts": {
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "postinstall": "npm run build",
     "start": "npm run webpack-dev",
-    "tsc": "rm -rf ./dist/tsc/* && tsc --module commonjs && typedoc --out docs --target es6 --theme minimal --mode file src",
-    "webpack-dev": "find ./dist/webpack/ ! -name '*.min.*' -type f -print -exec rm -rf {} \\; ; webpack --colors --config  webpack.config.dev.js",
-    "webpack-prod": "find ./dist/webpack/ -name '*.min.*' -type f -print -exec rm -rf {} \\; ; webpack --colors --config  webpack.config.prod.js",
+    "tsc": "rimraf dist/tsc/* && tsc --module commonjs && npm run typedoc",
+    "webpack-dev": "webpack --colors --config  webpack.config.dev.js",
+    "webpack-prod": "webpack --colors --config  webpack.config.prod.js",
     "webpack": "npm run webpack-dev && npm run webpack-prod",
     "build": "npm run tsc && npm run webpack",
+
+    "typedoc": "typedoc --out docs --target es6 --theme minimal --mode file src",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",
     "test:prod": "npm run lint && npm run test -- --no-cache",
@@ -95,7 +94,7 @@
     "@types/jest": "^23.3.2",
     "@types/node": "^10.11.0",
     "awesome-typescript-loader": "^5.2.1",
-    "browserify": "^16.2.3",
+    "clean-webpack-plugin": "^1.0.1",
     "colors": "^1.3.2",
     "commitizen": "^3.0.7",
     "coveralls": "^3.0.2",
@@ -110,19 +109,9 @@
     "prompt": "^1.0.0",
     "replace-in-file": "^3.4.2",
     "rimraf": "^2.6.2",
-    "rollup": "^0.67.0",
-    "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-commonjs": "^9.2.1",
-    "rollup-plugin-json": "^3.1.0",
-    "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-globals": "^1.4.0",
-    "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-typescript2": "^0.19.2",
     "semantic-release": "^15.9.16",
     "travis-deploy-once": "^5.0.9",
     "ts-jest": "^23.10.2",
-    "ts-loader": "^5.3.3",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
@@ -144,7 +133,6 @@
     "fast-sha256": "=1.1.0",
     "js-sha256": "^0.9.0",
     "ripemd160": "=2.0.2",
-    "tweetnacl": "=1.0.0",
-    "xmlhttprequest": "^1.8.0"
+    "tweetnacl": "=1.0.0"
   }
 }

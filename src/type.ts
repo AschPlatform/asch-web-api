@@ -55,8 +55,8 @@ export interface Method {
   isConstant: boolean
 }
 
-export enum Network {
-  Local,
-  Test,
-  Main
-}
+// export enum Network {
+//   Local,
+//   Test,
+//   Main
+// }

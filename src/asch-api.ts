@@ -1,7 +1,8 @@
 import { API } from './api'
 import AschWeb from './asch-web'
 import { TransactionBuilder } from './builders'
-import { Network, Transaction } from './type'
+import { Transaction } from './type'
+import { Network } from './providers'
 export default class AschAPI extends API {
   aschWeb: AschWeb
   constructor(aschWeb: AschWeb) {

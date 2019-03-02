@@ -1,5 +1,5 @@
-import { Provider, HTTPProvider, AutoProvider } from './providers'
-import { ObjectType, Network } from './type'
+import { Network, Provider, HTTPProvider, AutoProvider } from './providers'
+import { ObjectType } from './type'
 import { TransactionBuilder } from './builders'
 import { Transaction } from './type'
 
