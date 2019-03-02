@@ -1,13 +1,10 @@
 {
-  "name": "asch-web-test",
-  "version": "0.0.50",
+  "name": "asch-web",
+  "version": "0.0.57",
   "description": "",
   "keywords": [],
   "main": "dist/asch-web.js",
   "typings": "dist/types/asch-web.d.ts",
-  "files": [
-    "dist"
-  ],
   "author": "sqfasd <sqf1225@foxmail.com>",
   "repository": {
     "type": "git",
@@ -20,7 +17,8 @@
   "scripts": {
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
+    "build": "rm -rf ./dist/* && tsc --module commonjs",
+    "postinstall": "npm build",
     "start": "rollup -c rollup.config.ts -w",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",
