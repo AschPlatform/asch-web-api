@@ -31,7 +31,6 @@ dist目录下生成了两个文件夹tsc和webpack, 可供不同环境的项目�
  1. npm安装
 
 ```
-
 npm install asch-web
 
 ```
@@ -39,19 +38,15 @@ npm install asch-web
 2. 本地安装
   
 ```
-
 npm install path/to/asch-web  #本地路径
-
 
 ```
 
 3. 通过github安装
   
 ```
-
 npm install git://github.com/AschPlatform/asch-web.git   #master分支
 npm install git://github.com/AschPlatform/asch-web.git#kim  #kim分支
-
 
 ```
 
