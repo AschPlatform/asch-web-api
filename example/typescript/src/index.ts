@@ -1,5 +1,5 @@
 // import Asch  from '../../../dist/tsc'
-import {AschWeb, Keys, Transaction, Utils ,Network , Provider, HTTPProvider} from '../../../dist/tsc'
+import {AschWeb, Keys, Transaction, Utils ,Network , Provider, HTTPProvider} from 'asch-web'
 
 const host = 'http://testnet.asch.cn'// 'http://mainnet.asch.cn/'
 const net = Network.Test//   Network.Main
