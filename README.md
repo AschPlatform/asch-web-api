@@ -12,7 +12,7 @@ asch-web是一个通过HTTP请求与ASCH节点进行通信的js库。asch-web提
 asch-web还兼容前端框架，如Angular，React和Vue。
 您也可以在Chrome扩展程序中集成asch-web。
 
-## 安装
+## Build
 
 首先使用git克隆asch-web项目, 安装依赖并且运行示例：
 
@@ -23,7 +23,39 @@ npm install
 npm run build
 
 ```
-生成的.js文件和.d.ts都在dist目录下, 可供不同环境的项目使用。
+dist目录下生成了两个文件夹tsc和webpack, 可供不同环境的项目使用，其中tsc可以拷贝到typescript项目中直接使用，webpack生成的文件可以拷贝到node项目或者web项目直接使用。
+
+
+## 安装
+
+ 1. npm安装
+
+```
+
+npm install asch-web
+
+```
+ 
+2. 本地安装
+  
+```
+
+npm install path/to/asch-web  #本地路径
+
+
+```
+
+3. 通过github安装
+  
+```
+
+npm install git://github.com/AschPlatform/asch-web.git   #master分支
+npm install git://github.com/AschPlatform/asch-web.git#kim  #kim分支
+
+
+```
+
+## 
 
 ## 实例
 
