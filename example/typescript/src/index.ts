@@ -1,8 +1,7 @@
-
-import Asch  from '../../../dist/tsc'
+// import Asch  from '../../../dist/tsc'
 import {AschWeb, Keys, Transaction, Utils ,Network , Provider, HTTPProvider} from '../../../dist/tsc'
 
-const host = 'http://testnet.asch.io'// 'http://mainnet.asch.cn/'
+const host = 'http://testnet.asch.cn'// 'http://mainnet.asch.cn/'
 const net = Network.Test//   Network.Main
 
 let secret = 'quantum jelly guilt chase march lazy able repeat enrich fold sweet sketch'
