@@ -252,4 +252,85 @@ export default class AschAPI extends API {
     trx = this.aschWeb.fullSign(trx)
     return this.broadcastTransaction(trx)
   }
+
+  /**
+   * 注册合约
+   * @param asLimit
+   * @param name
+   * @param version
+   * @param desc
+   * @param code
+   * @param consumeOwnerEnergy
+   */
+  public registerContract(
+    asLimit: number,
+    name: string,
+    version: string,
+    desc: string,
+    code: string,
+    consumeOwnerEnergy: boolean
+  ): Promise<object> {
+    let trx: Transaction = TransactionBuilder.buildTransaction(600, [
+      asLimit,
+      name,
+      version,
+      desc,
+      code,
+      consumeOwnerEnergy
+    ])
+    trx = this.aschWeb.fullSign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+  /**
+   * 调用合约方法
+   * @param gasLimit
+   * @param enablePayGasInXAS
+   * @param contractName
+   * @param method
+   * @param methodArgs
+   */
+  public callContract(
+    gasLimit: number,
+    enablePayGasInXAS: boolean,
+    contractName: string,
+    method: string,
+    methodArgs: Array<any>
+  ): Promise<object> {
+    let trx: Transaction = TransactionBuilder.buildTransaction(601, [
+      gasLimit,
+      enablePayGasInXAS,
+      contractName,
+      method,
+      methodArgs
+    ])
+    trx = this.aschWeb.fullSign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+  /**
+   * 转账到合约
+   * @param gasLimit
+   * @param enablePayGasInXAS
+   * @param receiverPath
+   * @param amount
+   * @param currency
+   */
+  public payContract(
+    gasLimit: number,
+    enablePayGasInXAS: boolean,
+    receiverPath: string,
+    amount: number,
+    currency: string
+  ): Promise<object> {
+    let trx: Transaction = TransactionBuilder.buildTransaction(602, [
+      gasLimit,
+      enablePayGasInXAS,
+      receiverPath,
+      amount,
+      currency
+    ])
+    trx = this.aschWeb.fullSign(trx)
+    return this.broadcastTransaction(trx)
+  }
 }
