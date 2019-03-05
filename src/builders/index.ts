@@ -3,7 +3,7 @@
 // export * from './issue'
 import { ObjectType, Transaction } from '../type'
 import { getTime } from '../utils'
-import { type } from 'os'
+// import { type } from 'os'
 import calFee from '../asch-fee'
 import * as Constants from '../constants'
 import * as Slots from '../slots'

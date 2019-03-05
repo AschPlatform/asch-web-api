@@ -9,7 +9,7 @@ describe('Utils test', () => {
   let secret = 'marine tell onion breeze cheap sentence umbrella hurt humble tackle parent fantasy'
   let aschWeb = new AschWeb(provider, secret)
   let address = 'A2xBm2AqE2kuye9SDUfgxbvaGZ9YyNwgtB'
-  let publicKey
+  let publicKey: string
   let utils = aschWeb.utils
   let trx = {
     type: 601,

@@ -1,24 +1,26 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "target": "es6",
-    "module": "CommonJS",
-    "lib": ["dom", "es6", "dom.iterable", "scripthost"],
+    // "moduleResolution": "node",
+    "target": "es5",
+    "module":"commonjs",
+    "lib": ["es2015", "es2016", "es2017", "dom"],
     "strict": true,
     "sourceMap": true,
-    "allowJs": true,
-    // "declaration": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    // "declarationDir": "dist/types",
-    "outDir": "dist/",
-    "noImplicitAny": false,
+    "declaration": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    // "allowSyntheticDefaultImports": true,
+    // "experimentalDecorators": true,
+    // "emitDecoratorMetadata": true,
+    "outDir": "dist/tsc",
     "typeRoots": [
       "node_modules/@types"
     ]
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

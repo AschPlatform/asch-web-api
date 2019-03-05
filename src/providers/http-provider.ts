@@ -1,25 +1,41 @@
-import axios from 'axios'
+import Axios from 'axios'
 import { ObjectType } from '../type'
-import { Provider } from './provider'
-
-export class HTTPProvider implements Provider {
+import { Provider, Network } from './provider'
+import { LOCAL_NET_MAGIC, TEST_NET_MAGIC, MAIN_NET_MAGIC } from '../constants'
+export class HTTPProvider extends Provider {
   _url: string
   _timeout: number
-  _headers: ObjectType
+  _net?: Network
   _instance: ObjectType
 
-  constructor(url: string, timeout: number = 30000, headers: ObjectType = {}) {
+  constructor(url: string, net?: Network, timeout: number = 30000) {
+    super()
     url = url.replace(/\/+$/, '')
 
     this._url = url
     this._timeout = timeout
-    this._headers = headers
-
-    this._instance = axios.create({
+    if (net == null) {
+      this._net = Network.Test
+    }
+    this._net = net
+    this._instance = Axios.create({
       baseURL: url,
       timeout: timeout,
-      headers: headers
+      headers: this.headerForNet(net)
     })
+  }
+
+  headerForNet(net?: Network): ObjectType {
+    return {
+      magic:
+        net == Network.Main
+          ? MAIN_NET_MAGIC
+          : net == Network.Test
+          ? TEST_NET_MAGIC
+          : LOCAL_NET_MAGIC,
+      version: '',
+      'Content-Type': 'application/json'
+    }
   }
 
   json2url(json: any) {

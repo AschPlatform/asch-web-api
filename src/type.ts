@@ -39,6 +39,11 @@ export interface Param {
   require: boolean
 }
 
+export interface Reponse {
+  success: boolean
+  error: string
+}
+
 export interface Method {
   name: string
   returnType: { name: string; text: string }
@@ -50,7 +55,8 @@ export interface Method {
   isConstant: boolean
 }
 
-export interface Network {
-  host: string
-  isMainnet: boolean
-}
+// export enum Network {
+//   Local,
+//   Test,
+//   Main
+// }

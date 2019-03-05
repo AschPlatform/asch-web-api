@@ -48,13 +48,15 @@ function getBytes(
   bb.writeString(trs.senderId)
   if (trs.message) bb.writeString(trs.message)
   if (trs.args) {
-    let args
+    let args: string | undefined
     if (typeof trs.args === 'string') {
       args = trs.args
     } else if (Array.isArray(trs.args)) {
       args = JSON.stringify(trs.args)
     }
-    bb.writeString(args)
+    if (args != undefined && args.length > 0) {
+      bb.writeString(args)
+    }
   }
 
   if (!skipSignature && trs.signatures) {
@@ -75,6 +77,9 @@ function getBytes(
 
   bb.flip()
   return toLocalBuffer(bb)
+
+  // const buf = Buffer.from('123456')
+  // return new Uint8Array(buf)
 }
 
 function sign(transaction: Transaction, secret: string): Transaction {
@@ -94,6 +99,26 @@ function secondSign(transaction: Transaction, secret: string): Transaction {
   let signStr = new Buffer(signature).toString('hex')
   transaction.secondSignature = signStr
   return transaction
+}
+
+/**
+ * 所有交易的签名函数
+ * @param unsignedTrx
+ */
+function fullSign(unsignedTrx: Transaction, secret: string, secondSecret: string): Transaction {
+  //console.log('secret:'+secret)
+  let keys: Keys = getKeys(secret)
+  // console.log('Keys:' + JSON.stringify(keys))
+  //let publicKey =utils.getKeys(this.secret).publicKey
+  //let address = utils.getAddressByPublicKey(publicKey)
+  unsignedTrx.senderPublicKey = keys.publicKey
+  unsignedTrx.senderId = getAddressByPublicKey(keys.publicKey)
+  let trx = sign(unsignedTrx, secret)
+  if (secondSecret != null && secondSecret.length > 0) {
+    trx = secondSign(trx, secondSecret)
+  }
+  trx.id = new Buffer(getId(trx)).toString('hex')
+  return trx
 }
 
 function getKeys(secret: string): Keys {
@@ -153,9 +178,9 @@ function verifyBytes(bytes: string, signature: string, publicKey: string): boole
   return res
 }
 
-function hash(bytes: Bytes): string {
-  return ''
-}
+// function hash(bytes: Bytes): string {
+//   return ''
+// }
 
 function getId(transaction: Transaction): Uint8Array {
   return sha256Bytes(getBytes(transaction))
@@ -189,7 +214,7 @@ function base58DecodeUnsafe(str: string) {
 }
 
 function base58Encode(payload: Uint8Array) {
-  let checksum = Buffer.from(sha256.hash(sha256.hash(payload)))
+  let checksum = Buffer.from(sha256Bytes(sha256Bytes(payload)))
   let source = Buffer.concat([payload, checksum], payload.length + 4)
   if (source.length === 0) return ''
 
@@ -244,7 +269,7 @@ function generateBase58CheckAddress(publicKey: Bytes): string {
   if (typeof publicKey === 'string') {
     publicKey = Buffer.from(publicKey, 'hex')
   }
-  let h1 = sha256.hash(publicKey)
+  let h1 = sha256Bytes(publicKey)
   let h2 = new RIPEMD160().update(Buffer.from(h1)).digest()
   return NORMAL_PREFIX + base58Encode(h2)
 }
@@ -267,7 +292,7 @@ function getAddressByPublicKey(publicKey: Bytes): string {
   if (typeof publicKey === 'string') {
     publicKey = Buffer.from(publicKey, 'hex')
   }
-  const h1 = sha256.hash(publicKey)
+  const h1 = sha256Bytes(publicKey)
   const h2 = new RIPEMD160().update(Buffer.from(h1)).digest()
   return NORMAL_PREFIX + base58Encode(h2)
 }
@@ -343,25 +368,26 @@ function transactionBuilder(params: ObjectType): Transaction {
   return transaction
 }
 
-function sha256Hex(data) {
-  return Buffer.from(sha256.hash(data)).toString('hex')
+function sha256Hex(data: Uint8Array) {
+  return Buffer.from(sha256Bytes(data)).toString('hex')
 }
 
 export {
   sign,
   secondSign,
+  fullSign,
   signBytes,
   getId,
   verify,
   verifyBytes,
-  hash,
+  // hash,
   isAddress,
   createAccount,
   generateMnemonic,
   getAddressByPublicKey,
   fromSatoshi,
   toSatoshi,
-  transactionBuilder,
+  // transactionBuilder,
   getTime,
   getKeys,
   fullTimestamp,

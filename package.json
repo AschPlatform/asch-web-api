@@ -1,14 +1,16 @@
 {
   "name": "asch-web",
-  "version": "0.0.57",
-  "description": "",
-  "keywords": [],
-  "main": "dist/asch-web.js",
-  "typings": "dist/types/asch-web.d.ts",
+  "version": "0.0.59",
+  "description": "Asch typscript library, support typescript, node and web(browser) ports",
+  "keywords": ["asch","ts","js","lib","library","typescript","javascript","node","web","browser"],
+  "main": "dist/tsc/index.js",
+  "module": "dist/tsc/index.js",
+  "typings": "dist/tsc/index.d.ts",
   "author": "sqfasd <sqf1225@foxmail.com>",
+  "contributors":["kimziv <kimziv@qq.com>"],
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/AschPlatform/asch-web.git"
   },
   "license": "MIT",
   "engines": {
@@ -17,9 +19,14 @@
   "scripts": {
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "rm -rf ./dist/* && tsc --module commonjs",
-    "postinstall": "npm run-script build",
-    "start": "rollup -c rollup.config.ts -w",
+    "start": "npm run webpack-dev",
+    "tsc": "rimraf dist/tsc/* && tsc --module commonjs && npm run typedoc",
+    "webpack-dev": "webpack --colors --config  webpack.config.dev.js",
+    "webpack-prod": "webpack --colors --config  webpack.config.prod.js",
+    "webpack": "npm run webpack-dev && npm run webpack-prod",
+    "build": "npm run tsc && npm run webpack",
+    "postinstall": "npm install --ignore-scripts && npm run build",
+    "typedoc": "typedoc --out docs --target es6 --theme minimal --mode file src",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",
     "test:prod": "npm run lint && npm run test -- --no-cache",
@@ -29,8 +36,7 @@
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
-    "travis-deploy-once": "travis-deploy-once",
-    "tsc": "rm -rf ./dist/* && tsc --module commonjs && npm publish"
+    "travis-deploy-once": "travis-deploy-once"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -87,8 +93,10 @@
     "@commitlint/config-conventional": "^7.1.2",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.11.0",
+    "awesome-typescript-loader": "^5.2.1",
+    "clean-webpack-plugin": "^1.0.1",
     "colors": "^1.3.2",
-    "commitizen": "^3.0.0",
+    "commitizen": "^3.0.7",
     "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
     "cz-conventional-changelog": "^2.1.0",
@@ -101,12 +109,6 @@
     "prompt": "^1.0.0",
     "replace-in-file": "^3.4.2",
     "rimraf": "^2.6.2",
-    "rollup": "^0.67.0",
-    "rollup-plugin-commonjs": "^9.1.8",
-    "rollup-plugin-json": "^3.1.0",
-    "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-typescript2": "^0.18.0",
     "semantic-release": "^15.9.16",
     "travis-deploy-once": "^5.0.9",
     "ts-jest": "^23.10.2",
@@ -115,15 +117,21 @@
     "tslint-config-prettier": "^1.15.0",
     "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.12.0",
-    "typescript": "^3.0.3"
+    "typescript": "^3.0.3",
+    "webpack": "^4.29.5",
+    "webpack-cli": "^3.2.3",
+    "webpack-merge": "^4.2.1"
   },
   "dependencies": {
     "@types/bip39": "=2.4.1",
+    "@types/bytebuffer": "^5.0.40",
     "@types/ripemd160": "=2.0.0",
     "axios": "=0.18.0",
     "bip39": "=2.5.0",
-    "bytebuffer": "=5.0.1",
+    "bitcoin-ts": "^1.4.0",
+    "bytebuffer": "^5.0.1",
     "fast-sha256": "=1.1.0",
+    "js-sha256": "^0.9.0",
     "ripemd160": "=2.0.2",
     "tweetnacl": "=1.0.0"
   }
