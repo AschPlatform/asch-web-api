@@ -10,118 +10,118 @@ export default class AschAPI extends API {
     this.aschWeb = aschWeb
   }
 
-  public transferXAS(amount: number, recipientId: string, message: string): Promise<object> {
+  public async transferXAS(amount: number, recipientId: string, message: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.transferXAS(amount, recipientId, message)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     console.log('+++++transaction:' + JSON.stringify(trx))
     return this.broadcastTransaction(trx)
   }
 
   // 设置昵称
-  public setName(name: string): Promise<object> {
+  public async setName(name: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.setName(name)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
 
   // 设置二级密码
-  public setSecondPassword(secondPwd: string): Promise<object> {
+  public async setSecondPassword(secondPwd: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.setSecondPassword(secondPwd)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 锁仓
-  public setLock(height: number, amount: number): Promise<object> {
+  public async setLock(height: number, amount: number): Promise<object> {
     let trx: Transaction = TransactionBuilder.setLock(height, amount)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 解锁
-  public unlock(): Promise<object> {
+  public async unlock(): Promise<object> {
     let trx: Transaction = TransactionBuilder.unlock()
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 设置多签账户
-  public setMultiAccount(): Promise<object> {
+  public async setMultiAccount(): Promise<object> {
     let trx: Transaction = TransactionBuilder.setMultiAccount()
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 注册为代理人
-  public registerAgent(): Promise<object> {
+  public async registerAgent(): Promise<object> {
     let trx: Transaction = TransactionBuilder.registerAgent()
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 设置投票代理人
-  public setAgent(agent: string): Promise<object> {
+  public async setAgent(agent: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.setAgent(agent)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 取消投票代理
-  public repealAgent(): Promise<object> {
+  public async repealAgent(): Promise<object> {
     let trx: Transaction = TransactionBuilder.repealAgent()
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 注册为受托人
-  public registerDelegate(): Promise<object> {
+  public async registerDelegate(): Promise<object> {
     let trx: Transaction = TransactionBuilder.registerDelegate()
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 受托人投票
-  public voteDelegate(delegates: string[]): Promise<object> {
+  public async voteDelegate(delegates: string[]): Promise<object> {
     let trx: Transaction = TransactionBuilder.voteDelegate(delegates)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
 
   // 撤销受托人投票
-  public cleanVote(delegates: string[]): Promise<object> {
+  public async cleanVote(delegates: string[]): Promise<object> {
     let trx: Transaction = TransactionBuilder.cleanVote(delegates)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
 
   // 注册发行商 TODO
-  public registerIssuer(name: string, desc: string): Promise<object> {
+  public async registerIssuer(name: string, desc: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.registerIssuer(name, desc)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 注册资产 TODO
-  public registerAsset(
+  public async registerAsset(
     symbol: string,
     desc: string,
     maximum: number,
     precision: number
   ): Promise<object> {
     let trx: Transaction = TransactionBuilder.registerAsset(symbol, desc, maximum, precision)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 发行资产
-  public issueAsset(symbol: string, amount: string): Promise<object> {
+  public async issueAsset(symbol: string, amount: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.issueAsset(symbol, amount)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 资产转账
-  public transferAsset(
+  public async transferAsset(
     symbol: string,
     amount: string,
     recipientId: string,
     message: string
   ): Promise<object> {
     let trx: Transaction = TransactionBuilder.transferAsset(symbol, amount, recipientId, message)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 注册 dapp
-  public registerDapp(
+  public async registerDapp(
     name: string,
     desc: string,
     tags: string,
@@ -141,7 +141,7 @@ export default class AschAPI extends API {
       delegates,
       nlockNumber
     )
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
 
@@ -151,31 +151,31 @@ export default class AschAPI extends API {
    * @param from
    * @param to
    */
-  public updateBooker(dappId: string, from: string, to: string): Promise<object> {
+  public async updateBooker(dappId: string, from: string, to: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.updateBooker(dappId, from, to)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 添加 dapp 记账人
-  public addBooker(dappId: string, key: string): Promise<object> {
+  public async addBooker(dappId: string, key: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.addBooker(dappId, key)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 删除 dapp 记账人
-  public deleteBooker(dappId: string, key: string): Promise<object> {
+  public async deleteBooker(dappId: string, key: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.deleteBooker(dappId, key)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // dapp 充值
-  public depositDapp(name: string, currency: string, amount: string): Promise<object> {
+  public async depositDapp(name: string, currency: string, amount: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.depositDapp(name, currency, amount)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // dapp 提现 TODO  参数问题
-  public withdrawDapp(
+  public async withdrawDapp(
     dappId: string,
     recipient: string,
     amount: string,
@@ -189,11 +189,11 @@ export default class AschAPI extends API {
       wid,
       signatures
     )
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 发起提案
-  public createProposal(
+  public async createProposal(
     title: string,
     desc: string,
     topic: string,
@@ -201,41 +201,41 @@ export default class AschAPI extends API {
     endHeight: number
   ): Promise<object> {
     let trx: Transaction = TransactionBuilder.createProposal(title, desc, topic, content, endHeight)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 对提案投票
-  public voteProposal(pid: string): Promise<object> {
+  public async voteProposal(pid: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.voteProposal(pid)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 激活提案
-  public activateProposal(pid: string): Promise<object> {
+  public async activateProposal(pid: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.activateProposal(pid)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 网关注册候选人
-  public registerGateway(gateway: string, publicKey: string, desc: string): Promise<object> {
+  public async registerGateway(gateway: string, publicKey: string, desc: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.registerGateway(gateway, publicKey, desc)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 网关开户
-  public openGatewayAccount(gateway: string): Promise<object> {
+  public async openGatewayAccount(gateway: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.openGatewayAccount(gateway)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 网关充值
-  public depositGateway(address: string, currency: string, amount: string): Promise<object> {
+  public async depositGateway(address: string, currency: string, amount: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.depositGateway(address, currency, amount)
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
   // 网关提现
-  public withdrawGateway(
+  public async withdrawGateway(
     address: string,
     gateway: string,
     currency: string,
@@ -249,26 +249,26 @@ export default class AschAPI extends API {
       amount,
       fee
     )
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
 
   /**
-   * 注册合约
-   * @param asLimit
+   *  注册合约
    * @param name
    * @param version
    * @param desc
    * @param code
    * @param consumeOwnerEnergy
+   * @param asLimit
    */
-  public registerContract(
-    asLimit: number,
+  public async registerContract(
     name: string,
     version: string,
     desc: string,
     code: string,
-    consumeOwnerEnergy: boolean
+    consumeOwnerEnergy: boolean,
+    asLimit: number
   ): Promise<object> {
     let trx: Transaction = TransactionBuilder.buildTransaction(600, [
       asLimit,
@@ -278,50 +278,50 @@ export default class AschAPI extends API {
       code,
       consumeOwnerEnergy
     ])
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
 
   /**
-   * 调用合约方法
+   *  调用合约方法
+   * @param contractName
+   * @param methodName
+   * @param methodArgs
    * @param gasLimit
    * @param enablePayGasInXAS
-   * @param contractName
-   * @param method
-   * @param methodArgs
    */
-  public callContract(
-    gasLimit: number,
-    enablePayGasInXAS: boolean,
+  public async callContract(
     contractName: string,
-    method: string,
-    methodArgs: Array<any>
+    methodName: string,
+    methodArgs: Array<any>,
+    gasLimit: number,
+    enablePayGasInXAS: boolean
   ): Promise<object> {
     let trx: Transaction = TransactionBuilder.buildTransaction(601, [
       gasLimit,
       enablePayGasInXAS,
       contractName,
-      method,
+      methodName,
       methodArgs
     ])
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
 
   /**
    * 转账到合约
+   * @param currency
+   * @param amount
+   * @param receiverPath
    * @param gasLimit
    * @param enablePayGasInXAS
-   * @param receiverPath
-   * @param amount
-   * @param currency
    */
-  public payContract(
-    gasLimit: number,
-    enablePayGasInXAS: boolean,
+  public async payContract(
+    currency: string,
+    amount: string,
     receiverPath: string,
-    amount: number,
-    currency: string
+    gasLimit: number,
+    enablePayGasInXAS: boolean
   ): Promise<object> {
     let trx: Transaction = TransactionBuilder.buildTransaction(602, [
       gasLimit,
@@ -330,7 +330,7 @@ export default class AschAPI extends API {
       amount,
       currency
     ])
-    trx = this.aschWeb.fullSign(trx)
+    trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
 }

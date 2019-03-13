@@ -6,7 +6,7 @@ import { getTime } from '../utils'
 // import { type } from 'os'
 import calFee from '../asch-fee'
 import * as Constants from '../constants'
-import * as Slots from '../slots'
+import * as Slots from '../time/slots'
 export function transactionBuilder(params: ObjectType): Transaction {
   let transaction = {
     type: params.type,
@@ -34,7 +34,7 @@ export class TransactionBuilder {
       fee: 0,
       args: args,
       timestamp: 0,
-      message: '',
+      message: message,
       senderPublicKey: '',
       senderId: ''
       //mode: 0
@@ -290,7 +290,7 @@ export class TransactionBuilder {
     gasLimit: number,
     enablePayGasInXAS: boolean,
     receiverPath: string,
-    amount: number,
+    amount: string,
     currency: string
   ): Transaction {
     return this.buildTransaction(602, [gasLimit, enablePayGasInXAS, receiverPath, amount, currency])

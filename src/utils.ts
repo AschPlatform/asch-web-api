@@ -3,6 +3,7 @@ import * as sha256 from 'fast-sha256'
 import * as RIPEMD160 from 'ripemd160'
 import * as nacl from 'tweetnacl'
 import * as ByteBuffer from 'bytebuffer'
+import * as Format from './time/format'
 
 import { Transaction, Keys, ObjectType, Account } from './type'
 
@@ -82,6 +83,18 @@ function getBytes(
   // return new Uint8Array(buf)
 }
 
+/**
+ * 填充 senderId和senderPublicKey
+ * @param transaction
+ * @param secret
+ */
+function fill(transaction: Transaction, secret: string): Transaction {
+  let keys = getKeys(secret)
+  transaction.senderPublicKey = keys.publicKey
+  transaction.senderId = getAddress(keys.publicKey)
+  return transaction
+}
+
 function sign(transaction: Transaction, secret: string): Transaction {
   let hash = getHash(transaction)
   let keys = getKeys(secret)
@@ -109,11 +122,8 @@ function fullSign(unsignedTrx: Transaction, secret: string, secondSecret: string
   //console.log('secret:'+secret)
   let keys: Keys = getKeys(secret)
   // console.log('Keys:' + JSON.stringify(keys))
-  //let publicKey =utils.getKeys(this.secret).publicKey
-  //let address = utils.getAddressByPublicKey(publicKey)
-  unsignedTrx.senderPublicKey = keys.publicKey
-  unsignedTrx.senderId = getAddressByPublicKey(keys.publicKey)
-  let trx = sign(unsignedTrx, secret)
+  let trx = fill(unsignedTrx, secret)
+  trx = sign(unsignedTrx, secret)
   if (secondSecret != null && secondSecret.length > 0) {
     trx = secondSign(trx, secondSecret)
   }
@@ -280,7 +290,7 @@ function createAccount(): Account {
   // let password = base64EncodeToString(priKeyBytes)
   return {
     privateKey: mnemonic,
-    address: getAddressByPublicKey(publicKey)
+    address: getAddress(publicKey)
   }
 }
 
@@ -288,7 +298,7 @@ function generateMnemonic(): string {
   return Bip39.generateMnemonic()
 }
 
-function getAddressByPublicKey(publicKey: Bytes): string {
+function getAddress(publicKey: Bytes): string {
   if (typeof publicKey === 'string') {
     publicKey = Buffer.from(publicKey, 'hex')
   }
@@ -305,44 +315,44 @@ function toSatoshi(amount: number, precision: number = 8): number {
   return amount * Math.pow(10, precision)
 }
 
-function fullTimestamp(time: number) {
-  let d = EPOCHTIME
-  let t = d.getTime() / 1000
+// function fullTimestamp(time: number): string{
+//   let d = EPOCHTIME
+//   let t = d.getTime() / 1000
 
-  d = new Date((time + t) * 1000)
-  const month = d.getMonth() + 1
-  let monthStr = month + ''
-  if (month < 10) {
-    monthStr = '0' + month
-  }
+//   d = new Date((time + t) * 1000)
+//   const month = d.getMonth() + 1
+//   let monthStr = month + ''
+//   if (month < 10) {
+//     monthStr = '0' + month
+//   }
 
-  const day = d.getDate()
-  let dayStr = day + ''
-  if (day < 10) {
-    dayStr = '0' + day
-  }
+//   const day = d.getDate()
+//   let dayStr = day + ''
+//   if (day < 10) {
+//     dayStr = '0' + day
+//   }
 
-  const h = d.getHours()
-  let hStr = h + ''
-  const m = d.getMinutes()
-  let mStr = m + ''
-  const s = d.getSeconds()
-  let sStr = s + ''
+//   const h = d.getHours()
+//   let hStr = h + ''
+//   const m = d.getMinutes()
+//   let mStr = m + ''
+//   const s = d.getSeconds()
+//   let sStr = s + ''
 
-  if (h < 10) {
-    hStr = '0' + h
-  }
+//   if (h < 10) {
+//     hStr = '0' + h
+//   }
 
-  if (m < 10) {
-    mStr = '0' + m
-  }
+//   if (m < 10) {
+//     mStr = '0' + m
+//   }
 
-  if (s < 10) {
-    sStr = '0' + s
-  }
+//   if (s < 10) {
+//     sStr = '0' + s
+//   }
 
-  return d.getFullYear() + '/' + monthStr + '/' + dayStr + ' ' + hStr + ':' + mStr + ':' + sStr
-}
+//   return d.getFullYear() + '/' + monthStr + '/' + dayStr + ' ' + hStr + ':' + mStr + ':' + sStr
+// }
 
 function getTime(time: number | undefined = undefined): number {
   if (time === undefined) {
@@ -372,7 +382,36 @@ function sha256Hex(data: Uint8Array) {
   return Buffer.from(sha256Bytes(data)).toString('hex')
 }
 
+function injectPromise(func: any, ...args: any[]) {
+  return new Promise((resolve, reject) => {
+    func(...args, (err: any, res: any) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(res)
+      }
+    })
+  })
+}
+
+// injectPromise(func, ...args) {
+//   return new Promise((resolve, reject) => {
+//       func(...args, (err, res) => {
+//           if(err)
+//               reject(err);
+//           else resolve(res);
+//       });
+//   });
+// },
+
+function promiseInjector(scope: any) {
+  return (func: any, ...args: any[]) => {
+    return injectPromise(func.bind(scope), ...args)
+  }
+}
+
 export {
+  fill,
   sign,
   secondSign,
   fullSign,
@@ -384,12 +423,14 @@ export {
   isAddress,
   createAccount,
   generateMnemonic,
-  getAddressByPublicKey,
+  getAddress,
   fromSatoshi,
   toSatoshi,
   // transactionBuilder,
   getTime,
   getKeys,
-  fullTimestamp,
-  getHash
+  Format,
+  getHash,
+  injectPromise,
+  promiseInjector
 }
