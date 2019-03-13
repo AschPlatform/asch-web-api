@@ -8,7 +8,6 @@ const libName = 'asch-web'
 
 let baseConfig = {
   mode: 'development',
-  // mode: 'production',
   entry: './src/index-build.ts',
   target: 'node',
   output: {
@@ -19,8 +18,6 @@ let baseConfig = {
 
   devtool: 'inline-source-map',
   resolve: {
-    // mainFields: ['browser', 'module', 'main'],
-    // modules: ['node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
   module: {
@@ -37,11 +34,9 @@ let baseConfig = {
 let targets = ['web', 'node', 'async-node'].map((target) => {
   
   let config = webpackMerge(baseConfig, {
-    // entry: target==='web' ? './src/index-web.ts':'./src/index.ts',
     target: target,
     output: {
       filename: libName + '.' + target,
-      // path: path.resolve(__dirname, 'dist'),
       libraryTarget: target==='web'?'umd':'commonjs',
     }
   })

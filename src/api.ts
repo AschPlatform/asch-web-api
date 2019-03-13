@@ -83,36 +83,12 @@ export class API {
   // }
 
   public broadcastTransaction(trx: Transaction) {
-    // this._headers =
-    //   {
-    //     //magic: '594fe0f3', // local
-    //     magic: '5f5b3cf5', // mainnet
-    //     version: '',
-    //     'Content-Type': 'application/json'
-    //   }
-
-    // // let headers = Object.assign(
-    // //   {
-    // //     //magic: '594fe0f3', // local
-    // //     magic: '5f5b3cf5', // mainnet
-    // //     version: '',
-    // //     'Content-Type': 'application/json'
-    // //   },
-    // //   this._headers
-    // // )
-    return this._provider.post(
-      `/peer/transactions`,
-      {
-        transaction: trx
-      }
-      // ,
-      // {
-      //   headers: this._headers
-      // }
-    )
+    return this._provider.post(`/peer/transactions`, {
+      transaction: trx
+    })
   }
 
-  public get(uri: string, params: object): Promise<object> {
+  public get(uri: string, params?: object): Promise<object> {
     return this._provider.get(uri, params)
   }
 

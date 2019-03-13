@@ -14,7 +14,6 @@ const configs = baseConfigs.map((baseConfig =>{
         plugins: [
             new CleanWebpackPlugin(['dist/webpack/'+filename+'*'],
             {  
-                // exclude:  ['*.min.*'],
                 verbose:  true,
                 dry:      false
             })

@@ -6,7 +6,7 @@ import { getTime } from '../utils'
 // import { type } from 'os'
 import calFee from '../asch-fee'
 import * as Constants from '../constants'
-import * as Slots from '../slots'
+import * as Slots from '../time/slots'
 export function transactionBuilder(params: ObjectType): Transaction {
   let transaction = {
     type: params.type,
@@ -34,7 +34,7 @@ export class TransactionBuilder {
       fee: 0,
       args: args,
       timestamp: 0,
-      message: '',
+      message: message,
       senderPublicKey: '',
       senderId: ''
       //mode: 0
@@ -232,5 +232,67 @@ export class TransactionBuilder {
     fee: number
   ): Transaction {
     return this.buildTransaction(403, [address, gateway, currency, amount, fee])
+  }
+
+  /**
+   * 注册合约
+   * @param asLimit
+   * @param name
+   * @param version
+   * @param desc
+   * @param code
+   * @param consumeOwnerEnergy
+   */
+  static registerContract(
+    asLimit: number,
+    name: string,
+    version: string,
+    desc: string,
+    code: string,
+    consumeOwnerEnergy: boolean
+  ): Transaction {
+    return this.buildTransaction(600, [asLimit, name, version, desc, code, consumeOwnerEnergy])
+  }
+
+  /**
+   * 调用合约方法
+   * @param gasLimit
+   * @param enablePayGasInXAS
+   * @param contractName
+   * @param method
+   * @param methodArgs
+   */
+  static callContract(
+    gasLimit: number,
+    enablePayGasInXAS: boolean,
+    contractName: string,
+    method: string,
+    methodArgs: Array<any>
+  ): Transaction {
+    return this.buildTransaction(601, [
+      gasLimit,
+      enablePayGasInXAS,
+      contractName,
+      method,
+      methodArgs
+    ])
+  }
+
+  /**
+   * 转账到合约
+   * @param gasLimit
+   * @param enablePayGasInXAS
+   * @param receiverPath
+   * @param amount
+   * @param currency
+   */
+  static payContract(
+    gasLimit: number,
+    enablePayGasInXAS: boolean,
+    receiverPath: string,
+    amount: string,
+    currency: string
+  ): Transaction {
+    return this.buildTransaction(602, [gasLimit, enablePayGasInXAS, receiverPath, amount, currency])
   }
 }

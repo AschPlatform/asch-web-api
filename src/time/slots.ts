@@ -7,14 +7,13 @@ function getEpochTime(time?: number): number {
   return Math.floor((time - t) / 1000)
 }
 
-function beginEpochTime() {
-  var d = new Date(Date.UTC(2016, 5, 27, 20, 0, 0, 0))
-
+function beginEpochTime(): Date {
+  let d: Date = new Date(Date.UTC(2016, 5, 27, 20, 0, 0, 0))
   return d
 }
 
-var interval = 10,
-  delegates = 101
+const interval = 10
+const delegates = 101
 
 function getTime(time?: number) {
   return getEpochTime(time)

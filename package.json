@@ -1,13 +1,26 @@
 {
   "name": "asch-web",
-  "version": "0.0.59",
+  "version": "0.2.1",
   "description": "Asch typscript library, support typescript, node and web(browser) ports",
-  "keywords": ["asch","ts","js","lib","library","typescript","javascript","node","web","browser"],
+  "keywords": [
+    "asch",
+    "ts",
+    "js",
+    "lib",
+    "library",
+    "typescript",
+    "javascript",
+    "node",
+    "web",
+    "browser"
+  ],
   "main": "dist/tsc/index.js",
   "module": "dist/tsc/index.js",
   "typings": "dist/tsc/index.d.ts",
   "author": "sqfasd <sqf1225@foxmail.com>",
-  "contributors":["kimziv <kimziv@qq.com>"],
+  "contributors": [
+    "kimziv <kimziv@qq.com>"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/AschPlatform/asch-web.git"

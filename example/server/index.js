@@ -6,7 +6,7 @@ var HTTPProvider = Asch.HTTPProvider
 var Network = Asch.Network
 
 
-const host = 'http://testnet.asch.io'// 'http://mainnet.asch.cn/'
+const host = 'http://testnet.asch.cn'// 'http://mainnet.asch.cn/'
 const net = Network.Test//   Network.Main
 
 const secret = 'quantum jelly guilt chase march lazy able repeat enrich fold sweet sketch'
@@ -50,11 +50,11 @@ aschWeb.api
         console.error(err)
     })
 
-const host2 = 'http://mainnet.asch.cn/'
-const net2 = Network.Main
-const provider2 = new HTTPProvider(host2, net2)
+// const host2 = 'http://mainnet.asch.cn/'
+// const net2 = Network.Main
+// const provider2 = new HTTPProvider(host2, net2)
 //切换provider
-aschWeb.setProvider(provider2)
+// aschWeb.setProvider(provider2)
 
 aschWeb.api
     .get('api/v2/blocks', {})

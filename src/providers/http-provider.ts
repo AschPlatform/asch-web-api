@@ -63,8 +63,9 @@ export class HTTPProvider extends Provider {
     method = method.toLowerCase()
     // var res;
     if (method === 'get') {
+      let params = this.json2url(data)
       return this._instance
-        .get(url + '?' + this.json2url(data))
+        .get(params && params.length > 0 ? url + '?' + params : url)
         .then(({ data }: ObjectType) => data)
     } else if (method === 'post') {
       return this._instance.post(url, data, postHeaders).then(({ data }: ObjectType) => data)
@@ -73,7 +74,7 @@ export class HTTPProvider extends Provider {
     }
   }
 
-  get(uri: string, params: ObjectType) {
+  get(uri: string, params?: ObjectType) {
     return this.request(uri, params)
   }
 

@@ -46,7 +46,7 @@ export interface Reponse {
 
 export interface Method {
   name: string
-  returnType: { name: string; text: string }
+  returnType?: { name: string; text: string }
   parameters: Array<Param>
   isConstructor: boolean
   isPublic: boolean
