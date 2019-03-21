@@ -1,0 +1,302 @@
+{
+	"success": true,
+	"contract": {
+		"id": 28,
+		"tid": "35b7cd4d13ad1be5e625b88c735e1feb88a8046c6e40c2a83d0b88d6a5cd3641",
+		"name": "crowdFundging_v1",
+		"address": "SDd6oUU6xXGapWMyHsY4n9qvwUXfsFqcJA",
+		"ownerId": "ACDxqEWZ5nmoPhEQP7ntHtXRVby1WTFUzc",
+		"consumeOwnerEnergy": 1,
+		"desc": "test",
+		"vmVersion": "v0.1",
+		"code": "class FundingInfo {\n\t// 众筹得到的token数量\n\ttokenAmount: bigint\n\t// 参与众筹XAS数量\n\txasAmount: bigint\n\t// 参与众筹BCH数量\n\tbchAmount: bigint\n}\n\n// 众筹合约类\nclass CrowdFundgingContract extends AschContract {\n\t// 记录每个地址的众筹信息\n\tfundingOfAddress: Mapping<FundingInfo> \n\t// 兑换比例\n\trateOfCurrency: Mapping<bigint>\n\t// 总可众筹token数量\n\ttotalFundingToken: bigint\n\t// 剩余可众筹数量\n\tavalibleToken: bigint\n\t// 众筹发起人地址，发行token资产的账户地址\n\tsponsorAddress: string\n\t// 众筹得到的资产名称\n\tofferingCurrency: string\n\t\n\t// 初始化方法，会在合约注册时被调用\n\n\tconstructor() {\n\t\tsuper()\n\t\tthis.offeringCurrency = 'test.XXT'\n\t\tthis.sponsorAddress = 'ACDxqEWZ5nmoPhEQP7ntHtXRVby1WTFUzc' // 发行 XXT 资产的账户地址\n\t\t\n\t\tthis.rateOfCurrency = new Mapping<bigint>()\n\t\tthis.rateOfCurrency['XAS'] = 100n    // 1 XAS = 100 token\n\t\tthis.rateOfCurrency['BCH'] = 30000n // 1 BCH = 30000 token\n\t\t\n\t\tthis.totalFundingToken = 0n\n\t\tthis.avalibleToken = 0n\n\t\tthis.fundingOfAddress = new Mapping<FundingInfo>()\n\t}\n\n\t// 发起人初始注入token\n\t@payable\n\tpayInitialToken(amount: bigint, currency: string): void {\n\t\tassert(this.context!.senderAddress === this.sponsorAddress, `invalid sponsor address`)\n\t\tassert(currency === this.offeringCurrency, `invalid offering currency, should be ${this.offeringCurrency}`)\n\t\tassert(this.totalFundingToken === 0n, `initial ${this.offeringCurrency} has paied`)\n\t\t\n\t\tthis.totalFundingToken = amount\n\t\tthis.avalibleToken = amount\n\t}\n\t\n\t// 众筹逻辑\n\t@payable({ isDefault: true })\n\tcrowdFunding(amount: bigint, currency: string): void {\n\t\tassert(amount >= 0, 'amount must great than 0')\n\t\tassert(currency === 'XAS' || currency === 'BCH', `invalid currency '${currency}', please pay XAS or BCH`)\n\t\n\t\tconst rate = this.rateOfCurrency[currency]!\n\t\tconst tokenAmount = amount * rate\n\t\tassert(this.avalibleToken >= tokenAmount, `insuffient ${this.offeringCurrency}`)\n\t\t\n\t\tthis.avalibleToken = this.avalibleToken - tokenAmount\n\t\tconst partnerAddress = this.context!.senderAddress\n\t\tthis.updateFunding(partnerAddress, amount, currency, tokenAmount)\n\t\t// 调用ASCH链转账\n\t\tthis.transfer(partnerAddress, tokenAmount, this.offeringCurrency)\n\t} \n\n\tgetXXT(amount: bigint): void{\n\t\tassert(amount >= 0, 'amount must greate than 0')\n\t\tassert(amount < this.avalibleToken, `insuffient XAS, amount must less than ${this.avalibleToken}`)\n\t\tconst senderId = this.context!.senderAddress\n\t\tthis.avalibleToken = this.avalibleToken - amount\n\t\tthis.transfer(senderId, amount, 'test.XXT')\n\t}\n\t\n\t@constant\n\tgetFunding(address: string): FundingInfo {\n\t\treturn this.fundingOfAddress[address] || { tokenAmount: 0n, xasAmount: 0n, bchAmount: 0n }\n\t}\n\n\tprivate updateFunding( address: string, amount: bigint, currency: string, tokenAmount: bigint) : void {\n\t\tconst funding = this.getOrCreateFundingInfo(address)\n\t\tfunding.tokenAmount += tokenAmount\n\t\t\n\t\tif (currency === 'XAS') {\n\t\t\tfunding.xasAmount += amount\n\t\t}\n\t\telse if (currency === 'BCH') {\n\t\t\tfunding.bchAmount += amount\n\t\t}\n\t}\n\t\n\tprivate getOrCreateFundingInfo( address: string ) : FundingInfo {\n\t\tif (this.fundingOfAddress[address] === undefined) {\n\t\t\tthis.fundingOfAddress[address] = { tokenAmount: 0n, xasAmount: 0n, bchAmount: 0n }\n\t\t} \n\t\treturn this.fundingOfAddress[address]!\n\t}\n\t\n}",
+		"metadata": {
+			"className": "CrowdFundgingContract",
+			"customeTypes": [{
+				"name": "FundingInfo",
+				"flat": true,
+				"properties": [{
+					"name": "tokenAmount",
+					"isPublic": true,
+					"isReadonly": false,
+					"type": {
+						"name": "bigint",
+						"text": "bigint",
+						"kind": 0
+					}
+				}, {
+					"name": "xasAmount",
+					"isPublic": true,
+					"isReadonly": false,
+					"type": {
+						"name": "bigint",
+						"text": "bigint",
+						"kind": 0
+					}
+				}, {
+					"name": "bchAmount",
+					"isPublic": true,
+					"isReadonly": false,
+					"type": {
+						"name": "bigint",
+						"text": "bigint",
+						"kind": 0
+					}
+				}]
+			}],
+			"states": [{
+				"name": "fundingOfAddress",
+				"isPublic": true,
+				"isReadonly": false,
+				"type": {
+					"name": "Mapping",
+					"text": "Mapping<FundingInfo>",
+					"kind": 1,
+					"typeArguments": [{
+						"name": "FundingInfo",
+						"text": "FundingInfo",
+						"kind": 2
+					}]
+				}
+			}, {
+				"name": "rateOfCurrency",
+				"isPublic": true,
+				"isReadonly": false,
+				"type": {
+					"name": "Mapping",
+					"text": "Mapping<bigint>",
+					"kind": 1,
+					"typeArguments": [{
+						"name": "bigint",
+						"text": "bigint",
+						"kind": 0
+					}]
+				}
+			}, {
+				"name": "totalFundingToken",
+				"isPublic": true,
+				"isReadonly": false,
+				"type": {
+					"name": "bigint",
+					"text": "bigint",
+					"kind": 0
+				}
+			}, {
+				"name": "avalibleToken",
+				"isPublic": true,
+				"isReadonly": false,
+				"type": {
+					"name": "bigint",
+					"text": "bigint",
+					"kind": 0
+				}
+			}, {
+				"name": "sponsorAddress",
+				"isPublic": true,
+				"isReadonly": false,
+				"type": {
+					"name": "string",
+					"text": "string",
+					"kind": 0
+				}
+			}, {
+				"name": "offeringCurrency",
+				"isPublic": true,
+				"isReadonly": false,
+				"type": {
+					"name": "string",
+					"text": "string",
+					"kind": 0
+				}
+			}],
+			"methods": [{
+				"name": "constructor",
+				"parameters": [],
+				"isConstant": false,
+				"isPublic": true,
+				"isPayable": false,
+				"isDefaultPayable": false,
+				"isConstructor": true
+			}, {
+				"name": "payInitialToken",
+				"returnType": {
+					"name": "void",
+					"text": "void",
+					"kind": 2
+				},
+				"parameters": [{
+					"name": "amount",
+					"type": {
+						"name": "bigint",
+						"text": "bigint",
+						"kind": 0
+					},
+					"index": 0,
+					"require": true
+				}, {
+					"name": "currency",
+					"type": {
+						"name": "string",
+						"text": "string",
+						"kind": 0
+					},
+					"index": 1,
+					"require": true
+				}],
+				"isConstructor": false,
+				"isPublic": true,
+				"isPayable": true,
+				"isDefaultPayable": false,
+				"isConstant": false
+			}, {
+				"name": "crowdFunding",
+				"returnType": {
+					"name": "void",
+					"text": "void",
+					"kind": 2
+				},
+				"parameters": [{
+					"name": "amount",
+					"type": {
+						"name": "bigint",
+						"text": "bigint",
+						"kind": 0
+					},
+					"index": 0,
+					"require": true
+				}, {
+					"name": "currency",
+					"type": {
+						"name": "string",
+						"text": "string",
+						"kind": 0
+					},
+					"index": 1,
+					"require": true
+				}],
+				"isConstructor": false,
+				"isPublic": true,
+				"isPayable": true,
+				"isDefaultPayable": true,
+				"isConstant": false
+			}, {
+				"name": "getXXT",
+				"returnType": {
+					"name": "void",
+					"text": "void",
+					"kind": 2
+				},
+				"parameters": [{
+					"name": "amount",
+					"type": {
+						"name": "bigint",
+						"text": "bigint",
+						"kind": 0
+					},
+					"index": 0,
+					"require": true
+				}],
+				"isConstructor": false,
+				"isPublic": true,
+				"isPayable": false,
+				"isDefaultPayable": false,
+				"isConstant": false
+			}, {
+				"name": "getFunding",
+				"returnType": {
+					"name": "FundingInfo",
+					"text": "FundingInfo",
+					"kind": 2
+				},
+				"parameters": [{
+					"name": "address",
+					"type": {
+						"name": "string",
+						"text": "string",
+						"kind": 0
+					},
+					"index": 0,
+					"require": true
+				}],
+				"isConstructor": false,
+				"isPublic": true,
+				"isPayable": false,
+				"isDefaultPayable": false,
+				"isConstant": true
+			}, {
+				"name": "updateFunding",
+				"returnType": {
+					"name": "void",
+					"text": "void",
+					"kind": 2
+				},
+				"parameters": [{
+					"name": "address",
+					"type": {
+						"name": "string",
+						"text": "string",
+						"kind": 0
+					},
+					"index": 0,
+					"require": true
+				}, {
+					"name": "amount",
+					"type": {
+						"name": "bigint",
+						"text": "bigint",
+						"kind": 0
+					},
+					"index": 1,
+					"require": true
+				}, {
+					"name": "currency",
+					"type": {
+						"name": "string",
+						"text": "string",
+						"kind": 0
+					},
+					"index": 2,
+					"require": true
+				}, {
+					"name": "tokenAmount",
+					"type": {
+						"name": "bigint",
+						"text": "bigint",
+						"kind": 0
+					},
+					"index": 3,
+					"require": true
+				}],
+				"isConstructor": false,
+				"isPublic": false,
+				"isPayable": false,
+				"isDefaultPayable": false,
+				"isConstant": false
+			}, {
+				"name": "getOrCreateFundingInfo",
+				"returnType": {
+					"name": "FundingInfo",
+					"text": "FundingInfo",
+					"kind": 2
+				},
+				"parameters": [{
+					"name": "address",
+					"type": {
+						"name": "string",
+						"text": "string",
+						"kind": 0
+					},
+					"index": 0,
+					"require": true
+				}],
+				"isConstructor": false,
+				"isPublic": false,
+				"isPayable": false,
+				"isDefaultPayable": false,
+				"isConstant": false
+			}]
+		},
+		"timestamp": 84007547,
+		"_version_": 1
+	}
+}

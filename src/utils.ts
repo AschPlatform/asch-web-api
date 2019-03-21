@@ -7,6 +7,8 @@ import * as Format from './time/format'
 
 import { Transaction, Keys, ObjectType, Account } from './type'
 
+
+
 type Bytes = string | Uint8Array
 const NORMAL_PREFIX = 'A'
 const ONE_XAS = 100000000
@@ -410,6 +412,10 @@ function promiseInjector(scope: any) {
   }
 }
 
+function isFunction(obj:any) {
+  return typeof obj === 'function';
+}
+
 export {
   fill,
   sign,
@@ -419,7 +425,7 @@ export {
   getId,
   verify,
   verifyBytes,
-  // hash,
+  sha256Bytes,
   isAddress,
   createAccount,
   generateMnemonic,
@@ -432,5 +438,7 @@ export {
   Format,
   getHash,
   injectPromise,
-  promiseInjector
+  promiseInjector,
+  isFunction,
+  ByteBuffer
 }

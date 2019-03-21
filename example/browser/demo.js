@@ -36,7 +36,7 @@ const app = async () => {
 let keys = Utils.getKeys(secret)
 console.log('keys:' + JSON.stringify(keys))
 
-let addr = Utils.getAddressByPublicKey(keys.publicKey)
+let addr = Utils.getAddress(keys.publicKey)
 console.log('get address by publicKey:' + addr)
 
 

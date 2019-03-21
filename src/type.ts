@@ -55,8 +55,54 @@ export interface Method {
   isConstant: boolean
 }
 
-// export enum Network {
-//   Local,
-//   Test,
-//   Main
-// }
+//Contract meta data
+export interface ParameterMetadata {
+  index: number
+  name: string
+  type: TypeInfo
+  require: boolean
+ }
+ 
+ export interface TypeInfo {
+  text: string
+  name: string
+  kind: TypeKind
+  typeArguments?: TypeInfo[]
+ }
+ 
+ export enum TypeKind {
+  primitive = 0,
+  collection = 1,
+  custome = 2
+ }
+ 
+ export interface MethodMetadata {
+  name: string
+  parameters: ParameterMetadata[]
+  returnType?: TypeInfo
+  isConstructor: boolean
+  isPublic: boolean
+  isPayable: boolean
+  isDefaultPayable: boolean
+  isConstant: boolean
+ }
+ 
+ export interface StateMetadata {
+  name: string
+  isPublic: boolean
+  isReadonly: boolean
+  type: TypeInfo
+ }
+ 
+ export interface CustomeStateType {
+  name: string
+  flat: boolean
+  properties: StateMetadata[]
+ }
+ 
+ export interface ContractMetadataObject {
+  className: string
+  customeTypes: CustomeStateType[]
+  states: StateMetadata[]
+  methods: MethodMetadata[]
+ }

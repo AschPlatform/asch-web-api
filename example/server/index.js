@@ -29,7 +29,7 @@ const unsignedTrx =
 let keys = Utils.getKeys(secret)
 console.log('keys:' + JSON.stringify(keys))
 
-let addr = Utils.getAddressByPublicKey(keys.publicKey)
+let addr = Utils.getAddress(keys.publicKey)
 console.log('get address by publicKey:' + addr)
 
 
@@ -50,6 +50,7 @@ aschWeb.api
         console.error(err)
     })
 
+
 // const host2 = 'http://mainnet.asch.cn/'
 // const net2 = Network.Main
 // const provider2 = new HTTPProvider(host2, net2)
@@ -57,7 +58,7 @@ aschWeb.api
 // aschWeb.setProvider(provider2)
 
 aschWeb.api
-    .get('api/v2/blocks', {})
+    .get('api/v2/blocks')
     .then(res => {
         console.log('get blocks response:' + JSON.stringify(res))
     })

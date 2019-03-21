@@ -24,7 +24,7 @@ let unsignedTrx =
 let keys: Keys = Utils.getKeys(secret)
 console.log('keys:' + JSON.stringify(keys))
 
-let addr: string = Utils.getAddressByPublicKey(keys.publicKey)
+let addr: string = Utils.getAddress(keys.publicKey)
 console.log('get address by publicKey:' + addr)
 
 
