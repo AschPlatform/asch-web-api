@@ -419,7 +419,7 @@ export {
   getId,
   verify,
   verifyBytes,
-  // hash,
+  sha256Bytes,
   isAddress,
   createAccount,
   generateMnemonic,
@@ -432,5 +432,6 @@ export {
   Format,
   getHash,
   injectPromise,
-  promiseInjector
+  promiseInjector,
+  ByteBuffer
 }
