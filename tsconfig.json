@@ -15,7 +15,9 @@
     "outDir": "dist/tsc",
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    // "baseUrl": "./",
+    // "paths": { "buffer" : ["./buffer-override.d.ts"] }
   },
   "include": [
     "src"

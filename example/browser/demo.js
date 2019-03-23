@@ -1,13 +1,12 @@
-const Asch = window.Asch
-const Utils = Asch.Utils
-const Keys = Asch.keys
-const AW = Asch.AschWeb
-const Provider = Asch.Provider
-const HTTPProvider = Asch.HTTPProvider
-const Network = Asch.Network
-const Transaction = Asch.Transaction
+const AschWeb = window.AschWeb
+const Utils = AschWeb.Utils
+const Keys = AschWeb.keys
+const Provider = AschWeb.Provider
+const HTTPProvider = AschWeb.HTTPProvider
+const Network = AschWeb.Network
+const Transaction = AschWeb.Transaction
 
-const host = 'http://testnet.asch.cn'// 'http://mainnet.asch.cn/'
+const host = 'http://testnet.asch.io'// 'http://mainnet.asch.cn/'
 const net = Network.Test//   Network.Main
 
 const secret = 'reunion march reduce artist horror correct wonder ice inside fringe zoo beyond'
@@ -36,7 +35,7 @@ const app = async () => {
 let keys = Utils.getKeys(secret)
 console.log('keys:' + JSON.stringify(keys))
 
-let addr = Utils.getAddressByPublicKey(keys.publicKey)
+let addr = Utils.getAddress(keys.publicKey)
 console.log('get address by publicKey:' + addr)
 
 
@@ -45,7 +44,7 @@ console.log('full sign transaction:' + JSON.stringify(signedTrx))
 
 
 const provider = new HTTPProvider(host, net)
-let aschWeb = new AW(provider, secret, secondSecret)
+let aschWeb = new AschWeb(provider, secret, secondSecret)
 
 
 aschWeb.api

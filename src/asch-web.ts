@@ -4,6 +4,15 @@ import { Transaction, ObjectType } from './type'
 import { Provider, HTTPProvider, Network } from './providers'
 import { AschContract } from './asch-contract'
 
+import { TransactionBuilder } from './builders'
+import * as Constants from './constants'
+import * as Utils from './utils'
+import * as AschType from './type'
+// export * from './type'
+
+// const Asch = { Provider, HTTPProvider, Network, TransactionBuilder, Constants, Utils }
+// export { Provider, HTTPProvider, Network, TransactionBuilder, Constants, Utils }
+
 type CallbackType = (
   trx: Transaction
 ) => { signatures: string[]; secondSignature?: string; senderPublicKey: string }
@@ -11,6 +20,14 @@ type CallbackType = (
 type Callback = (err: any, trx?: Transaction) => Transaction | undefined
 
 export default class AschWeb {
+  static Provider=Provider
+  static HTTPProvider=HTTPProvider
+  static Network=Network
+  static TransactionBuilder=TransactionBuilder
+  static Constants=Constants
+  static Utils=Utils
+  static AschType=AschType
+  
   utils: any
   defaultAccount: any
   secret: string //12个助记词或者私钥

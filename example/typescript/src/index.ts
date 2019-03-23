@@ -1,8 +1,9 @@
-// import Asch  from '../../../dist/tsc'
-import {AschWeb, Keys, Transaction, Utils ,Network , Provider, HTTPProvider} from 'asch-web'
-
+import { AschWeb } from '../../../dist/tsc'
+//import {AschWeb, Keys, Transaction, Utils ,Network , Provider, HTTPProvider} from 'asch-web'
+// import {AschWeb, Keys, Transaction, Utils ,Network , Provider, HTTPProvider} from '../../../dist/tsc'
 const host = 'http://testnet.asch.cn'// 'http://mainnet.asch.cn/'
-const net = Network.Test//   Network.Main
+// console.log('AschWeb.Network:'+AschWeb.Network)
+const net = AschWeb.Network.Test//   Network.Main
 
 let secret = 'quantum jelly guilt chase march lazy able repeat enrich fold sweet sketch'
 let secondSecret = '' //'11111111a'
@@ -20,18 +21,19 @@ let unsignedTrx =
     senderId: 'ACFi5K42pVVYxq5rFkFQBa6c6uFLmGFUP2',
 }
 
+
 //utils用法
-let keys: Keys = Utils.getKeys(secret)
+let keys = AschWeb.Utils.getKeys(secret)
 console.log('keys:' + JSON.stringify(keys))
 
-let addr: string = Utils.getAddressByPublicKey(keys.publicKey)
+let addr: string = AschWeb.Utils.getAddress(keys.publicKey)
 console.log('get address by publicKey:' + addr)
 
 
-let signedTrx:  Transaction = Utils.fullSign(unsignedTrx, secret, secondSecret)
+let signedTrx = AschWeb.Utils.fullSign(unsignedTrx, secret, secondSecret)
 console.log('full sign transaction:' + JSON.stringify(signedTrx))
 
-const provider:Provider = new HTTPProvider(host, net)
+const provider = new AschWeb.HTTPProvider(host, net)
 const aschWeb = new AschWeb(provider, secret, secondSecret)
 
 aschWeb.api
@@ -44,8 +46,8 @@ aschWeb.api
     })
 
 const host2 = 'http://mainnet.asch.cn/'
-const net2 = Network.Main
-const provider2:Provider = new HTTPProvider(host2, net2)
+const net2 = AschWeb.Network.Main
+const provider2 = new AschWeb.HTTPProvider(host2, net2)
 //切换provider
 aschWeb.setProvider(provider2)
 
