@@ -81,7 +81,7 @@ export default class AschWeb {
     return utils.fullSign(unsignedTrx, this.secret, this.secondSecret)
   }
 
-  public async sign(
+  public sign(
     unsignedTrx: Transaction,
     secret: string = this.secret,
     secondSecret: string = this.secondSecret,

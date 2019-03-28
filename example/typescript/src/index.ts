@@ -1,11 +1,9 @@
 import { AschWeb } from '../../../dist/tsc'
-//import {AschWeb, Keys, Transaction, Utils ,Network , Provider, HTTPProvider} from 'asch-web'
-// import {AschWeb, Keys, Transaction, Utils ,Network , Provider, HTTPProvider} from '../../../dist/tsc'
-const host = 'http://testnet.asch.cn'// 'http://mainnet.asch.cn/'
-// console.log('AschWeb.Network:'+AschWeb.Network)
+const host = 'http://testnet.asch.io'// 'http://mainnet.asch.cn/'
 const net = AschWeb.Network.Test//   Network.Main
+const TransactionBuilder = AschWeb.TransactionBuilder
 
-let secret = 'quantum jelly guilt chase march lazy able repeat enrich fold sweet sketch'
+let secret = 'reunion march reduce artist horror correct wonder ice inside fringe zoo beyond'
 let secondSecret = '' //'11111111a'
 let address = 'ACFi5K42pVVYxq5rFkFQBa6c6uFLmGFUP2'
 let to = 'AHcGmYnCyr6jufT5AGbpmRUv55ebwMLCym'
@@ -45,11 +43,11 @@ aschWeb.api
         console.error(err)
     })
 
-const host2 = 'http://mainnet.asch.cn/'
-const net2 = AschWeb.Network.Main
-const provider2 = new AschWeb.HTTPProvider(host2, net2)
-//切换provider
-aschWeb.setProvider(provider2)
+// const host2 = 'http://mainnet.asch.cn/'
+// const net2 = AschWeb.Network.Main
+// const provider2 = new AschWeb.HTTPProvider(host2, net2)
+// //切换provider
+// aschWeb.setProvider(provider2)
 
 aschWeb.api
     .get('api/v2/blocks', {})
@@ -60,3 +58,15 @@ aschWeb.api
         console.error(err)
     })
 
+
+let trans = TransactionBuilder.transferXAS(1, to, 'test')
+console.log('trans:' + JSON.stringify(trans))
+let signedTrans = AschWeb.Utils.fullSign(trans, secret, secondSecret)
+console.log('signedTrans:' + JSON.stringify(signedTrans))
+let result = aschWeb.api.broadcastTransaction(signedTrans)
+    .then(res => {
+        console.log('result:' + JSON.stringify(res))
+    })
+    .catch(err => {
+        console.error(err)
+    })
