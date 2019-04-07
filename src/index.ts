@@ -10,4 +10,5 @@
 // export { Asch, AschWeb, Provider, HTTPProvider, Network, TransactionBuilder, Constants, Utils }
 
 // export * from './asch-web'
+export *  from './contract/metadata'
 export { AschWeb }  

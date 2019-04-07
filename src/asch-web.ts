@@ -9,6 +9,7 @@ import * as Constants from './constants'
 import * as Utils from './utils'
 import * as AschType from './type'
 // export * from './type'
+// import {ContractMetadataMananger } from './contract/metadata'
 
 // const Asch = { Provider, HTTPProvider, Network, TransactionBuilder, Constants, Utils }
 // export { Provider, HTTPProvider, Network, TransactionBuilder, Constants, Utils }
@@ -18,6 +19,7 @@ type CallbackType = (
 ) => { signatures: string[]; secondSignature?: string; senderPublicKey: string }
 
 type Callback = (err: any, trx?: Transaction) => Transaction | undefined
+// export {ContractMetadataMananger}
 
 export default class AschWeb {
   static Provider=Provider
