@@ -4,8 +4,12 @@ import { AschWeb,ContractMetadataMananger ,
     ParameterMetadata,
     PropertyMetadata,
     CustomeStateType,
-    TypeInfo
+    TypeInfo,
+    TypeKind
 } from '../../../dist/tsc'
+import assert from 'assert'
+
+import { EIDRM } from 'constants';
 // import { AschWeb,AschContract} from '../../../src'
 // import { ContractMetadataMananger ,ContractMetadataObject} from '../../../src/contract/metadata'
 const host ='http://123.206.19.30:4096'// 'http://testnet.asch.io'// 'http://mainnet.asch.cn/'
@@ -92,14 +96,46 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
     //     console.error(err)
     //   })
     //.catch(err => console.error(err));
+
+    function extractParamType(param: ParameterMetadata): string{
+        switch(param.type.kind){
+            case TypeKind.unknow:
+            {
+                return ''
+            } 
+            case TypeKind.primitive:
+            {
+                return param.type.name==='bigint'?'string':param.type.name
+            } 
+            case TypeKind.stateCollection:
+            {
+                return ''
+            } 
+            case TypeKind.customeState:
+            {
+                return ''
+            } 
+            case TypeKind.array:
+            {
+                return ''
+            } 
+            case TypeKind.interface:
+            {
+                return ''
+            } 
+        }
+        return ''
+    }
     async function testContractGen(){
-        let contract: any= await aschWeb.createContractFromName('test-contract')
+        let defaultGasLimit = 1000000
+        let contract: any= await aschWeb.createContractFromName('test_contract_kim')
         // console.log('contract:'+JSON.stringify(contract))
         let metadata:ContractMetadataObject=contract.metadata
         //console.log('metadata:'+JSON.stringify(metadata))
         let manager: ContractMetadataMananger= ContractMetadataMananger.fromJSONObject(contract.metadata)
         let customeTypes: CustomeStateType[] = metadata.customeTypes
-        //let sourceCode=""
+        let importCode = "import {AschWeb} from 'asch-web'\nconst AschContract = AschWeb.AschContract"
+        let sourceCode=`${importCode}\n\nexport class ${metadata.className} extends  AschContract {\n\n`
         customeTypes.forEach(customeType => {
             console.log('customeType:'+JSON.stringify(customeType.name))
             let properties:PropertyMetadata[] = customeType.properties
@@ -111,31 +147,69 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
         let methods: MethodMetadata[] = manager.methods
         
         methods.forEach(method => {
-            let methodCode:string=''
-            if(method.public){
+            let methodCode:string=' '
+            if(method.public && !method.constant && method.payable && !method.isConstructor){
                 methodCode+='public '+method.name+'('
                 console.log('method:'+JSON.stringify(method.name))
                 console.log('public:'+JSON.stringify(method.public))
                 let params:ParameterMetadata[] = method.parameters
+                assert(params.length==2)
                 params.forEach(param => {
                     console.log('params:'+JSON.stringify(param))
                     if(params[0]==param){
-                        methodCode+=param.name+": "+param.type.text
+                        methodCode+=param.name+": "+extractParamType(param)
                     }else{
-                        methodCode+=', '+param.name+": "+param.type.text
+                        methodCode+=', '+param.name+": "+extractParamType(param)
                     }
                 });
+                // let amount=params[0].name
                 console.log('returnType:'+JSON.stringify(method.returnType))
                 let returnType:TypeInfo|undefined=method.returnType
-                let returnCode = returnType?(returnType.name):'void'
+                // let returnCode = returnType?(returnType.name):'void'
+                let returnCode = 'Promise<object>'
                 methodCode+=`): ${returnCode}\n`
-                methodCode+='{\n'
-
-                methodCode+='}\n'
+                methodCode+=' {\n'
+                methodCode+=`    return this.pay(${params[0].name}, ${params[1].name}, this.name, ${defaultGasLimit}, true)`
+                methodCode+='\n }\n\n'
+                sourceCode+=methodCode
                 console.log(methodCode)
                 console.log('\n')
+            }else if(method.public && !method.constant && !method.payable && !method.isConstructor){
+                methodCode+='public '+method.name+'('
+                console.log('method:'+JSON.stringify(method.name))
+                console.log('public:'+JSON.stringify(method.public))
+                let params:ParameterMetadata[] = method.parameters
+                // assert(params.length==2)
+                let argsCode:string = '['
+                params.forEach(param => {
+                    console.log('params:'+JSON.stringify(param))
+                    if(params[0]==param){
+                        methodCode+=param.name+": "+extractParamType(param)
+                        argsCode+=param.name
+                    }else{
+                        methodCode+=', '+param.name+": "+extractParamType(param)
+                        argsCode+=', '+param.name
+                    }
+                });
+                // let amount=params[0].name
+                console.log('returnType:'+JSON.stringify(method.returnType))
+                argsCode+=']'
+                let returnType:TypeInfo|undefined=method.returnType
+                // let returnCode = returnType?(returnType.name):'void'
+                let returnCode = 'Promise<object>'
+                methodCode+=`): ${returnCode}\n`
+                methodCode+=' {\n'
+                methodCode+=`    return this.call(${method.name}, ${argsCode}, ${defaultGasLimit}, true)`
+                methodCode+='\n }\n\n'
+                sourceCode+=methodCode
+                console.log(methodCode)
+                console.log('\n')
+            }else if(method.public && method.constant && !method.payable && !method.isConstructor){
+
             }
         });
+        sourceCode+='\n}'
+        console.log(sourceCode)
         return null
     }
 

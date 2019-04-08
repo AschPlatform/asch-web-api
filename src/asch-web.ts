@@ -29,6 +29,7 @@ export default class AschWeb {
   static Constants=Constants
   static Utils=Utils
   static AschType=AschType
+  static AschContract=AschContract
   
   utils: any
   defaultAccount: any
