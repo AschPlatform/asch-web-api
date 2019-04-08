@@ -3,12 +3,268 @@ import AschWeb from './asch-web'
 import { TransactionBuilder } from './builders'
 import { Transaction } from './type'
 import { Network } from './providers'
+import { URLS } from './constants'
+
 export default class AschAPI extends API {
   aschWeb: AschWeb
   constructor(aschWeb: AschWeb) {
     super(aschWeb.provider)
     this.aschWeb = aschWeb
   }
+
+
+  /**
+   * 
+   * 以下接口为查询接口
+   * 
+  */
+
+
+  /**
+   * 
+   * @param secret 
+   */
+  public async open(secret: string): Promise<object>{
+    return this.post(URLS.loginApi.url, {secret:secret})
+  }
+
+  /**
+   * 
+   * @param address 
+   */
+  public async open2(publicKey: string): Promise<object>{
+    return this.post(URLS.loginApi2.url,{publicKey:publicKey})
+  }
+
+  public async getAccountDetail(address: string): Promise<object>{
+    return this.get(URLS.accountApi.url+'/'+address)
+  }
+
+  public async queryBalances(address: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+address)
+  }
+
+  public async queryVotedDelegates(address: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+address)
+  }
+
+  public async generateAccount(): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getAccountCount(): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async queryTransactions(orderBy: string, height: number|string, senderId:string, message:string, offset:number, limit:number): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getTransactionDetail(tid: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+tid)
+  }
+
+  public async getUnconfirmedTransactionDetail(tid: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+tid)
+  }
+
+  public async queryUnconfirmedTransactions(senderPublicKey: string='', address: string=''): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+address)
+  }
+
+  public async queryTransfers(limit: number, offset:number, ownerId:string, currency:string): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getBlockDetail(idOrHeightOrHash: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+idOrHeightOrHash)
+  }
+
+  public async queryBlocks(limit: number, offset: number, orderBy: string): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getBlockDetailV2(idOrHeight: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+idOrHeight)
+  }
+
+  public async getBlocksHeight(): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getMilestone(): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getBlockReward(): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getXASSupply(): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getBlockchainStatus(): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getBlockFullDetail(idOrHeight: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+idOrHeight)
+  }
+
+  public async getDelegatesCount(): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getVotersOfDelegate(name: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+name)
+  }
+
+  public async getDelegateDetail(publickeyOrName: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+publickeyOrName)
+  }
+
+  public async queryDelegates(limit: number, offset: number, orderBy: string): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getForgingStatusOfDelegate(publicKey: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+publicKey)
+  }
+
+  public async queryPeers(limit: number, offset: number): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getPeerVersion(): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getPeerDetail(ip: string, port: number): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getLoaderStatus(): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getLoaderStatusSync(): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async queryProposals(limit: number, offset: number): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getProposalDetail(pid: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+pid)
+  }
+
+  public async queryGateways(limit: number, offset: number): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async queryValidatorsOfGateway(gateway: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+gateway)
+  }
+
+  public async queryAllCurrenciesOfGateways(): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async queryCurrenciesOfGateway(gateway: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+gateway)
+  }
+
+  public async getAccountOfGateway(name: string, gateway: string): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async queryAccountsOfGateway(gateway: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+gateway)
+  }
+
+  public async querDepositsToGateway(address: string, currency: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+address)
+  }
+
+  public async querWithdrawalsFromGateway(address: string, currency: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+address)
+  }
+
+  public async queryAgents(limit: number=20, offset: number): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async queryClientelesOfAgent(agent: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+agent)
+  }
+
+  public async queryGroups(address: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+address)
+  }
+
+  public async querySideChainsRegistered(limit: number=20, offset: number): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async queryIssuers(limit: number=20, offset: number): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getIssuerDetail(address: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+address)
+  }
+
+  public async queryAssetsOfIssuer(address: string, limit: number=20, offset: number): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+address)
+  }
+
+  public async querAllAssets(limit: number=20, offset: number): Promise<object>{
+    return this.get(URLS.loginApi2.url)
+  }
+
+  public async getAssetDetail(currency: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+currency)
+  }
+
+  public async queryAssetBalances(address: string, limit: number=20, offset: number): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+address)
+  }
+
+  public async queryContracts(name:string='',ownerId:string='', address: string='', limit: number=20, offset: number): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+address)
+  }
+
+  public async getContractDetail(name: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+name)
+  }
+
+  public async getCodeOfContract(name: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+name)
+  }
+
+  public async getMetadataOfContract(name: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+name)
+  }
+
+  public async queryStatesOfContract(name: string, path:string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+name)
+  }
+
+  public async getResultOfContract(name: string, tid: string): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+name)
+  }
+
+  public async callConstantMethod(name: string, method: string, args: Array<any>): Promise<object>{
+    return this.get(URLS.loginApi2.url+'/'+name)
+  }
+
+  /**
+   * 
+   * 以下接口为事务接口
+   * 
+  */
 
   /**
    * 主链转账XAS
