@@ -100,6 +100,7 @@ export default class AschWeb {
       callback(ex)
     }
   }
+  
 
   /**
    * 从meta data创建合约对象

@@ -83,9 +83,9 @@ export class TransactionBuilder {
   static unlock(): Transaction {
     return this.buildTransaction(5, [])
   }
-  // 设置多签账户
-  static setMultiAccount(): Transaction {
-    return this.buildTransaction(6, [])
+  // 设置理事会
+  static setMultiAccount(name: string,members: Array<any>, min: number ,max: number ,m: number ,updateInterval :number): Transaction {
+    return this.buildTransaction(6, [name,members,min,max,m,updateInterval])
   }
   // 注册为代理人
   static registerAgent(): Transaction {
@@ -146,7 +146,6 @@ export class TransactionBuilder {
     tags: string,
     link: string,
     icon: string,
-    category: string,
     delegates: number,
     nlockNumber: number
   ): Transaction {
@@ -178,11 +177,12 @@ export class TransactionBuilder {
   static withdrawDapp(
     dappId: string,
     recipient: string,
+    currency: string,
     amount: string,
-    wid: string,
+    oid: string,
     signatures: string
   ): Transaction {
-    return this.buildTransaction(205, [dappId, recipient, amount, wid, signatures])
+    return this.buildTransaction(205, [dappId, recipient, currency , amount, oid, signatures])
   }
   // 发起提案
   static createProposal(
@@ -211,8 +211,8 @@ export class TransactionBuilder {
     return this.buildTransaction(400, [gateway])
   }
   // 网关充值
-  static depositGateway(address: string, currency: string, amount: string): Transaction {
-    return this.buildTransaction(402, [address, currency, amount])
+  static depositGateway(gateway:string, address: string, currency: string, amount: string, oid: string): Transaction {
+    return this.buildTransaction(402, [gateway,address,currency,amount,oid])
   }
   // 网关提现
   static withdrawGateway(

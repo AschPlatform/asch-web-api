@@ -52,37 +52,16 @@ export class AschContract {
     this.methods = methodsMap
     return methodsMap
   }
-  //  TODO
-  // public call(
-  //     methodName: string,
-  //     args: Array<any> = [],
-  //     address: string,
-  //     options: ObjectType = {},
-  //     callback: any
-  // ) {
-  //     try {
-  //         let method: Method | undefined = this.methods.get(methodName)
-  //         if (this.methods.has(methodName) && method && (!method.isConstant)) {
-  //             let trx = TransactionBuilder.callContract(
-  //                 options.gasLimit || 10000000,
-  //                 options.enablePayGasInXAS || false,
-  //                 this.name,
-  //                 methodName,
-  //                 args
-  //             )
-  //             trx.senderId = address
-  //             callback(trx, (trans: Transaction) => {
-  //                 return this.api.broadcastTransaction(trans)
-  //             })
-  //         } else {
-  //             return `contract has no method called ${methodName}`
-  //         }
-  //     } catch (e) {
-  //         return e
-  //     }
-  // }
 
-  //  TODO
+
+
+  /**
+   * 调用合约方法
+   * @param methodName 
+   * @param methodArgs 
+   * @param gasLimit 
+   * @param enablePayGasInXAS 
+   */
   public async call(
     methodName: string,
     methodArgs: Array<any>,
@@ -101,46 +80,43 @@ export class AschContract {
     }
   }
 
-  //    public async pay(
-  //         path: string,
-  //         amount: string,
-  //         currency: string,
-  //         address: string,
-  //         options: ObjectType = {},
-  //         callback: any
+  // /**
+  //  * 转账到合约
+  //  * @param currency
+  //  * @param amount
+  //  * @param receiverPath
+  //  * @param gasLimit
+  //  * @param enablePayGasInXAS
+  //  * @param callback
+  //  */
+  // public async pay(
+  //   currency: string,
+  //   amount: string,
+  //   receiverPath: string,
+  //   gasLimit: number,
+  //   enablePayGasInXAS: boolean,
+  //   callback?: any
+  // ) {
+  //   try {
+  //     let pathPrefix = receiverPath.split('/')[0]
+  //     let pathSuffix = receiverPath.split('/')[1] || ''
+  //     let method: Method | undefined = this.methods.get(pathSuffix)
+  //     if (
+  //       (pathSuffix && this.methods.has(pathSuffix) && method && method.isPayable) ||
+  //       (!pathSuffix && pathPrefix === this.name)
   //     ) {
-  //         try {
-  //             let pathPrefix = path.split('/')[0]
-  //             let pathSuffix = path.split('/')[1] || ''
-  //             let method: Method | undefined = this.methods.get(pathSuffix)
-  //             if (
-  //                 (pathSuffix &&
-  //                     this.methods.has(pathSuffix) &&
-  //                     method && method.isPayable) ||
-  //                 (!pathSuffix && pathPrefix === this.name)
-  //             ) {
-  //                 let trx = TransactionBuilder.payContract(
-  //                     options.gasLimit || 10000000,
-  //                     options.enablePayGasInXAS || false,
-  //                     path,
-  //                     amount,
-  //                     currency
-  //                 )
-  //                 trx.senderId = address
-  //                 callback(trx, (trans: Transaction) => {
-  //                     return this.api.broadcastTransaction(trans)
-  //                 })
-  //             } else {
-  //                 return `contract has no method called ${name}`
-  //             }
-  //         } catch (e) {
-  //             return e
-  //         }
+  //       return this.api.payContract(currency, amount, receiverPath, gasLimit, enablePayGasInXAS)
+  //     } else {
+  //       return Promise.reject(`contract has no method called ${method ? method.name : ''}`)
   //     }
+  //   } catch (e) {
+  //     return Promise.reject(e)
+  //   }
+  // }
 
   /**
-   *
-   * @param currency
+   * 转账到合约
+   * @param currency 
    * @param amount
    * @param receiverPath
    * @param gasLimit
@@ -152,9 +128,8 @@ export class AschContract {
     amount: string,
     receiverPath: string,
     gasLimit: number,
-    enablePayGasInXAS: boolean,
-    callback?: any
-  ) {
+    enablePayGasInXAS: boolean
+  ): Promise<object>{
     try {
       let pathPrefix = receiverPath.split('/')[0]
       let pathSuffix = receiverPath.split('/')[1] || ''
@@ -171,6 +146,7 @@ export class AschContract {
       return Promise.reject(e)
     }
   }
+
 
   constans(methodName: string, args: Array<any>) {
     try {
