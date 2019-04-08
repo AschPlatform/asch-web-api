@@ -65,9 +65,6 @@ export default class AschAPI extends API {
 
   /**
    * 设置理事会
-   */
-  /**
-   * 设置理事会
    * @param name 理事会名称
    * @param members 成员组
    * @param min 最少决策数(最少为3)
@@ -241,9 +238,9 @@ export default class AschAPI extends API {
   }
 
   /**
-   * 添加Dapp记账人
+   * 添加Dapp委托人
    * @param dappId Dapp ID
-   * @param key 记账人公钥
+   * @param key 委托人公钥
    */
   public async addBooker(dappId: string, key: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.addBooker(dappId, key)
@@ -252,9 +249,9 @@ export default class AschAPI extends API {
   }
 
   /**
-   * 删除Dapp记账人
+   * 删除Dapp委托人
    * @param dappId Dapp ID
-   * @param key 记账人公钥
+   * @param key 委托人公钥
    */
   public async deleteBooker(dappId: string, key: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.deleteBooker(dappId, key)
