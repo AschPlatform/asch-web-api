@@ -1,6 +1,6 @@
 {
   "name": "asch-web",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Asch typscript library, support typescript, node and web(browser) ports",
   "keywords": [
     "asch",
@@ -142,6 +142,7 @@
     "axios": "=0.18.0",
     "bip39": "=2.5.0",
     "bitcoin-ts": "^1.4.0",
+    "buffer": "^5.2.1",
     "bytebuffer": "^5.0.1",
     "fast-sha256": "=1.1.0",
     "js-sha256": "^0.9.0",

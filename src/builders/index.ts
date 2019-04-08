@@ -7,6 +7,7 @@ import { getTime } from '../utils'
 import calFee from '../asch-fee'
 import * as Constants from '../constants'
 import * as Slots from '../time/slots'
+import * as Utils from '../utils';
 export function transactionBuilder(params: ObjectType): Transaction {
   let transaction = {
     type: params.type,
@@ -23,6 +24,14 @@ export function transactionBuilder(params: ObjectType): Transaction {
 }
 
 export class TransactionBuilder {
+
+  /**
+   * 构建一个未签名的交易
+   * @param type 合约类型
+   * @param args 参数
+   * @param message 备注
+   * @param options 选项
+   */
   static buildTransaction(
     type: number,
     args: Array<any>,
@@ -44,19 +53,10 @@ export class TransactionBuilder {
     return transaction
   }
 
-  // export function transfer(from: string, token: string, amount: number | string, to: string, message: string): Transaction {
-  //   if( token === 'XAS'){
-  //     return buildTransaction(1, [amount, to],message)
-  //   }else{
-  //     return buildTransaction(103, [token, amount, to])
-  //   }
-  // }
-
   static convertSecondPwd(pwd: string): string {
-    // const key = pwd
-    // const keyPair = AschJS.crypto.getKeys(key)
-    // return keyPair.publicKey
-    return ''
+    const key = pwd
+    const keyPair = Utils.getKeys(key)
+    return keyPair.publicKey
   }
 
   //转账XAS
@@ -64,15 +64,6 @@ export class TransactionBuilder {
     return this.buildTransaction(1, [amount, to], message)
   }
 
-  // //转账自定义资产
-  // static transferUIA(
-  //   token: string,
-  //   amount: number | string,
-  //   to: string,
-  //   message: string
-  // ): Transaction {
-  //   return this.buildTransaction(103, [token, amount, to])
-  // }
 
   // 设置昵称
   static setName(name: string): Transaction {
@@ -180,7 +171,7 @@ export class TransactionBuilder {
     return this.buildTransaction(203, [dappId, key])
   }
   // dapp 充值
-  static depositDapp(name: string, currency: string, amount: string): Transaction {
+  static depositDapp(dappId: string, currency: string, amount: string): Transaction {
     return this.buildTransaction(204, [name, currency, amount])
   }
   // dapp 提现 TODO  参数问题

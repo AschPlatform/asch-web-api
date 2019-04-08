@@ -1,12 +1,11 @@
 
-var Asch = require('../../dist/webpack/asch-web.async-node').Asch
-var Utils = Asch.Utils
-var AschWeb = Asch.AschWeb
-var HTTPProvider = Asch.HTTPProvider
-var Network = Asch.Network
+var AschWeb = require('../../dist/webpack/asch-web.async-node').AschWeb
+var Utils = AschWeb.Utils
+var HTTPProvider = AschWeb.HTTPProvider
+var Network = AschWeb.Network
 
 
-const host = 'http://testnet.asch.cn'// 'http://mainnet.asch.cn/'
+const host = 'http://testnet.asch.io'// 'http://mainnet.asch.cn/'
 const net = Network.Test//   Network.Main
 
 const secret = 'quantum jelly guilt chase march lazy able repeat enrich fold sweet sketch'

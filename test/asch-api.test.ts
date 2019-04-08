@@ -1,6 +1,6 @@
 import AschWeb from '../src/asch-web'
 import AschAPI from '../src/asch-api'
-import { Network } from '../src/type'
+import { Network } from '../src/providers'
 import { Provider, HTTPProvider } from '../src/providers'
 
 describe('asch-api unit test', () => {

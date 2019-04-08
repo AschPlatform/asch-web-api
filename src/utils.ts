@@ -4,6 +4,15 @@ import * as RIPEMD160 from 'ripemd160'
 import * as nacl from 'tweetnacl'
 import * as ByteBuffer from 'bytebuffer'
 import * as Format from './time/format'
+// import { Buffer } from '../node_modules/buffer/'
+// import * as libBuffer from 'buffer'
+
+// console.log('libBuffer:' + JSON.stringify(libBuffer))
+// console.log('globalBuffer:' + global.Buffer)
+
+// const Buffer = global.Buffer || libBuffer
+
+// export default Buffer
 
 import { Transaction, Keys, ObjectType, Account } from './type'
 
@@ -27,7 +36,7 @@ for (let z = 0; z < ALPHABET.length; z++) {
   ALPHABET_MAP[x] = z
 }
 
-function sha256Bytes(data: Uint8Array) {
+function sha256Bytes(data: Uint8Array): Uint8Array {
   return sha256.hash(data)
 }
 
@@ -43,7 +52,7 @@ function getBytes(
   trs: Transaction,
   skipSignature: boolean = false,
   skipSecondSignature: boolean = false
-) {
+): Uint8Array {
   let bb = new ByteBuffer(1, true)
   bb.writeInt(trs.type)
   bb.writeInt(trs.timestamp)
@@ -80,9 +89,6 @@ function getBytes(
 
   bb.flip()
   return toLocalBuffer(bb)
-
-  // const buf = Buffer.from('123456')
-  // return new Uint8Array(buf)
 }
 
 /**
@@ -153,13 +159,56 @@ function toLocalBuffer(buf: any) {
   }
 }
 
-function signBytes(bytes: string, keys: Keys): string {
-  let hash = sha256Bytes(new Buffer(bytes, 'hex'))
-  let signature = nacl.sign.detached(hash, keys.keypair.secretKey)
-  return new Buffer(signature).toString('hex')
+/**
+ * 将Hex字符串或者buffer转换成Uint8Array
+ * @param hex 
+ */
+function fromHex(hex: string | Buffer): Uint8Array {
+  if (typeof hex === 'string') {
+    hex = Buffer.from(hex, 'hex')
+    // return Uint8Array.from(Buffer.from(hex, 'hex'))
+  }
+  let a = new Uint8Array(hex.length)
+  for (let i = 0; i < hex.length; i++) {
+    a[i] = hex[i]
+  }
+  return a;
 }
 
-// todo
+/**
+ * 将Uint8Array转换成十六进制的字符串
+ * @param bytes 
+ */
+function toHex(bytes: Uint8Array): string {
+  if (typeof bytes === 'string') {
+    return bytes;
+  }
+  return new Buffer(bytes).toString('hex')
+}
+
+/**
+ * 对字节数字签名
+ * @param bytes 
+ * @param secretKey 
+ */
+function signBytes(bytes: Bytes, secretKey: Bytes): string {
+  if (typeof bytes === 'string') {
+    bytes = fromHex(bytes)
+  }
+  if (typeof secretKey === 'string') {
+    secretKey = fromHex(secretKey)
+  }
+  console.log('secretKey:' + secretKey)
+  let hash = sha256Bytes(bytes)
+  console.log('hash:' + hash)
+  let signature = nacl.sign.detached(hash, secretKey)
+  return toHex(signature)
+}
+
+/**
+ * 
+ * @param transaction 
+ */
 function verify(transaction: Transaction): boolean {
   let remove = 64
   if (transaction.signSignature) {
@@ -178,21 +227,29 @@ function verify(transaction: Transaction): boolean {
   let signatureBuffer = new Buffer(transaction.signatures![0], 'hex')
   let senderPublicKeyBuffer = new Buffer(transaction.senderPublicKey, 'hex')
   let res = nacl.sign.detached.verify(hash, signatureBuffer, senderPublicKeyBuffer)
-
   return res
 }
 
-function verifyBytes(bytes: string, signature: string, publicKey: string): boolean {
-  let hash = sha256Bytes(new Buffer(bytes, 'hex'))
-  let signatureBuffer = new Buffer(signature, 'hex')
-  let publicKeyBuffer = new Buffer(publicKey, 'hex')
-  let res = nacl.sign.detached.verify(hash, signatureBuffer, publicKeyBuffer)
+/**
+ * 验证签名
+ * @param bytes 
+ * @param signature 
+ * @param publicKey 
+ */
+function verifyBytes(bytes: Bytes, signature: Bytes, publicKey: Bytes): boolean {
+  if (typeof bytes === 'string') {
+    bytes = fromHex(bytes)
+  }
+  if (typeof signature === 'string') {
+    signature = fromHex(signature)
+  }
+  if (typeof publicKey === 'string') {
+    publicKey = fromHex(publicKey)
+  }
+  let hash = sha256Bytes(bytes)
+  let res = nacl.sign.detached.verify(hash, signature, publicKey)
   return res
 }
-
-// function hash(bytes: Bytes): string {
-//   return ''
-// }
 
 function getId(transaction: Transaction): Uint8Array {
   return sha256Bytes(getBytes(transaction))
@@ -201,7 +258,7 @@ function getId(transaction: Transaction): Uint8Array {
 function base58DecodeUnsafe(str: string) {
   if (str.length === 0) return Buffer.allocUnsafe(0)
 
-  let bytes = [0]
+  let bytes: number[] = [0]
   for (let idx = 0; idx < str.length; idx++) {
     let value = ALPHABET_MAP[str[idx]]
     if (value === undefined) return
@@ -225,9 +282,10 @@ function base58DecodeUnsafe(str: string) {
   return Buffer.from(bytes.reverse())
 }
 
-function base58Encode(payload: Uint8Array) {
-  let checksum = Buffer.from(sha256Bytes(sha256Bytes(payload)))
-  let source = Buffer.concat([payload, checksum], payload.length + 4)
+function base58Encode(payload: Uint8Array): string {
+
+  let checksum: Buffer = new Buffer(sha256Bytes(sha256Bytes(payload)))
+  let source: Buffer = Buffer.concat([new Buffer(payload), checksum], payload.length + 4)
   if (source.length === 0) return ''
 
   let digits = [0]
@@ -245,7 +303,7 @@ function base58Encode(payload: Uint8Array) {
     }
   }
 
-  let str = ''
+  let str: string = ''
 
   // deal with leading zeros
   for (let k = 0; source[k] === 0 && k < source.length - 1; ++k) {
@@ -277,12 +335,16 @@ function isAddress(address: string): boolean {
   return true
 }
 
-function generateBase58CheckAddress(publicKey: Bytes): string {
+function generateBase58CheckAddress(publicKey: string): string {
+  let pubKey: Uint8Array
   if (typeof publicKey === 'string') {
-    publicKey = Buffer.from(publicKey, 'hex')
+    // pubKey = Buffer.from(publicKey, 'hex')
+    pubKey = fromHex(publicKey)
+  } else {
+    pubKey = publicKey
   }
-  let h1 = sha256Bytes(publicKey)
-  let h2 = new RIPEMD160().update(Buffer.from(h1)).digest()
+  let h1 = sha256Bytes(pubKey)
+  let h2 = new RIPEMD160().update(new Buffer(h1)).digest()
   return NORMAL_PREFIX + base58Encode(h2)
 }
 
@@ -300,12 +362,15 @@ function generateMnemonic(): string {
   return Bip39.generateMnemonic()
 }
 
-function getAddress(publicKey: Bytes): string {
+function getAddress(publicKey: string): string {
+  let pubKey: Uint8Array
   if (typeof publicKey === 'string') {
-    publicKey = Buffer.from(publicKey, 'hex')
+    pubKey = fromHex(publicKey)
+  } else {
+    pubKey = publicKey
   }
-  const h1 = sha256Bytes(publicKey)
-  const h2 = new RIPEMD160().update(Buffer.from(h1)).digest()
+  const h1: Uint8Array = sha256Bytes(pubKey)
+  const h2: Uint8Array = new RIPEMD160().update(new Buffer(h1)).digest()
   return NORMAL_PREFIX + base58Encode(h2)
 }
 
@@ -316,45 +381,6 @@ function fromSatoshi(rawAmount: number, precision: number = 8): number {
 function toSatoshi(amount: number, precision: number = 8): number {
   return amount * Math.pow(10, precision)
 }
-
-// function fullTimestamp(time: number): string{
-//   let d = EPOCHTIME
-//   let t = d.getTime() / 1000
-
-//   d = new Date((time + t) * 1000)
-//   const month = d.getMonth() + 1
-//   let monthStr = month + ''
-//   if (month < 10) {
-//     monthStr = '0' + month
-//   }
-
-//   const day = d.getDate()
-//   let dayStr = day + ''
-//   if (day < 10) {
-//     dayStr = '0' + day
-//   }
-
-//   const h = d.getHours()
-//   let hStr = h + ''
-//   const m = d.getMinutes()
-//   let mStr = m + ''
-//   const s = d.getSeconds()
-//   let sStr = s + ''
-
-//   if (h < 10) {
-//     hStr = '0' + h
-//   }
-
-//   if (m < 10) {
-//     mStr = '0' + m
-//   }
-
-//   if (s < 10) {
-//     sStr = '0' + s
-//   }
-
-//   return d.getFullYear() + '/' + monthStr + '/' + dayStr + ' ' + hStr + ':' + mStr + ':' + sStr
-// }
 
 function getTime(time: number | undefined = undefined): number {
   if (time === undefined) {
@@ -380,8 +406,10 @@ function transactionBuilder(params: ObjectType): Transaction {
   return transaction
 }
 
-function sha256Hex(data: Uint8Array) {
-  return Buffer.from(sha256Bytes(data)).toString('hex')
+function sha256Hex(data: Uint8Array): string {
+  // return Buffer.from(sha256Bytes(data)).toString('hex')
+  // return new Buffer(sha256Bytes(data)).toString('hex')
+  return toHex(sha256Bytes(data))
 }
 
 function injectPromise(func: any, ...args: any[]) {
@@ -423,6 +451,8 @@ export {
   fullSign,
   signBytes,
   getId,
+  fromHex,
+  toHex,
   verify,
   verifyBytes,
   sha256Bytes,
