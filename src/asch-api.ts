@@ -2,7 +2,7 @@ import { API } from './api'
 import AschWeb from './asch-web'
 import { TransactionBuilder } from './builders'
 import { Transaction } from './type'
-import { Network } from './providers'
+import { ObjectType } from './type'
 import { URLS } from './constants'
 
 export default class AschAPI extends API {
@@ -83,15 +83,28 @@ export default class AschAPI extends API {
    * @param senderId 交易签名者地址
    * @param message 交易备注
    */
-  public async queryTransactions(offset:number, limit:number, orderBy: string, height: number|string, senderId:string, message:string): Promise<object>{
-    return this.get(URLS.v2.transactions.list,{
+  public async queryTransactions(offset:number=0, limit:number=20, orderBy: string='', height: number=-1, senderId:string='', message:string=''): Promise<object>{
+    let params:ObjectType ={
       offset:offset,
       limit:limit,
-      orderBy:orderBy,
-      height:height,
-      senderId:senderId,
-      message: message
-    })
+      //orderBy:orderBy,
+      // height:height,
+      // senderId:senderId,
+      // message: message
+    }
+    if (orderBy.length>0) {
+      params[orderBy]=orderBy
+    }
+    if (height!=-1) {
+      params[height]=height
+    }
+    if (senderId.length>0) {
+      params[senderId]=senderId
+    }
+    if (message.length>0) {
+      params[message]=message
+    }
+    return this.get(URLS.v2.transactions.list,params)
   }
 
   /**
@@ -117,11 +130,16 @@ export default class AschAPI extends API {
    * @param address 地址
    */
   public async queryUnconfirmedTransactions(senderPublicKey: string='', address: string=''): Promise<object>{
-    return this.get(URLS.transactions.uncomfirmed,
-      {
-        senderPublicKey:senderPublicKey,
-        address:address
-      })
+    let params:ObjectType ={
+    }
+    if (senderPublicKey.length>0) {
+      params[senderPublicKey]=senderPublicKey
+    }
+    if (address.length>0) {
+      params[address]=address
+    }
+
+    return this.get(URLS.transactions.uncomfirmed, params)
   }
 
   /**
@@ -131,8 +149,18 @@ export default class AschAPI extends API {
    * @param ownerId 发送/接收者ID
    * @param currency 币种
    */
-  public async queryTransfers(limit: number=20, offset:number, ownerId:string, currency:string): Promise<object>{
-    return this.get(URLS.v2.transfers.list)
+  public async queryTransfers(offset:number=0, limit: number=20, ownerId:string='', currency:string=''): Promise<object>{
+    let params:ObjectType ={
+      offset:offset,
+      limit:limit,
+    }
+    if (ownerId.length>0) {
+      params[ownerId]=ownerId
+    }
+    if (currency.length>0) {
+      params[currency]=currency
+    }
+    return this.get(URLS.v2.transfers.list,params)
   }
 
   /**
@@ -147,7 +175,7 @@ export default class AschAPI extends API {
    *  根据区块高度获取指定区块的详情
    * @param height 区块高度
    */
-  public async getBlockDetailByHeight(height:string): Promise<object>{
+  public async getBlockDetailByHeight(height: number): Promise<object>{
     return this.get(URLS.blocks.detail,{height:height})
   }
 
@@ -165,8 +193,12 @@ export default class AschAPI extends API {
    * @param offset 偏移量
    * @param orderBy height:desc或者height:asc(目前提供的排序方法)
    */
-  public async queryBlocks(limit: number=20, offset: number, orderBy: string): Promise<object>{
-    return this.get(URLS.v2.blocks.list)
+  public async queryBlocks(offset: number=0, limit: number=20, orderBy: string='height:desc'): Promise<object>{
+    return this.get(URLS.v2.blocks.list,{
+      offset:offset,
+      limit:limit,
+      orderBy:orderBy
+    })
   }
 
   /**

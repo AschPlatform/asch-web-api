@@ -4,15 +4,16 @@ import { Network } from '../src/providers'
 import { Provider, HTTPProvider } from '../src/providers'
 
 describe('asch-api unit test', () => {
-  const host = 'http://mainnet.asch.cn/'
+  const host = 'http://123.206.19.30:4096' //'http://mainnet.asch.cn/'
   const provider: Provider = new HTTPProvider(host, Network.Main)
-  let secret = 'quantum jelly guilt chase march lazy able repeat enrich fold sweet sketch'
+  let secret = 'reunion march reduce artist horror correct wonder ice inside fringe zoo beyond'
   let secondSecret = '' //'11111111a'
   let aschWeb = new AschWeb(provider, secret, secondSecret)
-  let address = 'ACFi5K42pVVYxq5rFkFQBa6c6uFLmGFUP2'
+  let address = 'AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb'
   let to = 'AHcGmYnCyr6jufT5AGbpmRUv55ebwMLCym'
   let dappId = '25be71c296430a409cfeaf1ffaa957d18793f3695db07a846c22a7c467c45994'
-  let publicKey: string
+  let publicKey: string = AschWeb.Utils.getKeys(secret).publicKey
+  console.log('publicKey:'+publicKey)
   let utils = aschWeb.utils
   let trx = {
     type: 601,
@@ -24,17 +25,235 @@ describe('asch-api unit test', () => {
     senderPublicKey: ''
   }
 
-  it('asch-api transferXAS method test', () => {
+  // it('asch-api open method test', () => {
+  //   aschWeb.api
+  //     .open(secret)
+  //     .then(res => {
+  //       console.log('open response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+
+  // it('asch-api open2 method test', () => {
+  //   aschWeb.api
+  //     .open2(publicKey)
+  //     .then(res => {
+  //       console.log('open2 response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getAccountDetail method test', () => {
+  //   aschWeb.api
+  //     .getAccountDetail(address)
+  //     .then(res => {
+  //       console.log('getAccountDetail response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api queryBalances method test', () => {
+  //   aschWeb.api
+  //     .queryBalances(address)
+  //     .then(res => {
+  //       console.log('queryBalances response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api queryVotedDelegates method test', () => {
+  //   aschWeb.api
+  //     .queryVotedDelegates(address)
+  //     .then(res => {
+  //       console.log('queryVotedDelegates response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api generateAccount method test', () => {
+  //   aschWeb.api
+  //     .generateAccount()
+  //     .then(res => {
+  //       console.log('generateAccount response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getAccountCount method test', () => {
+  //   aschWeb.api
+  //     .getAccountCount()
+  //     .then(res => {
+  //       console.log('getAccountCount response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api queryTransactions method test', () => {
+  //   aschWeb.api
+  //     .queryTransactions()
+  //     .then(res => {
+  //     console.log('queryTransactions response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getTransactionDetail method test', () => {
+  //   aschWeb.api
+  //     .getTransactionDetail('e9f457aa6e6c021bb31dd0899aa942c35b89b648de7e11c7c1a1573ee3750a1f')
+  //     .then(res => {
+  //     console.log('getTransactionDetail response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getUnconfirmedTransactionDetail method test', () => {
+  //   aschWeb.api
+  //     .getUnconfirmedTransactionDetail('e9f457aa6e6c021bb31dd0899aa942c35b89b648de7e11c7c1a1573ee3750a1f')
+  //     .then(res => {
+  //     console.log('getUnconfirmedTransactionDetail response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api queryUnconfirmedTransactions method test', () => {
+  //   aschWeb.api
+  //     .queryUnconfirmedTransactions()
+  //     .then(res => {
+  //     console.log('queryUnconfirmedTransactions response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api queryTransfers method test', () => {
+  //   aschWeb.api
+  //     .queryTransfers()
+  //     .then(res => {
+  //     console.log('queryTransfers response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getBlockDetailById method test', () => {
+  //   aschWeb.api
+  //     .getBlockDetailById('ab5e3de0f8bf552ec3a638eac9c81a957fb0c06dc0ed63871c3b0592f90ea806')
+  //     .then(res => {
+  //     console.log('getBlockDetailById response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getBlockDetailByHeight method test', () => {
+  //   aschWeb.api
+  //     .getBlockDetailByHeight(72118)
+  //     .then(res => {
+  //     console.log('getBlockDetailByHeight response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+
+  // it('asch-api getBlockDetailByHash method test', () => {
+  //   aschWeb.api
+  //     .getBlockDetailByHash('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
+  //     .then(res => {
+  //     console.log('getBlockDetailByHash response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api queryBlocks method test', () => {
+  //   aschWeb.api
+  //     .queryBlocks()
+  //     .then(res => {
+  //     console.log('queryBlocks response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getBlockDetailByIdOrHeight method test', () => {
+  //   aschWeb.api
+  //     .getBlockDetailByIdOrHeight('1')
+  //     .then(res => {
+  //     console.log('getBlockDetailByIdOrHeight response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  it('asch-api getBlocksHeight method test', () => {
     aschWeb.api
-      .transferXAS(1000000, to, 'test')
+      .getBlocksHeight()
       .then(res => {
-        console.log('transferXAS response:' + JSON.stringify(res))
+      console.log('getBlocksHeight response:' + JSON.stringify(res))
       })
       .catch(err => {
         console.error(err)
       })
     //.catch(err => console.error(err));
   })
+
+  // it('asch-api transferXAS method test', () => {
+  //   aschWeb.api
+  //     .transferXAS(1000000, to, 'test')
+  //     .then(res => {
+  //       console.log('transferXAS response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
 
   // it('asch-api setName method test', () => {
   //   aschWeb.api
