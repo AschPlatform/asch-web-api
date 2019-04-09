@@ -25,7 +25,7 @@ export default class AschAPI extends API {
    * @param secret 
    */
   public async open(secret: string): Promise<object>{
-    return this.post(URLS.loginApi.url, {secret:secret})
+    return this.post(URLS.accounts.open, {secret:secret})
   }
 
   /**
@@ -33,231 +33,231 @@ export default class AschAPI extends API {
    * @param address 
    */
   public async open2(publicKey: string): Promise<object>{
-    return this.post(URLS.loginApi2.url,{publicKey:publicKey})
+    return this.post(URLS.accounts.open2,{publicKey:publicKey})
   }
 
   public async getAccountDetail(address: string): Promise<object>{
-    return this.get(URLS.accountApi.url+'/'+address)
+    return this.get(URLS.v2.accounts.detail+'/'+address)
   }
 
   public async queryBalances(address: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+address)
+    return this.get(URLS.v2.accounts.balances+'/'+address)
   }
 
   public async queryVotedDelegates(address: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+address)
+    return this.get(URLS.accounts.deletates_voted+'/'+address)
   }
 
   public async generateAccount(): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.accounts.new)
   }
 
   public async getAccountCount(): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.accounts.count)
   }
 
   public async queryTransactions(orderBy: string, height: number|string, senderId:string, message:string, offset:number, limit:number): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.v2.transactions.list)
   }
 
   public async getTransactionDetail(tid: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+tid)
+    return this.get(URLS.v2.transactions.detail+'/'+tid)
   }
 
   public async getUnconfirmedTransactionDetail(tid: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+tid)
+    return this.get(URLS.transactions.uncomfirmed_detail+'/'+tid)
   }
 
   public async queryUnconfirmedTransactions(senderPublicKey: string='', address: string=''): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+address)
+    return this.get(URLS.transactions.uncomfirmed+'/'+address)
   }
 
   public async queryTransfers(limit: number, offset:number, ownerId:string, currency:string): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.v2.transfers.list)
   }
 
   public async getBlockDetail(idOrHeightOrHash: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+idOrHeightOrHash)
+    return this.get(URLS.blocks.detail+'/'+idOrHeightOrHash)
   }
 
   public async queryBlocks(limit: number, offset: number, orderBy: string): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.v2.blocks.list)
   }
 
   public async getBlockDetailV2(idOrHeight: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+idOrHeight)
+    return this.get(URLS.v2.blocks.detail+'/'+idOrHeight)
   }
 
   public async getBlocksHeight(): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.blocks.height)
   }
 
   public async getMilestone(): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.blocks.milestone)
   }
 
   public async getBlockReward(): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.blocks.reward)
   }
 
   public async getXASSupply(): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.blocks.supply)
   }
 
   public async getBlockchainStatus(): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.blocks.status)
   }
 
   public async getBlockFullDetail(idOrHeight: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+idOrHeight)
+    return this.get(URLS.blocks.full+'/'+idOrHeight)
   }
 
   public async getDelegatesCount(): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.delegates.count)
   }
 
   public async getVotersOfDelegate(name: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+name)
+    return this.get(URLS.delegates.voters+'/'+name)
   }
 
   public async getDelegateDetail(publickeyOrName: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+publickeyOrName)
+    return this.get(URLS.delegates.detail+'/'+publickeyOrName)
   }
 
   public async queryDelegates(limit: number, offset: number, orderBy: string): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.delegates.list)
   }
 
   public async getForgingStatusOfDelegate(publicKey: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+publicKey)
+    return this.get(URLS.delegates.forging_status+'/'+publicKey)
   }
 
   public async queryPeers(limit: number, offset: number): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.peers.list)
   }
 
   public async getPeerVersion(): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.peers.version)
   }
 
   public async getPeerDetail(ip: string, port: number): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.peers.detail)
   }
 
   public async getLoaderStatus(): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.loder.status)
   }
 
   public async getLoaderStatusSync(): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.loder.status_sync)
   }
 
   public async queryProposals(limit: number, offset: number): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.v2.proposals.list)
   }
 
   public async getProposalDetail(pid: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+pid)
+    return this.get(URLS.v2.proposals.detail+'/'+pid)
   }
 
   public async queryGateways(limit: number, offset: number): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.v2.gateways.list)
   }
 
   public async queryValidatorsOfGateway(gateway: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+gateway)
+    return this.get(URLS.v2.gateways.validators+'/'+gateway)
   }
 
   public async queryAllCurrenciesOfGateways(): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.v2.gateways.currencies_all)
   }
 
   public async queryCurrenciesOfGateway(gateway: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+gateway)
+    return this.get(URLS.v2.gateways.account_one+'/'+gateway)
   }
 
   public async getAccountOfGateway(name: string, gateway: string): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.v2.gateways.account_one)
   }
 
   public async queryAccountsOfGateway(gateway: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+gateway)
+    return this.get(URLS.v2.gateways.account_all+'/'+gateway)
   }
 
   public async querDepositsToGateway(address: string, currency: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+address)
+    return this.get(URLS.v2.gateways.deposits+'/'+address)
   }
 
   public async querWithdrawalsFromGateway(address: string, currency: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+address)
+    return this.get(URLS.v2.gateways.withdrawals+'/'+address)
   }
 
   public async queryAgents(limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.v2.agents.list)
   }
 
   public async queryClientelesOfAgent(agent: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+agent)
+    return this.get(URLS.v2.agents.clienteles+'/'+agent)
   }
 
   public async queryGroups(address: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+address)
+    return this.get(URLS.v2.agents.group+'/'+address)
   }
 
   public async querySideChainsRegistered(limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.v2.chains.list)
   }
 
   public async queryIssuers(limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.v2.uia.issuers_list)
   }
 
   public async getIssuerDetail(address: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+address)
+    return this.get(URLS.v2.uia.issuers_detail+'/'+address)
   }
 
   public async queryAssetsOfIssuer(address: string, limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+address)
+    return this.get(URLS.v2.uia.assets_one+'/'+address)
   }
 
   public async querAllAssets(limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.loginApi2.url)
+    return this.get(URLS.v2.uia.assets_all)
   }
 
   public async getAssetDetail(currency: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+currency)
+    return this.get(URLS.v2.uia.assets_detail+'/'+currency)
   }
 
   public async queryAssetBalances(address: string, limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+address)
+    return this.get(URLS.v2.uia.balances+'/'+address)
   }
 
   public async queryContracts(name:string='',ownerId:string='', address: string='', limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+address)
+    return this.get(URLS.v2.contracts.list+'/'+address)
   }
 
   public async getContractDetail(name: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+name)
+    return this.get(URLS.v2.contracts.detail+'/'+name)
   }
 
   public async getCodeOfContract(name: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+name)
+    return this.get(URLS.v2.contracts.code+'/'+name)
   }
 
   public async getMetadataOfContract(name: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+name)
+    return this.get(URLS.v2.contracts.metadata+'/'+name)
   }
 
   public async queryStatesOfContract(name: string, path:string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+name)
+    return this.get(URLS.v2.contracts.states+'/'+name)
   }
 
   public async getResultOfContract(name: string, tid: string): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+name)
+    return this.get(URLS.v2.contracts.results+'/'+name)
   }
 
   public async callConstantMethod(name: string, method: string, args: Array<any>): Promise<object>{
-    return this.get(URLS.loginApi2.url+'/'+name)
+    return this.get(URLS.v2.contracts.constants_method+'/'+name)
   }
 
   /**
