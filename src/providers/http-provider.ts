@@ -1,4 +1,5 @@
-import Axios from 'axios'
+import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { AxiosInstance, AxiosPromise } from 'axios'
 import { ObjectType } from '../type'
 import { Provider, Network } from './provider'
 import { LOCAL_NET_MAGIC, TEST_NET_MAGIC, MAIN_NET_MAGIC } from '../constants'
@@ -6,7 +7,7 @@ export class HTTPProvider extends Provider {
   _url: string
   _timeout: number
   _net?: Network
-  _instance: ObjectType
+  _instance: AxiosInstance
 
   constructor(url: string, net?: Network, timeout: number = 30000) {
     super()
@@ -23,6 +24,8 @@ export class HTTPProvider extends Provider {
       timeout: timeout,
       headers: this.headerForNet(net)
     })
+    //debug log
+    this.addLogger(this._instance)
   }
 
   headerForNet(net?: Network): ObjectType {
@@ -31,11 +34,40 @@ export class HTTPProvider extends Provider {
         net == Network.Main
           ? MAIN_NET_MAGIC
           : net == Network.Test
-          ? TEST_NET_MAGIC
-          : LOCAL_NET_MAGIC,
+            ? TEST_NET_MAGIC
+            : LOCAL_NET_MAGIC,
       version: '',
       'Content-Type': 'application/json'
     }
+  }
+
+  /**
+   * 添加loger
+   * @param instance 
+   */
+  addLogger(instance: AxiosInstance) {
+    instance.interceptors.request.use(function (config: AxiosRequestConfig) {
+      console.debug((config.method ? config.method.toUpperCase() : 'unknow method') + ' ' + config.url)
+      return config
+    })
+    instance.interceptors.response.use(function (response: AxiosResponse) {
+      let config: AxiosRequestConfig = response.config
+      console.debug(
+        response.status + ' ' + response.statusText,
+        '(' + (config && config.method ? config.method.toUpperCase() : 'unknow method' )+ ' ' + response.config.url + ')'
+      )
+      return response
+    }, function (error) {
+      if (error.config) {
+        console.debug(
+          error.name + ': ' + error.message,
+          '(' + error.config.method.toUpperCase() + ' ' + error.config.url + ')'
+        )
+      } else {
+        console.debug(error.name + ': ' + error.message)
+      }
+      throw error
+    })
   }
 
   json2url(json: any) {
@@ -53,15 +85,16 @@ export class HTTPProvider extends Provider {
     data: ObjectType = {},
     method: string = 'get',
     postHeaders: ObjectType = {}
-  ) {
+  ): Promise<object> {
+
     for (let k in data) {
       if (url.indexOf(':' + k) !== -1) {
         url = url.replace(':' + k, data[k])
         delete data[k]
       }
     }
+
     method = method.toLowerCase()
-    // var res;
     if (method === 'get') {
       let params = this.json2url(data)
       return this._instance
@@ -72,13 +105,14 @@ export class HTTPProvider extends Provider {
     } else if (method === 'put') {
       return this._instance.put(url, data, postHeaders).then(({ data }: ObjectType) => data)
     }
+    return Promise.reject('has not beeb implement the method')
   }
 
-  get(uri: string, params?: ObjectType) {
+  get(uri: string, params?: ObjectType): Promise<object> {
     return this.request(uri, params)
   }
 
-  post(uri: string, params: ObjectType, headers?: ObjectType) {
+  post(uri: string, params: ObjectType, headers?: ObjectType): Promise<object> {
     return this.request(uri, params, 'post', headers)
   }
 

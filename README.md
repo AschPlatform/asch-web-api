@@ -134,7 +134,7 @@ aschWeb.api
 
 ### 构建交易-->签名交易-->广播交易
 
-1. [TransactionBuilder 生成未签名的交易](./src/builders/README.md)
+1. [TransactionBuilder 生成未签名的交易](https://github.com/AschPlatform/asch-web/blob/contract-gen/src/builders/README.md)
 ```
 let trans = TransactionBuilder.transferXAS(1000,to,'test')
 console.log('unsigned transcation:'+JSON.stringify(trans))

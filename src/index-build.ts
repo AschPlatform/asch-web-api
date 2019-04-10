@@ -10,5 +10,5 @@ import AschWeb from "./asch-web";
 // const Asch = { AschWeb, Provider, HTTPProvider, Network, TransactionBuilder, Constants, Utils }
 // export { Asch }
 // export default AschWeb 
-
+export *  from './contract/metadata'
 export { AschWeb } 

@@ -15,6 +15,6 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "asch-web": "0.0.59"
+    "asch-web": "file:../.."
   }
 }
