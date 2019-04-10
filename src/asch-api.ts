@@ -18,7 +18,6 @@ export default class AschAPI extends API {
    * 
    */
 
-
   /**
    * 本地不加密直接登陆
    * 备注：将密码以明文方式传入到后端，根据生成的地址去查询账户信息。不推荐在公网坏境使用！
@@ -256,7 +255,7 @@ export default class AschAPI extends API {
    * 根据区块高度获取指定区块的交易信息
    * @param height 区块高度
    */
-  public async getBlockFullDetailByHeight(height: string): Promise<object>{
+  public async getBlockFullDetailByHeight(height: number|string): Promise<object>{
     return this.get(URLS.blocks.full,{height:height})
   }
 
@@ -275,12 +274,20 @@ export default class AschAPI extends API {
     return this.get(URLS.delegates.voters,{name:name})
   }
 
+  // /**
+  //  * 根据公钥获取受托人详情
+  //  * @param publickey 受托人公钥
+  //  */
+  // public async getDelegateDetailByPublickey(publickey: string): Promise<object>{
+  //   return this.get(URLS.delegates.detail,{publickey:publickey})
+  // }
+
   /**
-   * 根据公钥获取受托人详情
-   * @param publickey 受托人公钥
+   * 根据地址获取受托人详情
+   * @param address 受托人地址
    */
-  public async getDelegateDetailByPublickey(publickey: string): Promise<object>{
-    return this.get(URLS.delegates.detail,{publickey:publickey})
+  public async getDelegateDetailByAddress(address: string): Promise<object>{
+    return this.get(URLS.delegates.detail,{address:address})
   }
 
   /**
@@ -294,12 +301,16 @@ export default class AschAPI extends API {
   /**
    * 获取受托人列表
    * 接口说明：如果不加参数则会返回全网受托人列表
-   * @param limit 数量
    * @param offset 偏移量，最小值：0
+   * @param limit 数量
    * @param orderBy 排序字段:排序规则，如:desc
    */
-  public async queryDelegates(limit: number, offset: number, orderBy: string): Promise<object>{
-    return this.get(URLS.delegates.list)
+  public async queryDelegates(offset: number=0, limit: number=20, orderBy: string='vote:desc'): Promise<object>{
+    return this.get(URLS.delegates.list,{
+      offset:offset,
+      limit:limit,
+      orderBy:orderBy
+    })
   }
 
   /**
@@ -307,7 +318,7 @@ export default class AschAPI extends API {
    * @param publicKey 公钥
    */
   public async getForgingStatusOfDelegate(publicKey: string): Promise<object>{
-    return this.get(URLS.delegates.forging_status+'/'+publicKey)
+    return this.get(URLS.delegates.forging_status,{publicKey:publicKey})
   }
 
   /**
@@ -316,8 +327,11 @@ export default class AschAPI extends API {
    * @param limit 数量限制
    * @param offset 偏移量
    */
-  public async queryPeers(limit: number, offset: number): Promise<object>{
-    return this.get(URLS.peers.list)
+  public async queryPeers(offset: number=0, limit: number=20): Promise<object>{
+    return this.get(URLS.peers.list,{
+      offset:offset,
+      limit:limit
+    })
   }
 
   /**
@@ -333,7 +347,7 @@ export default class AschAPI extends API {
    * @param port 待查询节点端口，1~65535
    */
   public async getPeerDetail(ip: string, port: number): Promise<object>{
-    return this.get(URLS.peers.detail)
+    return this.get(URLS.peers.detail,{ip:ip, port:port})
   }
 
   /**
@@ -352,11 +366,14 @@ export default class AschAPI extends API {
 
   /**
    * 获取提案列表
-   * @param limit 数量限制
    * @param offset 偏移量
+   * @param limit 数量限制
    */
-  public async queryProposals(limit: number, offset: number): Promise<object>{
-    return this.get(URLS.v2.proposals.list)
+  public async queryProposals(offset: number=0, limit: number=20): Promise<object>{
+    return this.get(URLS.v2.proposals.list,{
+      offset:offset,
+      limit:limit
+    })
   }
 
   /**
@@ -364,16 +381,19 @@ export default class AschAPI extends API {
    * @param pid 提案id
    */
   public async getProposalDetail(pid: string): Promise<object>{
-    return this.get(URLS.v2.proposals.detail+'/'+pid)
+    return this.get(URLS.v2.proposals.detail.replace(':id',pid))
   }
 
   /**
    * 获取网关列表
-   * @param limit 数量限制
    * @param offset 偏移量
+   * @param limit 数量限制
    */
-  public async queryGateways(limit: number, offset: number): Promise<object>{
-    return this.get(URLS.v2.gateways.list)
+  public async queryGateways(offset: number=0, limit: number=20): Promise<object>{
+    return this.get(URLS.v2.gateways.list,{
+      offset:offset,
+      limit:limit
+    })
   }
 
   /**
@@ -381,7 +401,7 @@ export default class AschAPI extends API {
    * @param gateway 网关名字
    */
   public async queryValidatorsOfGateway(gateway: string): Promise<object>{
-    return this.get(URLS.v2.gateways.validators+'/'+gateway)
+    return this.get(URLS.v2.gateways.validators.replace(':name',gateway))
   }
 
   /**
@@ -396,7 +416,7 @@ export default class AschAPI extends API {
    * @param gateway 网关名称
    */
   public async queryCurrenciesOfGateway(gateway: string): Promise<object>{
-    return this.get(URLS.v2.gateways.currencies_one+'/'+gateway)
+    return this.get(URLS.v2.gateways.currencies_one.replace(':name',gateway))
   }
 
   /**
@@ -405,7 +425,7 @@ export default class AschAPI extends API {
    * @param address 账户地址
    */
   public async getAccountOfGateway(gateway: string, address: string): Promise<object>{
-    return this.get(URLS.v2.gateways.account_one)
+    return this.get(URLS.v2.gateways.account_one.replace(':name',gateway).replace(':address',address))
   }
 
   /**
@@ -413,7 +433,7 @@ export default class AschAPI extends API {
    * @param address 
    */
   public async queryAccountsOfGateway(address: string): Promise<object>{
-    return this.get(URLS.v2.gateways.account_all+'/'+address)
+    return this.get(URLS.v2.gateways.account_all.replace(':address',address))
   }
 
   /**
@@ -422,7 +442,7 @@ export default class AschAPI extends API {
    * @param currency 币种
    */
   public async querDepositsToGateway(address: string, currency: string): Promise<object>{
-    return this.get(URLS.v2.gateways.deposits+'/'+address)
+    return this.get(URLS.v2.gateways.deposits.replace(':address',address).replace(':currency',currency))
   }
 
   /**
@@ -431,16 +451,19 @@ export default class AschAPI extends API {
    * @param currency 币种
    */
   public async querWithdrawalsFromGateway(address: string, currency: string): Promise<object>{
-    return this.get(URLS.v2.gateways.withdrawals+'/'+address)
+    return this.get(URLS.v2.gateways.withdrawals.replace(':address',address).replace(':currency',currency))
   }
 
   /**
    * 获取所有代理人账户
-   * @param limit 数量限制
    * @param offset 偏移量
+   * @param limit 数量限制
    */
-  public async queryAgents(limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.v2.agents.list)
+  public async queryAgents(offset: number=0, limit: number=20): Promise<object>{
+    return this.get(URLS.v2.agents.list, {
+      offset:offset,
+      limit:limit
+    })
   }
 
   /**
@@ -448,7 +471,7 @@ export default class AschAPI extends API {
    * @param agent 代理人名字
    */
   public async queryClientelesOfAgent(agent: string): Promise<object>{
-    return this.get(URLS.v2.agents.clienteles+'/'+agent)
+    return this.get(URLS.v2.agents.clienteles.replace(':name',agent))
   }
 
   /**
@@ -456,25 +479,31 @@ export default class AschAPI extends API {
    * @param address Group地址
    */
   public async queryGroups(address: string): Promise<object>{
-    return this.get(URLS.v2.agents.group+'/'+address)
+    return this.get(URLS.v2.agents.group.replace(':address',address))
   }
 
   /**
    * 获取所有已注册侧链
-   * @param limit 数量限制
    * @param offset 偏移量
+   * @param limit 数量限制
    */
-  public async querySideChainsRegistered(limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.v2.chains.list)
+  public async querySideChainsRegistered(offset: number=0, limit: number=20): Promise<object>{
+    return this.get(URLS.v2.chains.list,{
+      offset:offset,
+      limit:limit
+    })
   }
 
   /**
    * 获取全网所有发行商
-   * @param limit 限制结果集个数，最小值：0,最大值：100
    * @param offset 偏移量，最小值0
+   * @param limit 限制结果集个数，最小值：0,最大值：100
    */
-  public async queryIssuers(limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.v2.uia.issuers_list)
+  public async queryIssuers(offset: number=0, limit: number=20): Promise<object>{
+    return this.get(URLS.v2.uia.issuers_list,{
+      offset:offset,
+      limit:limit
+    })
   }
 
   /**
@@ -482,17 +511,20 @@ export default class AschAPI extends API {
    * @param address 账户地址
    */
   public async getIssuerDetail(address: string): Promise<object>{
-    return this.get(URLS.v2.uia.issuers_detail+'/'+address)
+    return this.get(URLS.v2.uia.issuers_detail.replace(':address',address))
   }
 
   /**
    * 查看指定发行商的资产
    * @param address 账户地址
-   * @param limit 限制结果集个数，最小值：0,最大值：100
    * @param offset 偏移量，最小值0
+   * @param limit 限制结果集个数，最小值：0,最大值：100
    */
-  public async queryAssetsOfIssuer(address: string, limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.v2.uia.assets_one+'/'+address)
+  public async queryAssetsOfIssuer(address: string, offset: number=0, limit: number=20): Promise<object>{
+    return this.get(URLS.v2.uia.assets_one.replace(':address',address),{
+      offset:offset,
+      limit:limit
+    })
   }
 
   /**
@@ -500,8 +532,11 @@ export default class AschAPI extends API {
    * @param limit 限制结果集个数，最小值：0,最大值：100
    * @param offset 偏移量，最小值0
    */
-  public async querAllAssets(limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.v2.uia.assets_all)
+  public async querAllAssets(offset: number=0, limit: number=20): Promise<object>{
+    return this.get(URLS.v2.uia.assets_all,{
+      offset:offset,
+      limit:limit
+    })
   }
 
   /**
@@ -509,17 +544,20 @@ export default class AschAPI extends API {
    * @param currency 资产名
    */
   public async getAssetDetail(currency: string): Promise<object>{
-    return this.get(URLS.v2.uia.assets_detail+'/'+currency)
+    return this.get(URLS.v2.uia.assets_detail.replace(':name',currency))
   }
 
   /**
    * 获取指定账户所有uia的余额
    * @param address 账户地址
-   * @param limit 限制结果集个数，最小值：0,最大值：100
    * @param offset 偏移量，最小值0
+   * @param limit 限制结果集个数，最小值：0,最大值：100
    */
-  public async queryAssetBalances(address: string, limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.v2.uia.balances+'/'+address)
+  public async queryAssetBalances(address: string, offset: number=0, limit: number=20): Promise<object>{
+    return this.get(URLS.v2.uia.balances.replace(':address',address),{
+      offset:offset,
+      limit:limit
+    })
   }
 
   /**
@@ -527,11 +565,24 @@ export default class AschAPI extends API {
    * @param name 合约名称
    * @param ownerId 创建人地址
    * @param address 合约地址
-   * @param limit 限制结果集个数，最小值：0,最大值：100
    * @param offset 偏移量，最小值0
+   * @param limit 限制结果集个数，最小值：0,最大值：100
    */
-  public async queryContracts(name:string='',ownerId:string='', address: string='', limit: number=20, offset: number): Promise<object>{
-    return this.get(URLS.v2.contracts.list+'/'+address)
+  public async queryContracts(name:string='',ownerId:string='', address: string='',offset: number=0, limit: number=20): Promise<object>{
+    let params:ObjectType ={
+      offset:offset,
+      limit:limit,
+    }
+    if (name.length>0) {
+      params[name]=name
+    }
+    if (ownerId.length>0) {
+      params[ownerId]=ownerId
+    }
+    if (address.length>0) {
+      params[address]=address
+    }
+    return this.get(URLS.v2.contracts.list,params)
   }
 
   /**
@@ -539,7 +590,7 @@ export default class AschAPI extends API {
    * @param name 合约名称
    */
   public async getContractDetail(name: string): Promise<object>{
-    return this.get(URLS.v2.contracts.detail+'/'+name)
+    return this.get(URLS.v2.contracts.detail.replace(':name',name))
   }
 
   /**
@@ -547,7 +598,7 @@ export default class AschAPI extends API {
    * @param name 合约名称
    */
   public async getCodeOfContract(name: string): Promise<object>{
-    return this.get(URLS.v2.contracts.code+'/'+name)
+    return this.get(URLS.v2.contracts.code.replace(':name',name))
   }
 
   /**
@@ -555,7 +606,7 @@ export default class AschAPI extends API {
    * @param name 合约名称
    */
   public async getMetadataOfContract(name: string): Promise<object>{
-    return this.get(URLS.v2.contracts.metadata+'/'+name)
+    return this.get(URLS.v2.contracts.metadata.replace(':name',name))
   }
 
   /**
@@ -576,7 +627,7 @@ export default class AschAPI extends API {
    * 
    */
   public async queryStatesOfContract(name: string, path:string): Promise<object>{
-    return this.get(URLS.v2.contracts.states+'/'+name)
+    return this.get(URLS.v2.contracts.states.replace(':name',name).replace(':path',path))
   }
 
   /**
@@ -585,7 +636,7 @@ export default class AschAPI extends API {
    * @param tid 执行合约的交易Id
    */
   public async getResultOfContract(name: string, tid: string): Promise<object>{
-    return this.get(URLS.v2.contracts.results+'/'+name)
+    return this.get(URLS.v2.contracts.results.replace(':name',name).replace(':tid',tid))
   }
 
   /**
@@ -594,8 +645,8 @@ export default class AschAPI extends API {
    * @param method 查询方法名称
    * @param args 查询方法参数数组，以json形式放在请求的body中。查询方法参数必须是数组，如果没有参数请使用空数组
    */
-  public async callConstantMethod(name: string, method: string, args: Array<any>): Promise<object>{
-    return this.get(URLS.v2.contracts.constants_method+'/'+name)
+  public async callConstantMethod(name: string, method: string, args: Array<any>=[]): Promise<object>{
+    return this.post(URLS.v2.contracts.constants_method.replace(':name',name).replace(':method',method),args)
   }
 
   /**

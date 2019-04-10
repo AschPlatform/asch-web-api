@@ -126,7 +126,7 @@ export const URLS = {
             metadata: '/api/v2/contracts/:name/metadata',
             states: '/api/v2/contracts/:name/states/:path',
             results: '/api/v2/contracts/:name/results/:tid',
-            constants_method: '/api/v2/contracts/:name/constants/:method'
+            constants_method: '/api/v2/contracts/:name/constant/:method'
         }
     },
 

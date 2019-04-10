@@ -231,17 +231,619 @@ describe('asch-api unit test', () => {
   //   //.catch(err => console.error(err));
   // })
 
-  it('asch-api getBlocksHeight method test', () => {
-    aschWeb.api
-      .getBlocksHeight()
-      .then(res => {
-      console.log('getBlocksHeight response:' + JSON.stringify(res))
-      })
-      .catch(err => {
-        console.error(err)
-      })
-    //.catch(err => console.error(err));
-  })
+  // it('asch-api getBlocksHeight method test', () => {
+  //   aschWeb.api
+  //     .getBlocksHeight()
+  //     .then(res => {
+  //     console.log('getBlocksHeight response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getMilestone method test', () => {
+  //   aschWeb.api
+  //     .getMilestone()
+  //     .then(res => {
+  //     console.log('getMilestone response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getBlockReward method test', () => {
+  //   aschWeb.api
+  //     .getBlockReward()
+  //     .then(res => {
+  //     console.log('getBlockReward response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getXASSupply method test', () => {
+  //   aschWeb.api
+  //     .getXASSupply()
+  //     .then(res => {
+  //     console.log('getXASSupply response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getBlockchainStatus method test', () => {
+  //   aschWeb.api
+  //     .getBlockchainStatus()
+  //     .then(res => {
+  //     console.log('getBlockchainStatus response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getBlockFullDetailById method test', () => {
+  //   aschWeb.api
+  //     .getBlockFullDetailById('0e25f00c98985eae62b530156f29f3d13fbbfc961f62c21822ab2f50e9517a34')
+  //     .then(res => {
+  //     console.log('getBlockFullDetailById response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getBlockFullDetailByHeight method test', () => {
+  //   aschWeb.api
+  //     .getBlockFullDetailByHeight('1')
+  //     .then(res => {
+  //     console.log('getBlockFullDetailByHeight response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getDelegatesCount method test', () => {
+  //   aschWeb.api
+  //     .getDelegatesCount()
+  //     .then(res => {
+  //     console.log('getDelegatesCount response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getVotersOfDelegate method test', () => {
+  //   aschWeb.api
+  //     .getVotersOfDelegate('asch_g59')
+  //     .then(res => {
+  //     console.log('getVotersOfDelegate response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getDelegateDetailByAddress method test', () => {
+  //   aschWeb.api
+  //     .getDelegateDetailByAddress('ADcPTKHLnDfxBjWyxVVMquPQDjfBNBwnvT')
+  //     .then(res => {
+  //     console.log('getDelegateDetailByAddress response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getDelegateDetailByName method test', () => {
+  //   aschWeb.api
+  //     .getDelegateDetailByName('asch_g59')
+  //     .then(res => {
+  //     console.log('getDelegateDetailByName response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getDelegateDetailByName method test', () => {
+  //   aschWeb.api
+  //     .getDelegateDetailByName('asch_g59')
+  //     .then(res => {
+  //     console.log('getDelegateDetailByName response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api queryDelegates method test', () => {
+  //   aschWeb.api
+  //     .queryDelegates()
+  //     .then(res => {
+  //     console.log('queryDelegates response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getForgingStatusOfDelegate method test', () => {
+  //   aschWeb.api
+  //     .getForgingStatusOfDelegate('ff6ea4945fee31f64439030f84bac934604468cf5d0b441bec761cfc1911653a')
+  //     .then(res => {
+  //     console.log('getForgingStatusOfDelegate response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getForgingStatusOfDelegate method test', () => {
+  //   aschWeb.api
+  //     .getForgingStatusOfDelegate('ff6ea4945fee31f64439030f84bac934604468cf5d0b441bec761cfc1911653a')
+  //     .then(res => {
+  //     console.log('getForgingStatusOfDelegate response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api queryPeers method test', () => {
+  //   aschWeb.api
+  //     .queryPeers()
+  //     .then(res => {
+  //     console.log('queryPeers response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getPeerVersion method test', () => {
+  //   aschWeb.api
+  //     .getPeerVersion()
+  //     .then(res => {
+  //     console.log('getPeerVersion response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getPeerDetail method test', () => {
+  //   aschWeb.api
+  //     .getPeerDetail('123.206.19.30',4096)
+  //     .then(res => {
+  //     console.log('getPeerDetail response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getLoaderStatus method test', () => {
+  //   aschWeb.api
+  //     .getLoaderStatus()
+  //     .then(res => {
+  //     console.log('getLoaderStatus response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getLoaderStatusSync method test', () => {
+  //   aschWeb.api
+  //     .getLoaderStatusSync()
+  //     .then(res => {
+  //     console.log('getLoaderStatusSync response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api queryProposals method test', () => {
+  //   aschWeb.api
+  //     .queryProposals()
+  //     .then(res => {
+  //     console.log('queryProposals response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getProposalDetail method test', () => {
+  //   aschWeb.api
+  //     .getProposalDetail('123')
+  //     .then(res => {
+  //     console.log('getProposalDetail response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api queryGateways method test', () => {
+  //   aschWeb.api
+  //     .queryGateways()
+  //     .then(res => {
+  //     console.log('queryGateways response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api queryValidatorsOfGateway method test', () => {
+  //   aschWeb.api
+  //     .queryValidatorsOfGateway('btc')
+  //     .then(res => {
+  //     console.log('queryValidatorsOfGateway response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api queryAllCurrenciesOfGateways method test', () => {
+  //   aschWeb.api
+  //     .queryAllCurrenciesOfGateways()
+  //     .then(res => {
+  //     console.log('queryAllCurrenciesOfGateways response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api queryCurrenciesOfGateway method test', () => {
+  //   aschWeb.api
+  //     .queryCurrenciesOfGateway('btc')
+  //     .then(res => {
+  //     console.log('queryCurrenciesOfGateway response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+  // })
+
+  // it('asch-api getAccountOfGateway method test', () => {
+  //   aschWeb.api
+  //     .getAccountOfGateway('btc',address)
+  //     .then(res => {
+  //     console.log('getAccountOfGateway response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api queryAccountsOfGateway method test', () => {
+  //   aschWeb.api
+  //     .queryAccountsOfGateway(address)
+  //     .then(res => {
+  //     console.log('queryAccountsOfGateway response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api querDepositsToGateway method test', () => {
+  //   aschWeb.api
+  //     .querDepositsToGateway(address,'cctime.XCT')
+  //     .then(res => {
+  //     console.log('querDepositsToGateway response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+
+  // it('asch-api querDepositsToGateway method test', () => {
+  //   aschWeb.api
+  //     .querDepositsToGateway(address,'BTC')
+  //     .then(res => {
+  //     console.log('querDepositsToGateway response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api querWithdrawalsFromGateway method test', () => {
+  //   aschWeb.api
+  //     .querWithdrawalsFromGateway(address,'cctime.XCT')
+  //     .then(res => {
+  //     console.log('querWithdrawalsFromGateway response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api queryAgents method test', () => {
+  //   aschWeb.api
+  //     .queryAgents()
+  //     .then(res => {
+  //     console.log('queryAgents response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+
+  // it('asch-api queryClientelesOfAgent method test', () => {
+  //   aschWeb.api
+  //     .queryClientelesOfAgent('asch')
+  //     .then(res => {
+  //     console.log('queryClientelesOfAgent response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api queryGroups method test', () => {
+  //   aschWeb.api
+  //     .queryGroups(address)
+  //     .then(res => {
+  //     console.log('queryGroups response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api querySideChainsRegistered method test', () => {
+  //   aschWeb.api
+  //     .querySideChainsRegistered()
+  //     .then(res => {
+  //     console.log('querySideChainsRegistered response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api queryIssuers method test', () => {
+  //   aschWeb.api
+  //     .queryIssuers()
+  //     .then(res => {
+  //     console.log('queryIssuers response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api getIssuerDetail method test', () => {
+  //   aschWeb.api
+  //     .getIssuerDetail(address)
+  //     .then(res => {
+  //     console.log('getIssuerDetail response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api queryIssuers method test', () => {
+  //   aschWeb.api
+  //     .queryIssuers()
+  //     .then(res => {
+  //     console.log('queryIssuers response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api queryAssetsOfIssuer method test', () => {
+  //   aschWeb.api
+  //     .queryAssetsOfIssuer(address)
+  //     .then(res => {
+  //     console.log('queryAssetsOfIssuer response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api querAllAssets method test', () => {
+  //   aschWeb.api
+  //     .querAllAssets()
+  //     .then(res => {
+  //     console.log('querAllAssets response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api getAssetDetail method test', () => {
+  //   aschWeb.api
+  //     .getAssetDetail('KIM.KIM')
+  //     .then(res => {
+  //     console.log('getAssetDetail response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api queryAssetBalances method test', () => {
+  //   aschWeb.api
+  //     .queryAssetBalances(address)
+  //     .then(res => {
+  //     console.log('queryAssetBalances response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api queryContracts method test', () => {
+  //   aschWeb.api
+  //     .queryContracts()
+  //     .then(res => {
+  //     console.log('queryContracts response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api getContractDetail method test', () => {
+  //   aschWeb.api
+  //     .getContractDetail('test-contract')
+  //     .then(res => {
+  //     console.log('getContractDetail response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api getCodeOfContract method test', () => {
+  //   aschWeb.api
+  //     .getCodeOfContract('test-contract')
+  //     .then(res => {
+  //     console.log('getCodeOfContract response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api getMetadataOfContract method test', () => {
+  //   aschWeb.api
+  //     .getMetadataOfContract('test-contract')
+  //     .then(res => {
+  //     console.log('getMetadataOfContract response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api queryStatesOfContract method test', () => {
+  //   aschWeb.api
+  //     .queryStatesOfContract('crowdfunding','avalibleToken')
+  //     .then(res => {
+  //     console.log('queryStatesOfContract response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+
+  // it('asch-api getResultOfContract method test', () => {
+  //   aschWeb.api
+  //     .getResultOfContract('sample','2273aeb3aedff822d4263066216ed8709995d9701d2dd6239f9dceb8813c4604')
+  //     .then(res => {
+  //     console.log('getResultOfContract response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
+
+  // it('asch-api callConstantMethod method test', () => {
+  //   aschWeb.api
+  //     .callConstantMethod('sample','getPayTimes')
+  //     .then(res => {
+  //     console.log('callConstantMethod response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
+
+  // })
 
   // it('asch-api transferXAS method test', () => {
   //   aschWeb.api
