@@ -25,7 +25,7 @@ export class HTTPProvider extends Provider {
       headers: this.headerForNet(net)
     })
     //debug log
-    this.addLogger(this._instance)
+    //this.addLogger(this._instance)
   }
 
   headerForNet(net?: Network): ObjectType {
