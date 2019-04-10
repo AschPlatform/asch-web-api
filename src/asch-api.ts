@@ -7,6 +7,11 @@ import { URLS } from './constants'
 
 export default class AschAPI extends API {
   aschWeb: AschWeb
+
+  /**
+   * 构造函数
+   * @param aschWeb AschWeb实例
+   */
   constructor(aschWeb: AschWeb) {
     super(aschWeb.provider)
     this.aschWeb = aschWeb
@@ -610,7 +615,7 @@ export default class AschAPI extends API {
   }
 
   /**
-   *  查询智能合约公开状态
+   * 查询智能合约公开状态
    * @param name 合约名称
    * @param path 状态的路径，状态路径是用'.'号分隔的一个字符串，表示要查询的状态所在的合约对象的位置。
    * 如：

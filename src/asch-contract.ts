@@ -1,15 +1,12 @@
-import { ObjectType, Method, Transaction } from './type'
-import { TransactionBuilder } from './builders'
-import { API } from './api'
+import { ObjectType, Method} from './type'
 import AschAPI from './asch-api'
-import { resolve } from 'url'
 
 export class AschContract {
   name: string
   methods: Map<string, Method>
   consumeOwnerEnergy: boolean
   originalContract: ObjectType
-  api: ObjectType
+  api: AschAPI
   metadata: ObjectType
 
   constructor(contract: ObjectType, api: AschAPI) {
@@ -129,7 +126,7 @@ export class AschContract {
     receiverPath: string,
     gasLimit: number,
     enablePayGasInXAS: boolean
-  ): Promise<object>{
+  ): Promise<object> {
     try {
       let pathPrefix = receiverPath.split('/')[0]
       let pathSuffix = receiverPath.split('/')[1] || ''
@@ -148,28 +145,40 @@ export class AschContract {
   }
 
 
-  constans(methodName: string, args: Array<any>) {
+  /**
+   * 调用当前合约的查询方法
+   * @param name 合约名称
+   * @param method 查询方法名称
+   * @param args 查询方法参数数组，以json形式放在请求的body中。查询方法参数必须是数组，如果没有参数请使用空数组
+   */
+  public async constans(method: string, args: Array<any>=[]): Promise<object> {
     try {
-      let method: Method | undefined = this.methods.get(methodName)
-      if (this.methods.has(methodName) && method && method.isConstant && args instanceof Array) {
-        return this.api.get(`${this.name}/constant/${methodName}/${JSON.stringify(args)}`)
+      let methodObj: Method | undefined = this.methods.get(method)
+      if (this.methods.has(method) && methodObj && methodObj.isConstant && args instanceof Array) {
+        return this.api.callConstantMethod(this.name, method, args)
+        //return this.api.get(`${this.name}/constant/${methodName}/${JSON.stringify(args)}`)
       } else {
-        return `constans get error`
+        return Promise.reject(`constans get error`)
       }
     } catch (e) {
-      return e
+      return Promise.reject(e)
     }
   }
 
-  queryStates(path: string) {
+  /**
+   * 查询当前合约的公开状态
+   * @param path 状态的路径，状态路径是用'.'号分隔的一个字符串，表示要查询的状态所在的合约对象的位置。
+   */
+  public async queryStates(path: string): Promise<object> {
     try {
       if (path) {
-        return this.api.get(`${this.name}/states/${path}`)
+        return this.api.queryStatesOfContract(this.name, path)
+        //return this.api.get(`${this.name}/states/${path}`)
       } else {
-        return `path is required`
+        return Promise.reject(`path is required`)
       }
     } catch (e) {
-      return e
+      return Promise.reject(e)
     }
   }
 }

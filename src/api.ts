@@ -4,6 +4,11 @@ import { Transaction } from './type'
 
 export class API {
   _provider: Provider
+
+  /**
+   * 构造函数
+   * @param p provider
+   */
   constructor(p: Provider | string) {
     if (typeof p === 'string') {
       this._provider = new HTTPProvider(p, Network.Test)
