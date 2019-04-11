@@ -5,17 +5,17 @@ export class CrowdFundgingContract extends  AschContract {
 
  public payInitialToken(amount: string, currency: string): Promise<object>
  {
-    return this.pay(currency, amount, this.name+'/'+'payInitialToken', 1000000, true)
+    return this.pay(currency, amount, 'payInitialToken', 10000000, true)
  }
 
  public crowdFunding(amount: string, currency: string): Promise<object>
  {
-    return this.pay(currency, amount, this.name, 1000000, true)
+    return this.pay(currency, amount, 'crowdFunding', 10000000, true)
  }
 
  public getXXT(amount: string): Promise<object>
  {
-    return this.call('getXXT', [amount], 1000000, true)
+    return this.call('getXXT', [amount], 10000000, true)
  }
 
  public getFunding(address: string): Promise<object>

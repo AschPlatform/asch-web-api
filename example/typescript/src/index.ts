@@ -151,7 +151,7 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
         methods.forEach(method => {
             let methodCode:string=' '
             if(method.public && !method.constant && method.payable && !method.isConstructor){
-                methodCode+='public '+method.name+'('
+                methodCode+='return function '+method.name+'('
                 console.log('method:'+JSON.stringify(method.name))
                 console.log('public:'+JSON.stringify(method.public))
                 let params:ParameterMetadata[] = method.parameters
@@ -159,9 +159,11 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
                 params.forEach(param => {
                     console.log('params:'+JSON.stringify(param))
                     if(params[0]==param){
-                        methodCode+=param.name+": "+extractParamType(param)
+                        // methodCode+=param.name+": "+extractParamType(param)
+                        methodCode+=param.name
                     }else{
-                        methodCode+=', '+param.name+": "+extractParamType(param)
+                        // methodCode+=', '+param.name+": "+extractParamType(param)
+                        methodCode+=', '+param.name
                     }
                 });
                 // let amount=params[0].name
@@ -169,13 +171,16 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
                 let returnType:TypeInfo|undefined=method.returnType
                 // let returnCode = returnType?(returnType.name):'void'
                 let returnCode = 'Promise<object>'
-                methodCode+=`): ${returnCode}\n`
+                // methodCode+=`): ${returnCode}\n`
+                methodCode+=`)\n`
                 methodCode+=' {\n'
-                methodCode+=`    return this.pay(${params[1].name}, ${params[0].name}, ${method.name}, ${defaultGasLimit}, true)`
+                methodCode+=`return 'test'` // `    return this.pay(${params[1].name}, ${params[0].name}, '${method.name}', ${defaultGasLimit}, true)`
                 methodCode+='\n }\n\n'
                 sourceCode+=methodCode
                 console.log(methodCode)
                 console.log('\n')
+                let func:Function =new Function(methodCode)()
+                console.log('func:'+func.toString())
             }else if(method.public && !method.constant && !method.payable && !method.isConstructor){
                 methodCode+='public '+method.name+'('
                 console.log('method:'+JSON.stringify(method.name))
@@ -258,7 +263,7 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
         return null
     }
 
-    //  testContractGen()
+      
     async function testContract(){
         let defaultGasLimit = 1000000
         let contract: any= await aschWeb.createContractFromName('test2_kim')
@@ -279,4 +284,34 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
         return null
     }
 
-   testContract()
+    async function testAddFunction(){
+        let defaultGasLimit = 1000000
+        let contract: any= await aschWeb.createContractFromName('test2_kim')
+        // contract.addPayableMethod('payInitialToken')
+        // let result =await contract.payInitialToken('kim.KIM','10001234567')
+        // console.log('result:'+JSON.stringify(result))
+        //contract.addPayableMethod('crowdFunding')
+        // let result =await contract.crowdFunding('XAS','12345667')
+        // console.log('result:'+JSON.stringify(result))
+        let result =await contract.getFunding(address)
+        console.log('result:'+JSON.stringify(result))
+        // let contractJson=contract.contractJson
+        // let demoContract: CrowdFundgingContract = new CrowdFundgingContract(contractJson, aschWeb.api)
+
+        // let result =await demoContract.payInitialToken('10001234567','kim.KIM')
+        // console.log('result:'+JSON.stringify(result))
+        return null
+    }
+
+    //testContractGen()
+   //testContract()
+   testAddFunction()
+//    var name = "foo";
+// Implement it
+// var func = new Function("return function " + name + "(){ console.log('hi there!'); };")();
+// var code =`return function payInitialToken(amount, currency) { return this.pay(currency, amount, 'payInitialToken', 10000000, true)}`
+// var func = new Function(code)();
+// // Test it
+// func();
+// // Next is TRUE
+// func.name === 'foo'
