@@ -4,9 +4,11 @@ import { AschWeb,ContractMetadataMananger ,
     ParameterMetadata,
     PropertyMetadata,
     CustomeStateType,
+    StateMetadata,
     TypeInfo,
     TypeKind
 } from '../../../dist/tsc'
+import {CrowdFundgingContract } from './demo_contract'
 import assert from 'assert'
 
 import { EIDRM } from 'constants';
@@ -101,7 +103,7 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
         switch(param.type.kind){
             case TypeKind.unknow:
             {
-                return ''
+                return 'any'
             } 
             case TypeKind.primitive:
             {
@@ -109,26 +111,26 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
             } 
             case TypeKind.stateCollection:
             {
-                return ''
+                return 'any'
             } 
             case TypeKind.customeState:
             {
-                return ''
+                return 'any'
             } 
             case TypeKind.array:
             {
-                return ''
+                return 'any'
             } 
             case TypeKind.interface:
             {
-                return ''
+                return 'any'
             } 
         }
-        return ''
+        return 'any'
     }
     async function testContractGen(){
-        let defaultGasLimit = 1000000
-        let contract: any= await aschWeb.createContractFromName('test_contract_kim')
+        let defaultGasLimit = 10000000
+        let contract: any= await aschWeb.createContractFromName('test2_kim')
         // console.log('contract:'+JSON.stringify(contract))
         let metadata:ContractMetadataObject=contract.metadata
         //console.log('metadata:'+JSON.stringify(metadata))
@@ -149,7 +151,7 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
         methods.forEach(method => {
             let methodCode:string=' '
             if(method.public && !method.constant && method.payable && !method.isConstructor){
-                methodCode+='public '+method.name+'('
+                methodCode+='return function '+method.name+'('
                 console.log('method:'+JSON.stringify(method.name))
                 console.log('public:'+JSON.stringify(method.public))
                 let params:ParameterMetadata[] = method.parameters
@@ -157,9 +159,11 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
                 params.forEach(param => {
                     console.log('params:'+JSON.stringify(param))
                     if(params[0]==param){
-                        methodCode+=param.name+": "+extractParamType(param)
+                        // methodCode+=param.name+": "+extractParamType(param)
+                        methodCode+=param.name
                     }else{
-                        methodCode+=', '+param.name+": "+extractParamType(param)
+                        // methodCode+=', '+param.name+": "+extractParamType(param)
+                        methodCode+=', '+param.name
                     }
                 });
                 // let amount=params[0].name
@@ -167,13 +171,16 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
                 let returnType:TypeInfo|undefined=method.returnType
                 // let returnCode = returnType?(returnType.name):'void'
                 let returnCode = 'Promise<object>'
-                methodCode+=`): ${returnCode}\n`
+                // methodCode+=`): ${returnCode}\n`
+                methodCode+=`)\n`
                 methodCode+=' {\n'
-                methodCode+=`    return this.pay(${params[0].name}, ${params[1].name}, this.name, ${defaultGasLimit}, true)`
+                methodCode+=`return 'test'` // `    return this.pay(${params[1].name}, ${params[0].name}, '${method.name}', ${defaultGasLimit}, true)`
                 methodCode+='\n }\n\n'
                 sourceCode+=methodCode
                 console.log(methodCode)
                 console.log('\n')
+                let func:Function =new Function(methodCode)()
+                console.log('func:'+func.toString())
             }else if(method.public && !method.constant && !method.payable && !method.isConstructor){
                 methodCode+='public '+method.name+'('
                 console.log('method:'+JSON.stringify(method.name))
@@ -199,13 +206,56 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
                 let returnCode = 'Promise<object>'
                 methodCode+=`): ${returnCode}\n`
                 methodCode+=' {\n'
-                methodCode+=`    return this.call(${method.name}, ${argsCode}, ${defaultGasLimit}, true)`
+                methodCode+=`    return this.call('${method.name}', ${argsCode}, ${defaultGasLimit}, true)`
                 methodCode+='\n }\n\n'
                 sourceCode+=methodCode
                 console.log(methodCode)
                 console.log('\n')
-            }else if(method.public && method.constant && !method.payable && !method.isConstructor){
-
+            }else if(method.public && method.constant){
+                methodCode+='public '+method.name+'('
+                console.log('method:'+JSON.stringify(method.name))
+                console.log('public:'+JSON.stringify(method.public))
+                let params:ParameterMetadata[] = method.parameters
+                let argsCode:string = '['
+                params.forEach(param => {
+                    console.log('params:'+JSON.stringify(param))
+                    if(params[0]==param){
+                        methodCode+=param.name+": "+extractParamType(param)
+                        argsCode+=param.name
+                    }else{
+                        methodCode+=', '+param.name+": "+extractParamType(param)
+                        argsCode+=', '+param.name
+                    }
+                });
+                // let amount=params[0].name
+                console.log('returnType:'+JSON.stringify(method.returnType))
+                argsCode+=']'
+                let returnType:TypeInfo|undefined=method.returnType
+                // let returnCode = returnType?(returnType.name):'void'
+                let returnCode = 'Promise<object>'
+                methodCode+=`): ${returnCode}\n`
+                methodCode+=' {\n'
+                methodCode+=`    return this.constans('${method.name}', ${argsCode})`
+                methodCode+='\n }\n\n'
+                sourceCode+=methodCode
+                console.log(methodCode)
+                console.log('\n')
+            }
+        });
+        let states: StateMetadata[] = manager.states
+        states.forEach(state => {
+            let methodCode:string=' '
+            if(state.public && state.type.kind==0){
+                console.log('state:'+JSON.stringify(state))
+                methodCode+='public get_'+state.name+'('
+                let returnCode = 'Promise<object>'
+                methodCode+=`): ${returnCode}\n`
+                methodCode+=' {\n'
+                methodCode+=`    return this.queryStates('${state.name}')`
+                methodCode+='\n }\n\n'
+                sourceCode+=methodCode
+                console.log(methodCode)
+                console.log('\n')
             }
         });
         sourceCode+='\n}'
@@ -213,4 +263,57 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
         return null
     }
 
-    testContractGen()
+      
+    async function testContract(){
+        let defaultGasLimit = 1000000
+        let contract: any= await aschWeb.createContractFromName('test2_kim')
+        // console.log('contract:'+JSON.stringify(contract))
+        // let metadata:ContractMetadataObject=contract.metadata
+        let contractJson=contract.contractJson
+  
+        // console.log('contractjson:'+JSON.stringify(contractJson))
+        let demoContract: CrowdFundgingContract = new CrowdFundgingContract(contractJson, aschWeb.api)
+        // let result =await demoContract.getFunding('AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb')
+        // console.log('result:'+JSON.stringify(result))
+        // let result =await demoContract.getXXT('56')
+        // console.log('result:'+JSON.stringify(result))
+        // let result =await demoContract.getFunding(address)
+        // console.log('result:'+JSON.stringify(result))
+        let result =await demoContract.payInitialToken('10001234567','kim.KIM')
+        console.log('result:'+JSON.stringify(result))
+        return null
+    }
+
+    async function testAddFunction(){
+        let defaultGasLimit = 1000000
+        let contract: any= await aschWeb.createContractFromName('crowdFundging_v1')
+        // contract.addPayableMethod('payInitialToken')
+        // let result =await contract.payInitialToken('kim.KIM','5000000000000')
+        // console.log('result:'+JSON.stringify(result))
+        //contract.addPayableMethod('crowdFunding')
+        // let result =await contract.crowdFunding('XAS','12345667')
+        // console.log('result:'+JSON.stringify(result))
+        // let result =await contract.getFunding(address)
+        // console.log('result:'+JSON.stringify(result))
+        // let contractJson=contract.contractJson
+        // let demoContract: CrowdFundgingContract = new CrowdFundgingContract(contractJson, aschWeb.api)
+        let result =await contract.getTotalFundingToken()
+        console.log('result:'+JSON.stringify(result))
+
+        // let result =await demoContract.payInitialToken('10001234567','kim.KIM')
+        // console.log('result:'+JSON.stringify(result))
+        return null
+    }
+
+    //testContractGen()
+   //testContract()
+   testAddFunction()
+//    var name = "foo";
+// Implement it
+// var func = new Function("return function " + name + "(){ console.log('hi there!'); };")();
+// var code =`return function payInitialToken(amount, currency) { return this.pay(currency, amount, 'payInitialToken', 10000000, true)}`
+// var func = new Function(code)();
+// // Test it
+// func();
+// // Next is TRUE
+// func.name === 'foo'

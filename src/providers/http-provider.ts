@@ -25,7 +25,7 @@ export class HTTPProvider extends Provider {
       headers: this.headerForNet(net)
     })
     //debug log
-    //this.addLogger(this._instance)
+    this.addLogger(this._instance)
   }
 
   headerForNet(net?: Network): ObjectType {
@@ -48,6 +48,8 @@ export class HTTPProvider extends Provider {
   addLogger(instance: AxiosInstance) {
     instance.interceptors.request.use(function (config: AxiosRequestConfig) {
       console.debug((config.method ? config.method.toUpperCase() : 'unknow method') + ' ' + config.url)
+      console.debug('headers: ' + JSON.stringify(config.headers))
+      console.debug('data: ' + JSON.stringify(config.data))
       return config
     })
     instance.interceptors.response.use(function (response: AxiosResponse) {
@@ -105,7 +107,7 @@ export class HTTPProvider extends Provider {
     } else if (method === 'put') {
       return this._instance.put(url, data, postHeaders).then(({ data }: ObjectType) => data)
     }
-    return Promise.reject('has not beeb implement the method')
+    return Promise.reject('has not been implement the method')
   }
 
   get(uri: string, params?: ObjectType): Promise<object> {

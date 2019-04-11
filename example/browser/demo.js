@@ -6,7 +6,7 @@ const HTTPProvider = AschWeb.HTTPProvider
 const Network = AschWeb.Network
 const Transaction = AschWeb.Transaction
 
-const host = 'http://testnet.asch.io'// 'http://mainnet.asch.cn/'
+const host = 'http://123.206.19.30:4096'// 'http://testnet.asch.io'// 'http://mainnet.asch.cn/'
 const net = Network.Test//   Network.Main
 
 const secret = 'reunion march reduce artist horror correct wonder ice inside fringe zoo beyond'
@@ -15,7 +15,7 @@ const secondSecret = '' //'11111111a'
 const address = 'AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb'
 const to = 'AHcGmYnCyr6jufT5AGbpmRUv55ebwMLCym'
 const dappId = '25be71c296430a409cfeaf1ffaa957d18793f3695db07a846c22a7c467c45994'
-const contractName = 'crowdFundging_v1'
+const contractName ='test2_kim'  //'crowdFundging_v1'
 let publicKey
 let unsignedTrx =
 {
@@ -71,13 +71,16 @@ aschWeb.api
         console.error(err)
     })
 };
-
+let contract 
  async function testContract(){
     const provider = new HTTPProvider(host, net)
-    let aschWeb = new AW(provider, secret, secondSecret)
-    let contract = await aschWeb.createContractFromName(contractName)
+    let aschWeb = new AschWeb(provider, secret, secondSecret)
+     contract = await aschWeb.createContractFromName(contractName)
     //console.log('testContract meta data:'+JSON.stringify(contract))
-    let result = await contract.call('getXXT', ['233'],1000000,false)
+    // let result = await contract.call('getXXT', ['233'],1000000,true)
+    // let result = await contract.getXXT(['233'])
+    // console.log('testContract result:'+JSON.stringify(result))
+    let result = await contract.getFunding(address)
     console.log('testContract result:'+JSON.stringify(result))
 }
 

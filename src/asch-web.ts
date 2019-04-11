@@ -3,34 +3,30 @@ import AschAPI from './asch-api'
 import { Transaction, ObjectType } from './type'
 import { Provider, HTTPProvider, Network } from './providers'
 import { AschContract } from './asch-contract'
+import { ContractMetadataObject } from './contract/metadata'
 
 import { TransactionBuilder } from './builders'
 import * as Constants from './constants'
 import * as Utils from './utils'
 import * as AschType from './type'
-// export * from './type'
-// import {ContractMetadataMananger } from './contract/metadata'
 
-// const Asch = { Provider, HTTPProvider, Network, TransactionBuilder, Constants, Utils }
-// export { Provider, HTTPProvider, Network, TransactionBuilder, Constants, Utils }
 
 type CallbackType = (
   trx: Transaction
 ) => { signatures: string[]; secondSignature?: string; senderPublicKey: string }
 
 type Callback = (err: any, trx?: Transaction) => Transaction | undefined
-// export {ContractMetadataMananger}
 
 export default class AschWeb {
-  static Provider=Provider
-  static HTTPProvider=HTTPProvider
-  static Network=Network
-  static TransactionBuilder=TransactionBuilder
-  static Constants=Constants
-  static Utils=Utils
-  static AschType=AschType
-  static AschContract=AschContract
-  
+  static Provider = Provider
+  static HTTPProvider = HTTPProvider
+  static Network = Network
+  static TransactionBuilder = TransactionBuilder
+  static Constants = Constants
+  static Utils = Utils
+  static AschType = AschType
+  static AschContract = AschContract
+
   utils: any
   defaultAccount: any
   secret: string //12个助记词或者私钥
@@ -38,7 +34,6 @@ export default class AschWeb {
   public provider: Provider
   public api: AschAPI
   injectPromise: any
-  // public contract: AschContract
 
   constructor(provider: Provider, secret: string, secondSecret: string = '') {
     this.provider = provider
@@ -100,14 +95,14 @@ export default class AschWeb {
       callback(ex)
     }
   }
-  
 
   /**
-   * 从meta data创建合约对象
-   * @param metaData
+   * 从metadata创建合约对象
+   * @param name 
+   * @param metadata 
    */
-  public createContractFromMeta(metaData: ObjectType): AschContract {
-    return new AschContract(metaData, this.api)
+  public createContractFromMeta(contractJson: ObjectType): AschContract {
+    return new AschContract(contractJson, this.api)
   }
 
   /**
@@ -116,16 +111,16 @@ export default class AschWeb {
    */
   public createContractFromName(name: string): Promise<object> {
     try {
-      return this.api.get(`/api/v2/contracts/${name}`, {}).then((res: ObjectType) => {
+      return this.api.getContractDetail(name).then((res: ObjectType) => {
         if (res && res.contract) {
-          return this.createContractFromMeta(res.contract)
+          return Promise.resolve(this.createContractFromMeta(res.contract))
         } else {
-          return res
+          return Promise.reject(`contract get error`)
         }
       })
     } catch (e) {
       console.log(e)
-      return e
+      return Promise.reject(e)
     }
   }
 }

@@ -85,7 +85,6 @@ export interface ContractMetadata extends ContractMetadataObject {
   toJSONObject(): ContractMetadataObject
 }
 
-// const msg = Messages.ContractMetadata
 export class ContractMetadataMananger implements ContractMetadata {
   private _className = ''
   private _constVariables = new Map<string, ConstVariable>()
