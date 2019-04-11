@@ -1063,17 +1063,25 @@ export default class AschAPI extends API {
     version: string,
     desc: string,
     code: string,
-    consumeOwnerEnergy: boolean,
-    gasLimit: number
+    consumeOwnerEnergy: boolean=true,
+    gasLimit: number=1000000
   ): Promise<object> {
-    let trx: Transaction = TransactionBuilder.buildTransaction(600, [
-      gasLimit,
+    // let trx: Transaction = TransactionBuilder.buildTransaction(600, [
+    //   gasLimit,
+    //   name,
+    //   version,
+    //   desc,
+    //   code,
+    //   consumeOwnerEnergy
+    // ])
+    let trx: Transaction =TransactionBuilder.registerContract(
       name,
       version,
       desc,
       code,
-      consumeOwnerEnergy
-    ])
+      consumeOwnerEnergy,
+      gasLimit
+    )
     trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
@@ -1090,31 +1098,26 @@ export default class AschAPI extends API {
     contractName: string,
     methodName: string,
     methodArgs: Array<any>,
-    gasLimit: number,
-    enablePayGasInXAS: boolean
+    gasLimit: number=100000,
+    enablePayGasInXAS: boolean=true
   ): Promise<object> {
-    let trx: Transaction = TransactionBuilder.buildTransaction(601, [
-      gasLimit,
-      enablePayGasInXAS,
+    // let trx: Transaction = TransactionBuilder.buildTransaction(601, [
+    //   gasLimit,
+    //   enablePayGasInXAS,
+    //   contractName,
+    //   methodName,
+    //   methodArgs
+    // ])
+    let trx: Transaction =TransactionBuilder.callContract(
       contractName,
       methodName,
-      methodArgs
-    ])
+      methodArgs,
+      gasLimit,
+      enablePayGasInXAS
+    )
     trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
-
-
-//   /**
-//      * Pay money to contract, behavior dependents on contract code.
-//      * @param {number} gasLimit max gas avalible, 1000000 >= gasLimit >0
-//      * @param {boolean} enablePayGasInXAS pay gas in XAS if energy is insuffient  
-//      * @param {string} nameOrAddress contract name or address 
-//      * @param {string} method payable method name, use undefined or null or '' for default payable method
-//      * @param {string|number} amount pay amount
-//      * @param {string} currency currency
-//      */
-// async pay(gasLimit, enablePayGasInXAS, nameOrAddress, method, amount, currency)
 
   /**
    * 转账到合约
@@ -1133,24 +1136,21 @@ export default class AschAPI extends API {
     gasLimit: number=100000,
     enablePayGasInXAS: boolean=true
   ): Promise<object> {
-    // let path = (methodName && methodName.length>0)?(nameOrAddress+'/'+methodName):nameOrAddress
     // let trx: Transaction = TransactionBuilder.buildTransaction(602, [
     //   gasLimit,
     //   enablePayGasInXAS,
-    //   path,
+    //   nameOrAddress,
+    //   (methodName && methodName.length>0)?methodName:'',
     //   amount,
     //   currency
     // ])
-    let path = (methodName && methodName.length>0)?(nameOrAddress+'/'+methodName):nameOrAddress
-    let trx: Transaction = TransactionBuilder.buildTransaction(602, [
-      gasLimit,
-      enablePayGasInXAS,
-      nameOrAddress,
-      (methodName && methodName.length>0)?methodName:'',
+    let trx: Transaction =TransactionBuilder.payContract(
+      currency,
       amount,
-      currency
-    ])
-    
+      nameOrAddress,
+      methodName,
+      gasLimit,
+      enablePayGasInXAS)
     trx = await this.aschWeb.sign(trx)
     console.log('payContract:'+JSON.stringify(trx))
     return this.broadcastTransaction(trx)

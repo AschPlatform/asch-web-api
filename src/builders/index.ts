@@ -94,7 +94,7 @@ export class TransactionBuilder {
   static setLock(height: number, amount: number): Transaction {
     return this.buildTransaction(4, [height, amount])
   }
- 
+
   /**
    * 解锁
    */
@@ -111,13 +111,13 @@ export class TransactionBuilder {
    * @param m 决策权值最小值
    * @param updateInterval 更新间隔
    */
-  static setMultiAccount(name: string,members: Array<any>, min: number ,max: number ,m: number ,updateInterval :number): Transaction {
-    return this.buildTransaction(6, [name,members,min,max,m,updateInterval])
+  static setMultiAccount(name: string, members: Array<any>, min: number, max: number, m: number, updateInterval: number): Transaction {
+    return this.buildTransaction(6, [name, members, min, max, m, updateInterval])
   }
 
-   /**
-   * 注册代理人
-   */ 
+  /**
+  * 注册代理人
+  */
   static registerAgent(): Transaction {
     return this.buildTransaction(7, [])
   }
@@ -287,7 +287,7 @@ export class TransactionBuilder {
     oid: string,
     signatures: string
   ): Transaction {
-    return this.buildTransaction(205, [dappId, recipient, currency , amount, oid, signatures])
+    return this.buildTransaction(205, [dappId, recipient, currency, amount, oid, signatures])
   }
 
   /**
@@ -350,8 +350,8 @@ export class TransactionBuilder {
    * @param amount 数量
    * @param oid 
    */
-  static depositGateway(gateway:string, address: string, currency: string, amount: string, oid: string): Transaction {
-    return this.buildTransaction(402, [gateway,address,currency,amount,oid])
+  static depositGateway(gateway: string, address: string, currency: string, amount: string, oid: string): Transaction {
+    return this.buildTransaction(402, [gateway, address, currency, amount, oid])
   }
 
   /**
@@ -386,8 +386,8 @@ export class TransactionBuilder {
     version: string,
     desc: string,
     code: string,
-    consumeOwnerEnergy: boolean,
-    gasLimit: number
+    consumeOwnerEnergy: boolean=true,
+    gasLimit: number=1000000
   ): Transaction {
     return this.buildTransaction(600, [gasLimit, name, version, desc, code, consumeOwnerEnergy])
   }
@@ -404,8 +404,8 @@ export class TransactionBuilder {
     contractName: string,
     methodName: string,
     methodArgs: Array<any>,
-    gasLimit: number,
-    enablePayGasInXAS: boolean
+    gasLimit: number=100000,
+    enablePayGasInXAS: boolean=true
   ): Transaction {
     return this.buildTransaction(601, [
       gasLimit,
@@ -420,17 +420,26 @@ export class TransactionBuilder {
    * 转账到合约
    * @param currency 转账资产名称
    * @param amount 转账金额
-   * @param receiverPath 接收转账的路径（由合约地址或名称、'/'、接收方法名称组成，如接收方法是默认接收方法则'/'和接收方法可以省略）
+   * @param nameOrAddress 合约名称或者地址
+   * @param methodName payable方法名称, 若为undefined, null或者''，则调用默认的payable方法
    * @param gasLimit 最大消耗的Gas, 10,000,000 > gasLimit > 0
    * @param enablePayGasInXAS 当调用者能量不足时，是否使用XAS支付Gas
    */
   static payContract(
     currency: string,
     amount: string,
-    receiverPath: string,
-    gasLimit: number,
-    enablePayGasInXAS: boolean
+    nameOrAddress: string,
+    methodName?: string,
+    gasLimit: number = 100000,
+    enablePayGasInXAS: boolean = true
   ): Transaction {
-    return this.buildTransaction(602, [gasLimit, enablePayGasInXAS, receiverPath, amount, currency])
+    return this.buildTransaction(602, [
+      gasLimit,
+      enablePayGasInXAS,
+      nameOrAddress,
+      (methodName && methodName.length > 0) ? methodName : '',
+      amount,
+      currency
+    ])
   }
 }

@@ -1,6 +1,10 @@
+V0.2.5:
+1.fix TransactionBuilder pay contract；
+
 V0.2.4:
 1.智能合约模块重构；
 2.智能合约动态添加合约api；
+3.AschContract pay方法重构，reveivePath拆分为两个参数
 
 V0.2.3:
 1.增加所有查询接口；
