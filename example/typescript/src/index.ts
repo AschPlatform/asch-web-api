@@ -286,17 +286,19 @@ const aschWeb = new AschWeb(provider, secret, secondSecret)
 
     async function testAddFunction(){
         let defaultGasLimit = 1000000
-        let contract: any= await aschWeb.createContractFromName('test2_kim')
+        let contract: any= await aschWeb.createContractFromName('crowdFundging_v1')
         // contract.addPayableMethod('payInitialToken')
-        // let result =await contract.payInitialToken('kim.KIM','10001234567')
+        // let result =await contract.payInitialToken('kim.KIM','5000000000000')
         // console.log('result:'+JSON.stringify(result))
         //contract.addPayableMethod('crowdFunding')
         // let result =await contract.crowdFunding('XAS','12345667')
         // console.log('result:'+JSON.stringify(result))
-        let result =await contract.getFunding(address)
-        console.log('result:'+JSON.stringify(result))
+        // let result =await contract.getFunding(address)
+        // console.log('result:'+JSON.stringify(result))
         // let contractJson=contract.contractJson
         // let demoContract: CrowdFundgingContract = new CrowdFundgingContract(contractJson, aschWeb.api)
+        let result =await contract.getTotalFundingToken()
+        console.log('result:'+JSON.stringify(result))
 
         // let result =await demoContract.payInitialToken('10001234567','kim.KIM')
         // console.log('result:'+JSON.stringify(result))

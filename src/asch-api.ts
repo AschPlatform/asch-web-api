@@ -646,7 +646,8 @@ export default class AschAPI extends API {
    * @param method 查询方法名称
    * @param args 查询方法参数数组，以json形式放在请求的body中。查询方法参数必须是数组，如果没有参数请使用空数组
    */
-  public async callConstantMethod(name: string, method: string, args: Array<any>=[]): Promise<object>{
+  public async callConstantMethod(name: string, method: string, ...args: Array<any>): Promise<object>{
+    // console.log('callConstantMethod:'+JSON.stringify(args))
     return this.post(URLS.v2.contracts.constants_method.replace(':name',name).replace(':method',method),args)
   }
 
@@ -1103,29 +1104,55 @@ export default class AschAPI extends API {
     return this.broadcastTransaction(trx)
   }
 
+
+//   /**
+//      * Pay money to contract, behavior dependents on contract code.
+//      * @param {number} gasLimit max gas avalible, 1000000 >= gasLimit >0
+//      * @param {boolean} enablePayGasInXAS pay gas in XAS if energy is insuffient  
+//      * @param {string} nameOrAddress contract name or address 
+//      * @param {string} method payable method name, use undefined or null or '' for default payable method
+//      * @param {string|number} amount pay amount
+//      * @param {string} currency currency
+//      */
+// async pay(gasLimit, enablePayGasInXAS, nameOrAddress, method, amount, currency)
+
   /**
    * 转账到合约
    * @param currency 转账资产名称
    * @param amount 转账金额
-   * @param receiverPath 接收转账的路径（由合约地址或名称、'/'、接收方法名称组成，如接收方法是默认接收方法则'/'和接收方法可以省略）
+   * @param nameOrAddress 合约名称或者地址
+   * @param methodName payable方法名称, 若为undefined, null或者''，则调用默认的payable方法
    * @param gasLimit 最大消耗的Gas, 10,000,000 > gasLimit > 0
    * @param enablePayGasInXAS 当调用者能量不足时，是否使用XAS支付Gas
    */
   public async payContract(
     currency: string,
     amount: string,
-    receiverPath: string,
-    gasLimit: number,
-    enablePayGasInXAS: boolean
+    nameOrAddress: string,
+    methodName?:string,
+    gasLimit: number=100000,
+    enablePayGasInXAS: boolean=true
   ): Promise<object> {
+    // let path = (methodName && methodName.length>0)?(nameOrAddress+'/'+methodName):nameOrAddress
+    // let trx: Transaction = TransactionBuilder.buildTransaction(602, [
+    //   gasLimit,
+    //   enablePayGasInXAS,
+    //   path,
+    //   amount,
+    //   currency
+    // ])
+    let path = (methodName && methodName.length>0)?(nameOrAddress+'/'+methodName):nameOrAddress
     let trx: Transaction = TransactionBuilder.buildTransaction(602, [
       gasLimit,
       enablePayGasInXAS,
-      receiverPath,
+      nameOrAddress,
+      (methodName && methodName.length>0)?methodName:'',
       amount,
       currency
     ])
+    
     trx = await this.aschWeb.sign(trx)
+    console.log('payContract:'+JSON.stringify(trx))
     return this.broadcastTransaction(trx)
   }
 }

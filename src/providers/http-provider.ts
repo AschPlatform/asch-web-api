@@ -48,6 +48,8 @@ export class HTTPProvider extends Provider {
   addLogger(instance: AxiosInstance) {
     instance.interceptors.request.use(function (config: AxiosRequestConfig) {
       console.debug((config.method ? config.method.toUpperCase() : 'unknow method') + ' ' + config.url)
+      console.debug('headers: ' + JSON.stringify(config.headers))
+      console.debug('data: ' + JSON.stringify(config.data))
       return config
     })
     instance.interceptors.response.use(function (response: AxiosResponse) {
