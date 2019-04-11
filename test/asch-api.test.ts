@@ -807,7 +807,7 @@ describe('asch-api unit test', () => {
 
   // it('asch-api queryStatesOfContract method test', () => {
   //   aschWeb.api
-  //     .queryStatesOfContract('crowdfunding','avalibleToken')
+  //     .queryStatesOfContract('demo','sponsorAddress')
   //     .then(res => {
   //     console.log('queryStatesOfContract response:' + JSON.stringify(res))
   //     })
@@ -832,18 +832,18 @@ describe('asch-api unit test', () => {
 
   // })
 
-  // it('asch-api callConstantMethod method test', () => {
-  //   aschWeb.api
-  //     .callConstantMethod('sample','getPayTimes')
-  //     .then(res => {
-  //     console.log('callConstantMethod response:' + JSON.stringify(res))
-  //     })
-  //     .catch(err => {
-  //       console.error(err)
-  //     })
-  //   //.catch(err => console.error(err));
+  it('asch-api callConstantMethod method test', () => {
+    aschWeb.api
+      .callConstantMethod('test2_kim','getFunding',['AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb'])
+      .then(res => {
+      console.log('callConstantMethod response:' + JSON.stringify(res))
+      })
+      .catch(err => {
+        console.error(err)
+      })
+    //.catch(err => console.error(err));
 
-  // })
+  })
 
   // it('asch-api transferXAS method test', () => {
   //   aschWeb.api

@@ -104,6 +104,9 @@ let feeFuncMap: { [index: number]: any } = {
   404: function(trs: Transaction): number {
     return 0.01
   },
+  600: function(trs: Transaction): number {
+    return 0
+  },
   601: function(trs: Transaction): number {
     return 0
   },

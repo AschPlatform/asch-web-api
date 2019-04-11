@@ -90,11 +90,7 @@ export default class AschAPI extends API {
   public async queryTransactions(offset:number=0, limit:number=20, orderBy: string='', height: number=-1, senderId:string='', message:string=''): Promise<object>{
     let params:ObjectType ={
       offset:offset,
-      limit:limit,
-      //orderBy:orderBy,
-      // height:height,
-      // senderId:senderId,
-      // message: message
+      limit:limit
     }
     if (orderBy.length>0) {
       params[orderBy]=orderBy
