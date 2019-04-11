@@ -252,8 +252,8 @@ export class AschContract {
     enablePayGasInXAS: boolean = true
   ): Promise<object> {
     try {
-      if (methodName == undefined)
-        return this.api.payContract(currency, amount, this.name, undefined, gasLimit, enablePayGasInXAS)
+      if (!methodName || methodName.length==0)
+        return this.api.payContract(currency, amount, this.name, '', gasLimit, enablePayGasInXAS)
       let method: MethodMetadata | undefined = this.metadataManager.getMethod(methodName)
       if (method && method.public && method.payable) {
         return this.api.payContract(currency, amount, this.name, methodName, gasLimit, enablePayGasInXAS)
