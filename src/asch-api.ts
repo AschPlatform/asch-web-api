@@ -49,6 +49,14 @@ export default class AschAPI extends API {
   }
 
   /**
+   * 获取账户带宽和CPU等资源抵押信息
+   * @param address 账户地址
+   */
+  public async getPledges(address: string): Promise<object>{
+    return this.get(URLS.v2.accounts.pledges,{address: address})
+  }
+
+    /**
    * 获取账户资产余额
    * @param address 账户地址
    */
@@ -778,6 +786,28 @@ export default class AschAPI extends API {
    */
   public async cleanVote(delegates: string[]): Promise<object> {
     let trx: Transaction = TransactionBuilder.cleanVote(delegates)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+  /**
+   * 带宽和CPU抵押
+   * @param bandwidth 带宽抵押的XAS数量
+   * @param cpu CPU抵押的XAS数量
+   */
+  public async pledge(bandwidth: string|number, cpu: string|number): Promise<object> {
+    let trx: Transaction = TransactionBuilder.pledge(bandwidth,cpu)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+  /**
+   * 取消带宽和CPU抵押
+   * @param bandwidth 取消带宽抵押的XAS数量
+   * @param cpu 取消CPU抵押的XAS数量
+   */
+  public async unPledge(bandwidth: string|number, cpu: string|number): Promise<object> {
+    let trx: Transaction = TransactionBuilder.unPledge(bandwidth,cpu)
     trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }

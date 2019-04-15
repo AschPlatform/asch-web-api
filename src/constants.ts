@@ -64,7 +64,8 @@ export const URLS = {
         // 账户查询 ps: name params is avaliable now
         accounts: {
             detail: '/api/v2/accounts/:address',
-            balances: '/api/v2/balances/:address'
+            balances: '/api/v2/balances/:address',
+            pledges: '/api/v2/pledges'
         },
         
         transactions: {

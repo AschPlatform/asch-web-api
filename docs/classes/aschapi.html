@@ -1042,6 +1042,9 @@ img { max-width: 100%; }
 					<a href="aschapi.html#getpeerversion" class="tsd-kind-icon">get<wbr>Peer<wbr>Version</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="aschapi.html#getpledges" class="tsd-kind-icon">get<wbr>Pledges</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="aschapi.html#getproposaldetail" class="tsd-kind-icon">get<wbr>Proposal<wbr>Detail</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -1076,6 +1079,9 @@ img { max-width: 100%; }
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="aschapi.html#paycontract" class="tsd-kind-icon">pay<wbr>Contract</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="aschapi.html#pledge" class="tsd-kind-icon">pledge</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a href="aschapi.html#post" class="tsd-kind-icon">post</a>
@@ -1204,6 +1210,9 @@ img { max-width: 100%; }
 					<a href="aschapi.html#transferxas" class="tsd-kind-icon">transferXAS</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="aschapi.html#unpledge" class="tsd-kind-icon">un<wbr>Pledge</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="aschapi.html#unlock" class="tsd-kind-icon">unlock</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -1311,6 +1320,7 @@ img { max-width: 100%; }
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#getmilestone" class="tsd-kind-icon">get<wbr>Milestone</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#getpeerdetail" class="tsd-kind-icon">get<wbr>Peer<wbr>Detail</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#getpeerversion" class="tsd-kind-icon">get<wbr>Peer<wbr>Version</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#getpledges" class="tsd-kind-icon">get<wbr>Pledges</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#getproposaldetail" class="tsd-kind-icon">get<wbr>Proposal<wbr>Detail</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#getresultofcontract" class="tsd-kind-icon">get<wbr>Result<wbr>OfContract</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#gettransactiondetail" class="tsd-kind-icon">get<wbr>Transaction<wbr>Detail</a></li>
@@ -1323,6 +1333,7 @@ img { max-width: 100%; }
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#open2" class="tsd-kind-icon">open2</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#opengatewayaccount" class="tsd-kind-icon">open<wbr>Gateway<wbr>Account</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#paycontract" class="tsd-kind-icon">pay<wbr>Contract</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#pledge" class="tsd-kind-icon">pledge</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="aschapi.html#post" class="tsd-kind-icon">post</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#querallassets" class="tsd-kind-icon">quer<wbr>All<wbr>Assets</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#querdepositstogateway" class="tsd-kind-icon">quer<wbr>Deposits<wbr>ToGateway</a></li>
@@ -1365,6 +1376,7 @@ img { max-width: 100%; }
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#setsecondpassword" class="tsd-kind-icon">set<wbr>Second<wbr>Password</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#transferasset" class="tsd-kind-icon">transfer<wbr>Asset</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#transferxas" class="tsd-kind-icon">transferXAS</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#unpledge" class="tsd-kind-icon">un<wbr>Pledge</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#unlock" class="tsd-kind-icon">unlock</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschapi.html#updatebooker" class="tsd-kind-icon">update<wbr>Booker</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="aschapi.html#useautoprovider" class="tsd-kind-icon">use<wbr>Auto<wbr>Provider</a></li>
@@ -1391,7 +1403,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Overrides <a href="api.html">API</a>.<a href="api.html#constructor">constructor</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L9">asch-api.ts:9</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L9">asch-api.ts:9</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1424,7 +1436,7 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="api.html">API</a>.<a href="api.html#_provider">_provider</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/api.ts#L6">api.ts:6</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/api.ts#L6">api.ts:6</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1434,7 +1446,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">asch<wbr>Web<span class="tsd-signature-symbol">:</span> <a href="aschweb.html" class="tsd-signature-type">AschWeb</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L9">asch-api.ts:9</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L9">asch-api.ts:9</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1448,8 +1460,8 @@ img { max-width: 100%; }
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="api.html">API</a>.<a href="api.html#provider">provider</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/api.ts#L21">api.ts:21</a></li>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/api.ts#L25">api.ts:25</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/api.ts#L21">api.ts:21</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/api.ts#L25">api.ts:25</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1466,7 +1478,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L984">asch-api.ts:984</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L1014">asch-api.ts:1014</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1497,7 +1509,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L892">asch-api.ts:892</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L922">asch-api.ts:922</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1535,7 +1547,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="api.html">API</a>.<a href="api.html#broadcasttransaction">broadcastTransaction</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/api.ts#L41">api.ts:41</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/api.ts#L41">api.ts:41</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1558,7 +1570,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L649">asch-api.ts:649</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L657">asch-api.ts:657</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1601,7 +1613,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L1097">asch-api.ts:1097</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L1127">asch-api.ts:1127</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1656,7 +1668,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L779">asch-api.ts:779</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L787">asch-api.ts:787</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1688,7 +1700,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="api.html">API</a>.<a href="api.html#contract">contract</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/api.ts#L55">api.ts:55</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/api.ts#L55">api.ts:55</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1711,7 +1723,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L958">asch-api.ts:958</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L988">asch-api.ts:988</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1766,7 +1778,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L903">asch-api.ts:903</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L933">asch-api.ts:933</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1803,7 +1815,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L915">asch-api.ts:915</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L945">asch-api.ts:945</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1846,7 +1858,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L1020">asch-api.ts:1020</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L1050">asch-api.ts:1050</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1900,7 +1912,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L70">asch-api.ts:70</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L78">asch-api.ts:78</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1923,7 +1935,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="api.html">API</a>.<a href="api.html#get">get</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/api.ts#L47">api.ts:47</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/api.ts#L47">api.ts:47</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1949,7 +1961,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L77">asch-api.ts:77</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L85">asch-api.ts:85</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1971,7 +1983,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L47">asch-api.ts:47</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L47">asch-api.ts:47</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2001,7 +2013,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L428">asch-api.ts:428</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L436">asch-api.ts:436</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2038,7 +2050,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L547">asch-api.ts:547</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L555">asch-api.ts:555</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2069,7 +2081,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L186">asch-api.ts:186</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L194">asch-api.ts:194</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2100,7 +2112,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L178">asch-api.ts:178</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L186">asch-api.ts:186</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2131,7 +2143,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L170">asch-api.ts:170</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L178">asch-api.ts:178</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2162,7 +2174,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L208">asch-api.ts:208</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L216">asch-api.ts:216</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2193,7 +2205,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L259">asch-api.ts:259</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L267">asch-api.ts:267</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2224,7 +2236,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L251">asch-api.ts:251</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L259">asch-api.ts:259</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2255,7 +2267,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L229">asch-api.ts:229</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L237">asch-api.ts:237</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2277,7 +2289,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L243">asch-api.ts:243</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L251">asch-api.ts:251</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2299,7 +2311,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L215">asch-api.ts:215</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L223">asch-api.ts:223</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2321,7 +2333,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L601">asch-api.ts:601</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L609">asch-api.ts:609</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2352,7 +2364,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L593">asch-api.ts:593</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L601">asch-api.ts:601</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2383,7 +2395,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L290">asch-api.ts:290</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L298">asch-api.ts:298</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2414,7 +2426,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L298">asch-api.ts:298</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L306">asch-api.ts:306</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2445,7 +2457,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L266">asch-api.ts:266</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L274">asch-api.ts:274</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2467,7 +2479,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L321">asch-api.ts:321</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L329">asch-api.ts:329</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2498,7 +2510,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L514">asch-api.ts:514</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L522">asch-api.ts:522</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2529,7 +2541,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L357">asch-api.ts:357</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L365">asch-api.ts:365</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2551,7 +2563,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L364">asch-api.ts:364</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L372">asch-api.ts:372</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2573,7 +2585,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L609">asch-api.ts:609</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L617">asch-api.ts:617</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2604,7 +2616,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L222">asch-api.ts:222</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L230">asch-api.ts:230</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2626,7 +2638,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L350">asch-api.ts:350</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L358">asch-api.ts:358</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2663,7 +2675,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L341">asch-api.ts:341</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L349">asch-api.ts:349</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2671,6 +2683,37 @@ img { max-width: 100%; }
 								<p>获取当前节点版本号等信息</p>
 							</div>
 						</div>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="getpledges" class="tsd-anchor"></a>
+				<h3>get<wbr>Pledges</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Pledges<span class="tsd-signature-symbol">(</span>address<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L55">asch-api.ts:55</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>获取账户带宽和CPU等资源抵押信息</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>address: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>账户地址</p>
+								</div>
+							</li>
+						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
@@ -2685,7 +2728,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L384">asch-api.ts:384</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L392">asch-api.ts:392</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2716,7 +2759,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L639">asch-api.ts:639</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L647">asch-api.ts:647</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2753,7 +2796,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L114">asch-api.ts:114</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L122">asch-api.ts:122</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2783,7 +2826,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L122">asch-api.ts:122</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L130">asch-api.ts:130</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2814,7 +2857,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L274">asch-api.ts:274</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L282">asch-api.ts:282</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2845,7 +2888,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L236">asch-api.ts:236</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L244">asch-api.ts:244</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2868,7 +2911,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="api.html">API</a>.<a href="api.html#isconnected">isConnected</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/api.ts#L29">api.ts:29</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/api.ts#L29">api.ts:29</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -2885,7 +2928,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L819">asch-api.ts:819</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L849">asch-api.ts:849</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2922,7 +2965,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L31">asch-api.ts:31</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L31">asch-api.ts:31</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2953,7 +2996,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L39">asch-api.ts:39</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L39">asch-api.ts:39</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2983,7 +3026,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L1006">asch-api.ts:1006</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L1036">asch-api.ts:1036</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3014,7 +3057,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L1131">asch-api.ts:1131</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L1161">asch-api.ts:1161</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3065,6 +3108,43 @@ img { max-width: 100%; }
 					</li>
 				</ul>
 			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="pledge" class="tsd-anchor"></a>
+				<h3>pledge</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">pledge<span class="tsd-signature-symbol">(</span>bandwidth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, cpu<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L798">asch-api.ts:798</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>带宽和CPU抵押</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>bandwidth: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>带宽抵押的XAS数量</p>
+								</div>
+							</li>
+							<li>
+								<h5>cpu: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>CPU抵押的XAS数量</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 				<a name="post" class="tsd-anchor"></a>
 				<h3>post</h3>
@@ -3076,7 +3156,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="api.html">API</a>.<a href="api.html#post">post</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/api.ts#L51">api.ts:51</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/api.ts#L51">api.ts:51</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3102,7 +3182,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L536">asch-api.ts:536</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L544">asch-api.ts:544</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3139,7 +3219,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L445">asch-api.ts:445</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L453">asch-api.ts:453</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3176,7 +3256,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L454">asch-api.ts:454</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L462">asch-api.ts:462</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3213,7 +3293,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L436">asch-api.ts:436</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L444">asch-api.ts:444</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3243,7 +3323,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L463">asch-api.ts:463</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L471">asch-api.ts:471</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3280,7 +3360,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L411">asch-api.ts:411</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L419">asch-api.ts:419</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3302,7 +3382,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L557">asch-api.ts:557</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L565">asch-api.ts:565</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3345,7 +3425,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L524">asch-api.ts:524</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L532">asch-api.ts:532</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3388,7 +3468,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L55">asch-api.ts:55</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L63">asch-api.ts:63</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3419,7 +3499,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L196">asch-api.ts:196</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L204">asch-api.ts:204</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3462,7 +3542,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L474">asch-api.ts:474</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L482">asch-api.ts:482</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3493,7 +3573,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L572">asch-api.ts:572</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L580">asch-api.ts:580</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3548,7 +3628,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L419">asch-api.ts:419</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L427">asch-api.ts:427</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3579,7 +3659,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L309">asch-api.ts:309</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L317">asch-api.ts:317</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3623,7 +3703,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L393">asch-api.ts:393</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L401">asch-api.ts:401</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3660,7 +3740,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L482">asch-api.ts:482</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L490">asch-api.ts:490</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3691,7 +3771,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L503">asch-api.ts:503</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L511">asch-api.ts:511</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3728,7 +3808,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L331">asch-api.ts:331</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L339">asch-api.ts:339</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3766,7 +3846,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L373">asch-api.ts:373</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L381">asch-api.ts:381</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3803,7 +3883,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L491">asch-api.ts:491</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L499">asch-api.ts:499</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3840,7 +3920,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L630">asch-api.ts:630</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L638">asch-api.ts:638</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3885,7 +3965,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L90">asch-api.ts:90</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L98">asch-api.ts:98</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3946,7 +4026,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L152">asch-api.ts:152</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L160">asch-api.ts:160</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3995,7 +4075,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L132">asch-api.ts:132</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L140">asch-api.ts:140</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4033,7 +4113,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L404">asch-api.ts:404</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L412">asch-api.ts:412</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4064,7 +4144,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L63">asch-api.ts:63</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L71">asch-api.ts:71</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4095,7 +4175,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L731">asch-api.ts:731</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L739">asch-api.ts:739</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4117,7 +4197,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L803">asch-api.ts:803</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L833">asch-api.ts:833</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4166,7 +4246,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L1061">asch-api.ts:1061</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L1091">asch-api.ts:1091</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4227,7 +4307,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L853">asch-api.ts:853</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L883">asch-api.ts:883</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4294,7 +4374,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L759">asch-api.ts:759</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L767">asch-api.ts:767</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4316,7 +4396,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L996">asch-api.ts:996</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L1026">asch-api.ts:1026</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4359,7 +4439,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L790">asch-api.ts:790</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L820">asch-api.ts:820</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4396,7 +4476,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L750">asch-api.ts:750</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L758">asch-api.ts:758</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4418,7 +4498,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L741">asch-api.ts:741</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L749">asch-api.ts:749</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4449,7 +4529,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L698">asch-api.ts:698</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L706">asch-api.ts:706</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4486,7 +4566,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L722">asch-api.ts:722</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L730">asch-api.ts:730</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4547,7 +4627,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L677">asch-api.ts:677</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L685">asch-api.ts:685</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4578,7 +4658,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L687">asch-api.ts:687</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L695">asch-api.ts:695</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4609,7 +4689,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L832">asch-api.ts:832</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L862">asch-api.ts:862</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4658,7 +4738,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L666">asch-api.ts:666</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L674">asch-api.ts:674</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4692,6 +4772,43 @@ img { max-width: 100%; }
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="unpledge" class="tsd-anchor"></a>
+				<h3>un<wbr>Pledge</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">un<wbr>Pledge<span class="tsd-signature-symbol">(</span>bandwidth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, cpu<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L809">asch-api.ts:809</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>取消带宽和CPU抵押</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>bandwidth: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>取消带宽抵押的XAS数量</p>
+								</div>
+							</li>
+							<li>
+								<h5>cpu: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>取消CPU抵押的XAS数量</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 				<a name="unlock" class="tsd-anchor"></a>
 				<h3>unlock</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -4701,7 +4818,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L707">asch-api.ts:707</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L715">asch-api.ts:715</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4723,7 +4840,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L881">asch-api.ts:881</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L911">asch-api.ts:911</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4767,7 +4884,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="api.html">API</a>.<a href="api.html#useautoprovider">useAutoProvider</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/api.ts#L37">api.ts:37</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/api.ts#L37">api.ts:37</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -4785,7 +4902,7 @@ img { max-width: 100%; }
 						<aside class="tsd-sources">
 							<p>Inherited from <a href="api.html">API</a>.<a href="api.html#usehttpprovider">useHttpProvider</a></p>
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/api.ts#L33">api.ts:33</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/api.ts#L33">api.ts:33</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4808,7 +4925,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L769">asch-api.ts:769</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L777">asch-api.ts:777</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4839,7 +4956,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L974">asch-api.ts:974</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L1004">asch-api.ts:1004</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4870,7 +4987,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L930">asch-api.ts:930</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L960">asch-api.ts:960</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -4927,7 +5044,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/b6da7b3/src/asch-api.ts#L1034">asch-api.ts:1034</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/92a1470/src/asch-api.ts#L1064">asch-api.ts:1064</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">

@@ -27,22 +27,22 @@ export default class AschWeb {
   static AschType = AschType
   static AschContract = AschContract
 
-  utils: any
-  defaultAccount: any
-  secret: string //12个助记词或者私钥
-  secondSecret: string
+  // utils: any
+  public defaultAccount: any
+  public secret: string //12个助记词或者私钥
+  public secondSecret: string
   public provider: Provider
   public api: AschAPI
-  injectPromise: any
+  private injectPromise: any
 
   constructor(provider: Provider, secret: string, secondSecret: string = '') {
     this.provider = provider
     this.secret = secret
     this.secondSecret = secondSecret
     this.api = new AschAPI(this)
-    this.utils = utils
+    // this.utils = utils
     this.defaultAccount = { address: '' }
-    this.injectPromise = utils.promiseInjector(this)
+    this.injectPromise = Utils.promiseInjector(this)
   }
 
   // getHost(): string {
@@ -76,7 +76,7 @@ export default class AschWeb {
    * @param unsignedTrx
    */
   public fullSign(unsignedTrx: Transaction): Transaction {
-    return utils.fullSign(unsignedTrx, this.secret, this.secondSecret)
+    return Utils.fullSign(unsignedTrx, this.secret, this.secondSecret)
   }
 
   public sign(
@@ -89,7 +89,7 @@ export default class AschWeb {
       return this.injectPromise(this.sign, unsignedTrx, secret, secondSecret)
     }
     try {
-      const trx: Transaction = utils.fullSign(unsignedTrx, secret, secondSecret)
+      const trx: Transaction = Utils.fullSign(unsignedTrx, secret, secondSecret)
       return callback(null, trx)
     } catch (ex) {
       callback(ex)

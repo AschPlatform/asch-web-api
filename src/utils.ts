@@ -45,7 +45,7 @@ function getHash(
   skipSignature: boolean = false,
   skipSecondSignature: boolean = false
 ) {
-  return sha256Bytes(getBytes(transaction))
+  return sha256Bytes(getBytes(transaction, skipSignature, skipSecondSignature))
 }
 
 function getBytes(
@@ -104,21 +104,23 @@ function fill(transaction: Transaction, secret: string): Transaction {
 }
 
 function sign(transaction: Transaction, secret: string): Transaction {
-  let hash = getHash(transaction)
+  let hash = getHash(transaction, true, true)
   let keys = getKeys(secret)
   let signature = nacl.sign.detached(hash, keys.keypair.secretKey)
   let signStr = new Buffer(signature).toString('hex')
   if (transaction.signatures == null) transaction.signatures = new Array<string>()
   transaction.signatures!.push(signStr)
+  transaction.id = new Buffer(getId(transaction)).toString('hex')
   return transaction
 }
 
 function secondSign(transaction: Transaction, secret: string): Transaction {
-  let hash = getHash(transaction)
+  let hash = getHash(transaction,  true, true)
   let keys = getKeys(secret)
   let signature = nacl.sign.detached(hash, keys.keypair.secretKey)
   let signStr = new Buffer(signature).toString('hex')
   transaction.secondSignature = signStr
+  transaction.id = new Buffer(getId(transaction)).toString('hex')
   return transaction
 }
 
@@ -135,7 +137,7 @@ function fullSign(unsignedTrx: Transaction, secret: string, secondSecret: string
   if (secondSecret != null && secondSecret.length > 0) {
     trx = secondSign(trx, secondSecret)
   }
-  trx.id = new Buffer(getId(trx)).toString('hex')
+  // trx.id = new Buffer(getId(trx)).toString('hex')
   return trx
 }
 

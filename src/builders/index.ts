@@ -161,6 +161,24 @@ export class TransactionBuilder {
   }
 
   /**
+   * 带宽和CPU抵押
+   * @param bandwidth 带宽抵押的XAS数量
+   * @param cpu CPU抵押的XAS数量
+   */
+  static pledge(bandwidth: string|number, cpu: string|number): Transaction {
+    return this.buildTransaction(13, [bandwidth, cpu])
+  }
+
+  /**
+   * 取消带宽和CPU抵押
+   * @param bandwidth 取消带宽抵押的XAS数量
+   * @param cpu 取消CPU抵押的XAS数量
+   */
+  static unPledge(bandwidth: string|number, cpu: string|number): Transaction {
+    return this.buildTransaction(14, [bandwidth, cpu])
+  }
+
+  /**
    * 注册发行商
    * @param name 发行商名称
    * @param desc 描述
