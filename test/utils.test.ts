@@ -10,7 +10,7 @@ describe('Utils test', () => {
   let aschWeb = new AschWeb(provider, secret)
   let address = 'A2xBm2AqE2kuye9SDUfgxbvaGZ9YyNwgtB'
   let publicKey: string
-  let utils = aschWeb.utils
+  let utils = AschWeb.Utils
   let trx = {
     type: 601,
     fee: 0,
@@ -67,12 +67,14 @@ describe('Utils test', () => {
 
   it('AschWeb utils sign methon', async () => {
     let trans = utils.sign(trx, secret)
-    expect(trans.signatures[0]).not.toBeNull()
+    if(trans.signatures)
+      expect(trans.signatures[0]).not.toBeNull()
   })
 
   it('AschWeb utils create account methon', async () => {
     let trans = utils.sign(trx, secret)
-    expect(trans.signatures[0]).not.toBeNull()
+    if(trans.signatures)
+      expect(trans.signatures[0]).not.toBeNull()
   })
 
   it('AschWeb utils fromSatoshi methon', async () => {
@@ -95,9 +97,10 @@ describe('Utils test', () => {
   //   expect(timeStr).toEqual(expect.stringContaining('2019'))
   // })
   it('AschWeb utils signBytes method', async () => {
-    let keys = utils.getKeys(secret)
-    console.log('privateKey:'+keys.privateKey)
-    let signature = utils.signBytes(msgBytes, keys.privateKey)
+    // let keys = utils.getKeys(secret)
+    // console.log('privateKey:'+keys.privateKey)
+    // let signature = utils.signBytes(msgBytes, keys.privateKey)
+    let signature = utils.signBytes(msgBytes, secret)
     console.log('signBytes:'+signature)
     expect(signature).not.toBeNull()
   })

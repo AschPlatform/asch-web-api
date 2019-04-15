@@ -96,6 +96,25 @@ export default class AschWeb {
     }
   }
 
+  // public sign(
+  //   unsignedTrx: Transaction,
+  //   secret: string = this.secret,
+  //   secondSecret: string = this.secondSecret
+  // ): Promise<Transaction>{
+  //   // if (!callback) {
+  //   //   return this.injectPromise(this.sign, unsignedTrx, secret, secondSecret)
+  //   // }
+  //   try {
+  //     const trx: Transaction = Utils.fullSign(unsignedTrx, secret, secondSecret)
+  //     return Promise.resolve(trx)
+  //     //return callback(null, trx)
+  //   } catch (ex) {
+  //     //callback(ex)
+  //     return Promise.reject(ex)
+  //   }
+  // }
+
+
   /**
    * 从metadata创建合约对象
    * @param name 

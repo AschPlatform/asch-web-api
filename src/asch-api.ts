@@ -1096,14 +1096,6 @@ export default class AschAPI extends API {
     consumeOwnerEnergy: boolean=true,
     gasLimit: number=1000000
   ): Promise<object> {
-    // let trx: Transaction = TransactionBuilder.buildTransaction(600, [
-    //   gasLimit,
-    //   name,
-    //   version,
-    //   desc,
-    //   code,
-    //   consumeOwnerEnergy
-    // ])
     let trx: Transaction =TransactionBuilder.registerContract(
       name,
       version,
@@ -1131,13 +1123,6 @@ export default class AschAPI extends API {
     gasLimit: number=100000,
     enablePayGasInXAS: boolean=true
   ): Promise<object> {
-    // let trx: Transaction = TransactionBuilder.buildTransaction(601, [
-    //   gasLimit,
-    //   enablePayGasInXAS,
-    //   contractName,
-    //   methodName,
-    //   methodArgs
-    // ])
     let trx: Transaction =TransactionBuilder.callContract(
       contractName,
       methodName,
@@ -1160,20 +1145,12 @@ export default class AschAPI extends API {
    */
   public async payContract(
     currency: string,
-    amount: string,
+    amount: number|string,
     nameOrAddress: string,
     methodName?:string,
     gasLimit: number=100000,
     enablePayGasInXAS: boolean=true
   ): Promise<object> {
-    // let trx: Transaction = TransactionBuilder.buildTransaction(602, [
-    //   gasLimit,
-    //   enablePayGasInXAS,
-    //   nameOrAddress,
-    //   (methodName && methodName.length>0)?methodName:'',
-    //   amount,
-    //   currency
-    // ])
     let trx: Transaction =TransactionBuilder.payContract(
       currency,
       amount,

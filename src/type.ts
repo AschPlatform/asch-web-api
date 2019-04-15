@@ -1,8 +1,9 @@
+import { SignKeyPair } from 'tweetnacl'
 export interface Transaction {
   type: number
   timestamp: number
   id?: string
-  message: string
+  message?: string
   fee: number
   args: Array<any>
   senderId: string
@@ -18,7 +19,7 @@ export interface Keypair {
 }
 
 export interface Keys {
-  keypair: any
+  keypair: SignKeyPair
   privateKey: string
   publicKey: string
 }

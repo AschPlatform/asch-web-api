@@ -115,7 +115,7 @@ function sign(transaction: Transaction, secret: string): Transaction {
 }
 
 function secondSign(transaction: Transaction, secret: string): Transaction {
-  let hash = getHash(transaction,  true, true)
+  let hash = getHash(transaction, true, true)
   let keys = getKeys(secret)
   let signature = nacl.sign.detached(hash, keys.keypair.secretKey)
   let signStr = new Buffer(signature).toString('hex')
@@ -191,14 +191,19 @@ function toHex(bytes: Uint8Array): string {
 /**
  * 对字节数字签名
  * @param bytes 
- * @param secretKey 
+ * @param secretKey 12个单词的mnemonic或者hex字符串，或者Uint8Array
  */
 function signBytes(bytes: Bytes, secretKey: Bytes): string {
   if (typeof bytes === 'string') {
     bytes = fromHex(bytes)
   }
   if (typeof secretKey === 'string') {
-    secretKey = fromHex(secretKey)
+    if(secretKey.split(' ').length==12){
+     let keys: Keys =  getKeys(secretKey)
+     secretKey = keys.keypair.secretKey
+    }else{
+     secretKey = fromHex(secretKey)
+    }
   }
   console.log('secretKey:' + secretKey)
   let hash = sha256Bytes(bytes)
@@ -442,7 +447,7 @@ function promiseInjector(scope: any) {
   }
 }
 
-function isFunction(obj:any) {
+function isFunction(obj: any) {
   return typeof obj === 'function';
 }
 
