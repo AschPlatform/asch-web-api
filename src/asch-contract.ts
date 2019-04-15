@@ -59,7 +59,6 @@ export class AschContract {
     let methods: MethodMetadata[] = manager.methods
     
     methods.forEach(method => {
-        let methodCode:string=' '
         if(method.public && !method.constant && method.payable && !method.isConstructor){
           this.addPayMethod(method)
         }else if(method.public && !method.constant && !method.payable && !method.isConstructor){
@@ -70,7 +69,6 @@ export class AschContract {
     });
     let states: StateMetadata[] = manager.states
     states.forEach(state => {
-        let methodCode:string=' '
         if(state.public && state.type.kind==0){
           this.addStateMethod(state)
         }

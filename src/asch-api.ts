@@ -49,6 +49,14 @@ export default class AschAPI extends API {
   }
 
   /**
+   * 获取账户带宽和CPU等资源抵押信息
+   * @param address 账户地址
+   */
+  public async getPledges(address: string): Promise<object>{
+    return this.get(URLS.v2.accounts.pledges,{address: address})
+  }
+
+    /**
    * 获取账户资产余额
    * @param address 账户地址
    */
@@ -783,6 +791,28 @@ export default class AschAPI extends API {
   }
 
   /**
+   * 带宽和CPU抵押
+   * @param bandwidth 带宽抵押的XAS数量
+   * @param cpu CPU抵押的XAS数量
+   */
+  public async pledge(bandwidth: string|number, cpu: string|number): Promise<object> {
+    let trx: Transaction = TransactionBuilder.pledge(bandwidth,cpu)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+  /**
+   * 取消带宽和CPU抵押
+   * @param bandwidth 取消带宽抵押的XAS数量
+   * @param cpu 取消CPU抵押的XAS数量
+   */
+  public async unPledge(bandwidth: string|number, cpu: string|number): Promise<object> {
+    let trx: Transaction = TransactionBuilder.unPledge(bandwidth,cpu)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+  /**
    * 注册发行商
    * @param name 发行商名称
    * @param desc 描述
@@ -1066,14 +1096,6 @@ export default class AschAPI extends API {
     consumeOwnerEnergy: boolean=true,
     gasLimit: number=1000000
   ): Promise<object> {
-    // let trx: Transaction = TransactionBuilder.buildTransaction(600, [
-    //   gasLimit,
-    //   name,
-    //   version,
-    //   desc,
-    //   code,
-    //   consumeOwnerEnergy
-    // ])
     let trx: Transaction =TransactionBuilder.registerContract(
       name,
       version,
@@ -1101,13 +1123,6 @@ export default class AschAPI extends API {
     gasLimit: number=100000,
     enablePayGasInXAS: boolean=true
   ): Promise<object> {
-    // let trx: Transaction = TransactionBuilder.buildTransaction(601, [
-    //   gasLimit,
-    //   enablePayGasInXAS,
-    //   contractName,
-    //   methodName,
-    //   methodArgs
-    // ])
     let trx: Transaction =TransactionBuilder.callContract(
       contractName,
       methodName,
@@ -1130,20 +1145,12 @@ export default class AschAPI extends API {
    */
   public async payContract(
     currency: string,
-    amount: string,
+    amount: number|string,
     nameOrAddress: string,
     methodName?:string,
     gasLimit: number=100000,
     enablePayGasInXAS: boolean=true
   ): Promise<object> {
-    // let trx: Transaction = TransactionBuilder.buildTransaction(602, [
-    //   gasLimit,
-    //   enablePayGasInXAS,
-    //   nameOrAddress,
-    //   (methodName && methodName.length>0)?methodName:'',
-    //   amount,
-    //   currency
-    // ])
     let trx: Transaction =TransactionBuilder.payContract(
       currency,
       amount,

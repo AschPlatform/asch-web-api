@@ -50,6 +50,12 @@ let feeFuncMap: { [index: number]: any } = {
   12: function(trs: Transaction): number {
     return 0.1
   },
+  13: function(trs: Transaction): number {
+    return 0.1
+  },
+  14: function(trs: Transaction): number {
+    return 0
+  },
   100: function(trs: Transaction): number {
     return 100
   },

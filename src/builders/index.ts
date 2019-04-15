@@ -1,23 +1,24 @@
-import { ObjectType, Transaction } from '../type'
-import { getTime } from '../utils'
+import { Transaction } from '../type'
 import calFee from '../asch-fee'
 import * as Constants from '../constants'
 import * as Slots from '../time/slots'
-import * as Utils from '../utils';
-// export function transactionBuilder(params: ObjectType): Transaction {
-//   let transaction = {
-//     type: params.type,
-//     timestamp: getTime() - 5,
-//     fee: params.fee,
-//     args: params.args,
-//     senderPublicKey: params.address,
-//     senderId: params.address,
-//     signatures: [],
-//     secondSecret: params.secondSecret,
-//     message: params.message || ''
-//   }
-//   return transaction
-// }
+import * as Utils from '../utils'
+
+function convertBigintMemberToString(obj: any) {
+  if (typeof obj !== 'object' || obj === null) return
+  let bint = 'bigint'
+  Object.keys(obj).forEach(key => {
+    const value = obj[key]
+    const type = typeof value
+    if (type === bint) {
+      obj[key] = String(value)
+    }
+    else if (type === 'object') {
+      convertBigintMemberToString(value)
+    }
+  })
+}
+
 
 /**
  * TransactionBuilder 创建未签名交易
@@ -37,6 +38,7 @@ export class TransactionBuilder {
     message: string = '',
     options = {}
   ): Transaction {
+    convertBigintMemberToString(args)
     let transaction: Transaction = {
       type: type,
       fee: 0,
@@ -158,6 +160,24 @@ export class TransactionBuilder {
    */
   static cleanVote(delegates: string[]): Transaction {
     return this.buildTransaction(12, delegates)
+  }
+
+  /**
+   * 带宽和CPU抵押
+   * @param bandwidth 带宽抵押的XAS数量
+   * @param cpu CPU抵押的XAS数量
+   */
+  static pledge(bandwidth: string|number, cpu: string|number): Transaction {
+    return this.buildTransaction(13, [bandwidth, cpu])
+  }
+
+  /**
+   * 取消带宽和CPU抵押
+   * @param bandwidth 取消带宽抵押的XAS数量
+   * @param cpu 取消CPU抵押的XAS数量
+   */
+  static unPledge(bandwidth: string|number, cpu: string|number): Transaction {
+    return this.buildTransaction(14, [bandwidth, cpu])
   }
 
   /**
@@ -427,7 +447,7 @@ export class TransactionBuilder {
    */
   static payContract(
     currency: string,
-    amount: string,
+    amount: number|string,
     nameOrAddress: string,
     methodName?: string,
     gasLimit: number = 100000,

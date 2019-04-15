@@ -1,3 +1,11 @@
+V0.2.6:
+1. fix second sign bug;
+2. update signBytes to support 12 mnemonic words params
+3. add pledge and unPledge api
+4. add query pledges api
+5. add transaction args auto convertion from bigint to string
+
+
 V0.2.5:
 1.fix TransactionBuilder pay contract；
 
