@@ -1082,17 +1082,17 @@ export default class AschAPI extends API {
   /**
    * 注册合约
    * @param name 智能合约名称，全网唯一，3 ~ 32个字母或数字组成
-   * @param version 合约引擎版本，目前请填v1.0
    * @param desc 智能合约的描述，长度不超过255的字符串
    * @param code 智能合约代码，长度不超过16K
+   * @param version 合约引擎版本，目前请填v0.1
    * @param consumeOwnerEnergy 是否优先消耗合约所有者的能量
    * @param gasLimit 最大消耗的Gas, 10,000,000 > gasLimit > 0
    */
   public async registerContract(
     name: string,
-    version: string,
     desc: string,
     code: string,
+    version: string='v0.1',
     consumeOwnerEnergy: boolean=true,
     gasLimit: number=1000000
   ): Promise<object> {

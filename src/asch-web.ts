@@ -116,6 +116,27 @@ export default class AschWeb {
 
 
   /**
+   * 发布智能合约
+   * @param name 智能合约名称，全网唯一，3 ~ 32个字母或数字组成
+   * @param desc 智能合约的描述，长度不超过255的字符串
+   * @param code 智能合约代码，长度不超过16K
+   * @param version 合约引擎版本，目前请填v0.1
+   * @param consumeOwnerEnergy 是否优先消耗合约所有者的能量
+   * @param gasLimit 最大消耗的Gas, 10,000,000 > gasLimit > 0
+   */
+  public registerContract(
+    name: string,
+    desc: string,
+    code: string,
+    version: string='v0.1',
+    consumeOwnerEnergy: boolean=true,
+    gasLimit: number=1000000
+    ): Promise<object> {
+    return this.api.registerContract(name,desc,code,version,consumeOwnerEnergy,gasLimit)
+  }
+
+
+  /**
    * 从metadata创建合约对象
    * @param name 
    * @param metadata 

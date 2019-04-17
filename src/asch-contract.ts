@@ -18,6 +18,9 @@ export class AschContract {
   api: AschAPI
   [key: string]: any
 
+  private _gasLimit: number
+  private _enablePayGasInXAS: boolean
+
 
   /**
    * constructor
@@ -37,8 +40,26 @@ export class AschContract {
     this.metadata = contractJson.metadata
     this.metadataManager = ContractMetadataMananger.fromJSONObject(this.metadata)
     this.api = api
+    this._gasLimit=1000000
+    this._enablePayGasInXAS=true
     this.initMethods(this.metadata)
   }
+
+  public get gasLimit(){
+    return this._gasLimit
+  }
+
+  public set gasLimit(gasLimit: number) {
+    this._gasLimit = gasLimit;
+  }
+
+   public get enablePayGasInXAS(){
+     return this._enablePayGasInXAS
+   }
+
+   public set enablePayGasInXAS(enablePayGasInXAS:boolean){
+     this._enablePayGasInXAS=enablePayGasInXAS
+   }
 
   /**
    * 
@@ -83,11 +104,11 @@ export class AschContract {
     if (!this.hasOwnProperty(methodData.name)) {
       this[methodData.name] = (
         currency: string,
-        amount: string,
-        gasLimit: number = 1000000,
-        enablePayGasInXAS: boolean = true
+        amount: string
+        // gasLimit: number = 1000000,
+        // enablePayGasInXAS: boolean = true
       ): Promise<object> => {
-        return this.pay(currency, amount, methodData.name, gasLimit, enablePayGasInXAS)
+        return this.pay(currency, amount, methodData.name, this.gasLimit, this.enablePayGasInXAS)
       }
     } else {
       console.log('already has the method:' + methodData.name)
@@ -101,11 +122,11 @@ export class AschContract {
   public addCallMethod(methodData: MethodMetadata): void {
     if (!this.hasOwnProperty(methodData.name)) {
       this[methodData.name] = (
-        methodArgs: Array<any>,
-        gasLimit: number = 10000000,
-        enablePayGasInXAS: boolean = true
+        ... methodArgs: Array<any>
+        // gasLimit: number = 10000000,
+        // enablePayGasInXAS: boolean = true
       ): Promise<object> => {
-        return this.call(methodData.name, methodArgs, gasLimit, enablePayGasInXAS)
+        return this.call(methodData.name, methodArgs,this.gasLimit,this.enablePayGasInXAS)
       }
     } else {
       console.log('already has the method:' + methodData.name)
@@ -185,8 +206,8 @@ export class AschContract {
   public async call(
     methodName: string,
     methodArgs: Array<any>,
-    gasLimit: number = 10000000,
-    enablePayGasInXAS: boolean = true
+    gasLimit: number = this.gasLimit,
+    enablePayGasInXAS: boolean = this.enablePayGasInXAS
   ): Promise<object> {
     try {
       let method: MethodMetadata | undefined = this.metadataManager.getMethod(methodName)
@@ -246,8 +267,8 @@ export class AschContract {
     currency: string,
     amount: string,
     methodName?: string,
-    gasLimit: number = 1000000,
-    enablePayGasInXAS: boolean = true
+    gasLimit: number = this.gasLimit,
+    enablePayGasInXAS: boolean = this.enablePayGasInXAS
   ): Promise<object> {
     try {
       if (!methodName || methodName.length==0)
