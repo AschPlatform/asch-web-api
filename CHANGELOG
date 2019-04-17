@@ -1,3 +1,9 @@
+V0.2.7:
+1. add some params check;
+2. update some apis and comments;
+3. update readme;
+4. add  council apis;
+
 V0.2.6:
 1. fix second sign bug;
 2. update signBytes to support 12 mnemonic words params
