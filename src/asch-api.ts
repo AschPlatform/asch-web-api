@@ -4,6 +4,7 @@ import { TransactionBuilder } from './builders'
 import { Transaction } from './type'
 import { ObjectType } from './type'
 import { URLS } from './constants'
+import * as Validation from './validation'
 
 export default class AschAPI extends API {
   aschWeb: AschWeb
@@ -28,7 +29,11 @@ export default class AschAPI extends API {
    * 备注：将密码以明文方式传入到后端，根据生成的地址去查询账户信息。不推荐在公网坏境使用！
    * @param secret 
    */
-  public async open(secret: string): Promise<object>{
+  public async open(secret: string=this.aschWeb.secret): Promise<object>{
+    if(!Validation.checkSecret(secret))
+    {
+      return Promise.reject('param secret is wrong.')
+    }
     return this.post(URLS.accounts.open, {secret:secret})
   }
 
@@ -36,7 +41,11 @@ export default class AschAPI extends API {
    * 本地加密后再登陆（推荐使用）
    * @param publicKey 
    */
-  public async open2(publicKey: string): Promise<object>{
+  public async open2(publicKey: string=this.aschWeb.publicKey): Promise<object>{
+    if(!Validation.checkPublicKey(publicKey))
+    {
+      return Promise.reject('param publicKey is wrong.')
+    }
     return this.post(URLS.accounts.open2,{publicKey:publicKey})
   }
 
@@ -44,7 +53,11 @@ export default class AschAPI extends API {
    * 根据地址获取账户信息
    * @param address 
    */
-  public async getAccountDetail(address: string): Promise<object>{
+  public async getAccountDetail(address: string=this.aschWeb.address): Promise<object>{
+    if(!Validation.checkAddress(address))
+    {
+      return Promise.reject('param address is wrong.')
+    }
     return this.get(URLS.v2.accounts.detail.replace(':address', address))
   }
 
@@ -52,7 +65,11 @@ export default class AschAPI extends API {
    * 获取账户带宽和CPU等资源抵押信息
    * @param address 账户地址
    */
-  public async getPledges(address: string): Promise<object>{
+  public async getPledges(address: string=this.aschWeb.address): Promise<object>{
+    if(!Validation.checkAddress(address))
+    {
+      return Promise.reject('param address is wrong.')
+    }
     return this.get(URLS.v2.accounts.pledges,{address: address})
   }
 
@@ -60,7 +77,11 @@ export default class AschAPI extends API {
    * 获取账户资产余额
    * @param address 账户地址
    */
-  public async queryBalances(address: string): Promise<object>{
+  public async queryBalances(address: string=this.aschWeb.address): Promise<object>{
+    if(!Validation.checkAddress(address))
+    {
+      return Promise.reject('param address is wrong.')
+    }
     return this.get(URLS.v2.accounts.balances.replace(':address',address))
   }
 

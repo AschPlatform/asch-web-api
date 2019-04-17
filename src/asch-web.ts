@@ -31,6 +31,8 @@ export default class AschWeb {
   public defaultAccount: any
   public secret: string //12个助记词或者私钥
   public secondSecret: string
+  public readonly publicKey:string
+  public readonly address:string
   public provider: Provider
   public api: AschAPI
   private injectPromise: any
@@ -40,8 +42,17 @@ export default class AschWeb {
     this.secret = secret
     this.secondSecret = secondSecret
     this.api = new AschAPI(this)
-    // this.utils = utils
-    this.defaultAccount = { address: '' }
+    if(secret && secret.length>0){
+      let publicKey=Utils.getKeys(secret).publicKey
+      this.publicKey=publicKey
+      let address=Utils.getAddress(publicKey)
+      this.address =address
+      this.defaultAccount = { address: address, publicKey: publicKey}
+    }else{
+      this.publicKey=''
+      this.address =''
+      this.defaultAccount = { address: '', publicKey: ''}
+    }
     this.injectPromise = Utils.promiseInjector(this)
   }
 

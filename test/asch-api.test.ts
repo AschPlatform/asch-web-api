@@ -14,7 +14,6 @@ describe('asch-api unit test', () => {
   let dappId = '25be71c296430a409cfeaf1ffaa957d18793f3695db07a846c22a7c467c45994'
   let publicKey: string = AschWeb.Utils.getKeys(secret).publicKey
   console.log('publicKey:'+publicKey)
-  let utils = aschWeb.utils
   let trx = {
     type: 601,
     fee: 0,
@@ -27,7 +26,8 @@ describe('asch-api unit test', () => {
 
   // it('asch-api open method test', () => {
   //   aschWeb.api
-  //     .open(secret)
+  //     .open()
+  //     // .open(secret)
   //     .then(res => {
   //       console.log('open response:' + JSON.stringify(res))
   //     })
@@ -40,7 +40,8 @@ describe('asch-api unit test', () => {
 
   // it('asch-api open2 method test', () => {
   //   aschWeb.api
-  //     .open2(publicKey)
+  //     .open2()
+  //     // .open2(publicKey)
   //     .then(res => {
   //       console.log('open2 response:' + JSON.stringify(res))
   //     })
@@ -52,7 +53,8 @@ describe('asch-api unit test', () => {
 
   // it('asch-api getAccountDetail method test', () => {
   //   aschWeb.api
-  //     .getAccountDetail(address)
+  //    .getAccountDetail()
+  //     // .getAccountDetail(address)
   //     .then(res => {
   //       console.log('getAccountDetail response:' + JSON.stringify(res))
   //     })
@@ -62,17 +64,18 @@ describe('asch-api unit test', () => {
   //   //.catch(err => console.error(err));
   // })
 
-  // it('asch-api queryBalances method test', () => {
-  //   aschWeb.api
-  //     .queryBalances(address)
-  //     .then(res => {
-  //       console.log('queryBalances response:' + JSON.stringify(res))
-  //     })
-  //     .catch(err => {
-  //       console.error(err)
-  //     })
-  //   //.catch(err => console.error(err));
-  // })
+  it('asch-api queryBalances method test', () => {
+    aschWeb.api
+    .queryBalances()
+      // .queryBalances(address)
+      .then(res => {
+        console.log('queryBalances response:' + JSON.stringify(res))
+      })
+      .catch(err => {
+        console.error(err)
+      })
+    //.catch(err => console.error(err));
+  })
 
   // it('asch-api queryVotedDelegates method test', () => {
   //   aschWeb.api
@@ -832,18 +835,18 @@ describe('asch-api unit test', () => {
 
   // })
 
-  it('asch-api callConstantMethod method test', () => {
-    aschWeb.api
-      .callConstantMethod('test2_kim','getFunding',['AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb'])
-      .then(res => {
-      console.log('callConstantMethod response:' + JSON.stringify(res))
-      })
-      .catch(err => {
-        console.error(err)
-      })
-    //.catch(err => console.error(err));
+  // it('asch-api callConstantMethod method test', () => {
+  //   aschWeb.api
+  //     .callConstantMethod('test2_kim','getFunding',['AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb'])
+  //     .then(res => {
+  //     console.log('callConstantMethod response:' + JSON.stringify(res))
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  //   //.catch(err => console.error(err));
 
-  })
+  // })
 
   // it('asch-api transferXAS method test', () => {
   //   aschWeb.api
