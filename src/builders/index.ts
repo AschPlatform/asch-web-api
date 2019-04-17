@@ -392,6 +392,42 @@ export class TransactionBuilder {
     return this.buildTransaction(403, [address, gateway, currency, amount, fee])
   }
 
+
+  /**
+   * 为理事会投票
+   * @param targetId 目标ID
+   */
+  static voteForCouncil(targetId: string): Transaction {
+    return this.buildTransaction(500, [targetId])
+  }
+
+  /**
+   * 激活理事会
+   * @param targetId 目标ID
+   */
+  static activCouncil(targetId: string): Transaction {
+    return this.buildTransaction(501, [targetId])
+  }
+
+  /**
+   * 增加理事会成员
+   * @param address 成员地址
+   * @param weight 权重
+   * @param m 
+   */
+  static addMemberToCouncil(address: string, weight: string, m: number): Transaction {
+    return this.buildTransaction(502, [address,weight,m])
+  }
+
+  /**
+   * 移除理事会成员
+   * @param address 成员地址
+   * @param m 
+   */
+  static removeMemberFromCouncil(address: string, m: number): Transaction {
+    return this.buildTransaction(503, [address, m])
+  }
+
   /**
    * 注册合约
    * @param name 智能合约名称，全网唯一，3 ~ 32个字母或数字组成

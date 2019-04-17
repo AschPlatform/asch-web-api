@@ -1101,6 +1101,50 @@ export default class AschAPI extends API {
   }
 
   /**
+   * 为理事会投票
+   * @param targetId 目标ID
+   */
+  public async voteForCouncil(targetId: string): Promise<object> {
+    let trx: Transaction = TransactionBuilder.voteForCouncil(targetId)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+  /**
+   * 激活理事会
+   * @param targetId 目标ID
+   */
+  public async activCouncil(targetId: string): Promise<object> {
+    let trx: Transaction = TransactionBuilder.activCouncil(targetId)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+  /**
+   * 增加理事会成员
+   * @param address 成员地址
+   * @param weight 权重
+   * @param m 
+   */
+  public async addMemberToCouncil(address: string, weight: string, m: number): Promise<object> {
+    let trx: Transaction = TransactionBuilder.addMemberToCouncil(address,weight,m)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+  /**
+   * 移除理事会成员
+   * @param address 成员地址
+   * @param m 
+   */
+  public async removeMemberFromCouncil(address: string, m: number): Promise<object> {
+    let trx: Transaction = TransactionBuilder.removeMemberFromCouncil(address,m)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+
+  /**
    * 注册合约
    * @param name 智能合约名称，全网唯一，3 ~ 32个字母或数字组成
    * @param desc 智能合约的描述，长度不超过255的字符串
