@@ -4,6 +4,7 @@ import { TransactionBuilder } from './builders'
 import { Transaction } from './type'
 import { ObjectType } from './type'
 import { URLS } from './constants'
+import * as Validation from './validation'
 
 export default class AschAPI extends API {
   aschWeb: AschWeb
@@ -28,7 +29,11 @@ export default class AschAPI extends API {
    * 备注：将密码以明文方式传入到后端，根据生成的地址去查询账户信息。不推荐在公网坏境使用！
    * @param secret 
    */
-  public async open(secret: string): Promise<object>{
+  public async open(secret: string=this.aschWeb.secret): Promise<object>{
+    if(!Validation.checkSecret(secret))
+    {
+      return Promise.reject('param secret is wrong.')
+    }
     return this.post(URLS.accounts.open, {secret:secret})
   }
 
@@ -36,7 +41,11 @@ export default class AschAPI extends API {
    * 本地加密后再登陆（推荐使用）
    * @param publicKey 
    */
-  public async open2(publicKey: string): Promise<object>{
+  public async open2(publicKey: string=this.aschWeb.publicKey): Promise<object>{
+    if(!Validation.checkPublicKey(publicKey))
+    {
+      return Promise.reject('param publicKey is wrong.')
+    }
     return this.post(URLS.accounts.open2,{publicKey:publicKey})
   }
 
@@ -44,7 +53,11 @@ export default class AschAPI extends API {
    * 根据地址获取账户信息
    * @param address 
    */
-  public async getAccountDetail(address: string): Promise<object>{
+  public async getAccountDetail(address: string=this.aschWeb.address): Promise<object>{
+    if(!Validation.checkAddress(address))
+    {
+      return Promise.reject('param address is wrong.')
+    }
     return this.get(URLS.v2.accounts.detail.replace(':address', address))
   }
 
@@ -52,7 +65,11 @@ export default class AschAPI extends API {
    * 获取账户带宽和CPU等资源抵押信息
    * @param address 账户地址
    */
-  public async getPledges(address: string): Promise<object>{
+  public async getPledges(address: string=this.aschWeb.address): Promise<object>{
+    if(!Validation.checkAddress(address))
+    {
+      return Promise.reject('param address is wrong.')
+    }
     return this.get(URLS.v2.accounts.pledges,{address: address})
   }
 
@@ -60,7 +77,11 @@ export default class AschAPI extends API {
    * 获取账户资产余额
    * @param address 账户地址
    */
-  public async queryBalances(address: string): Promise<object>{
+  public async queryBalances(address: string=this.aschWeb.address): Promise<object>{
+    if(!Validation.checkAddress(address))
+    {
+      return Promise.reject('param address is wrong.')
+    }
     return this.get(URLS.v2.accounts.balances.replace(':address',address))
   }
 
@@ -671,7 +692,7 @@ export default class AschAPI extends API {
    * @param recipientId 接收者地址
    * @param message 转账备注 
    */
-  public async transferXAS(amount: number, recipientId: string, message: string): Promise<object> {
+  public async transferXAS(amount: number, recipientId: string, message: string=''): Promise<object> {
     let trx: Transaction = TransactionBuilder.transferXAS(amount, recipientId, message)
     trx = await this.aschWeb.sign(trx)
     //console.log('+++++transaction:' + JSON.stringify(trx))
@@ -690,7 +711,7 @@ export default class AschAPI extends API {
 
   /**
    * 设置二级密码
-   * @param secondPwd 二级密码(加密后publickey)
+   * @param secondPwd 二级密码
    */
   public async setSecondPassword(secondPwd: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.setSecondPassword(secondPwd)
@@ -727,8 +748,8 @@ export default class AschAPI extends API {
    * @param m 决策权值最小值
    * @param updateInterval 更新间隔
    */
-  public async setMultiAccount(name: string,members: Array<any>, min: number ,max: number ,m: number ,updateInterval :number): Promise<object> {
-    let trx: Transaction = TransactionBuilder.setMultiAccount(name,members,min,max,m,updateInterval)
+  public async setCouncil(name: string,members: Array<any>, min: number ,max: number ,m: number ,updateInterval :number): Promise<object> {
+    let trx: Transaction = TransactionBuilder.setCouncil(name,members,min,max,m,updateInterval)
     trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
@@ -774,15 +795,15 @@ export default class AschAPI extends API {
    * 给委托人投票
    * @param delegates 受托人公钥数组,最多33个
    */
-  public async voteDelegate(delegates: string[]): Promise<object> {
-    let trx: Transaction = TransactionBuilder.voteDelegate(delegates)
+  public async voteDelegates(delegates: string[]): Promise<object> {
+    let trx: Transaction = TransactionBuilder.voteDelegates(delegates)
     trx = await this.aschWeb.sign(trx)
     return this.broadcastTransaction(trx)
   }
 
   /**
    * 撤销受托人投票
-   * @param delegates 受托人公钥数组,最多33个
+   * @param delegates 受托人数组,最多33个
    */
   public async cleanVote(delegates: string[]): Promise<object> {
     let trx: Transaction = TransactionBuilder.cleanVote(delegates)
@@ -863,7 +884,7 @@ export default class AschAPI extends API {
     symbol: string,
     amount: string,
     recipientId: string,
-    message: string
+    message: string=''
   ): Promise<object> {
     let trx: Transaction = TransactionBuilder.transferAsset(symbol, amount, recipientId, message)
     trx = await this.aschWeb.sign(trx)
@@ -883,7 +904,6 @@ export default class AschAPI extends API {
   public async registerDapp(
     name: string,
     desc: string,
-    tags: string,
     link: string,
     icon: string,
     delegates: number,
@@ -892,7 +912,6 @@ export default class AschAPI extends API {
     let trx: Transaction = TransactionBuilder.registerDapp(
       name,
       desc,
-      tags,
       link,
       icon,
       delegates,
@@ -984,6 +1003,61 @@ export default class AschAPI extends API {
    * @param topic 提案类型
    * @param content 内容
    * @param endHeight 提案结束高度
+   * ~~~
+   * 对不同提案类型给出不同的参数
+   * 1.新增网关
+   * //提案类型
+   * let topic = 'gateway_register'
+   * //下面构造content,对于新增网关提案，需要提供提案的名称，描述，最少成员，更新间隔，资产信息等
+   * let name = 'aschCoin'   //3-16位大小写字母数字
+   * let desc = 'test the gateway register'
+   * let minimumMembers = 3      //网关最少成员数，这个数值的范围应当在3-33之间的整数，
+   * let updateInterval = 8640   //更新频率，这个值应当是大于8640的
+   * let symbol = 'TEC'   //比如发行的币叫TEC
+   * let currencyDesc = 'some describes of currency'    //资产描述
+   * let precision = 1      //资产精度
+   * let currency = {symbol:symbol,
+   *            desc:currencyDesc,
+   *           precision:precision}
+   * //下面构造这个content
+   * let content = {name:name,
+   *           desc:desc,
+   *           minimumMembers:minimumMembers,
+   *           updateInterval:updateInterval,
+   *           currency:currency}
+   * 2. 网关初始化
+   * //提案类型
+   * let topic = 'gateway_init'
+   * //下面构造content
+   * let gateway = 'bitcoin'     //网关的名字
+   * let members = [             //初始网关的成员
+   * 'A5eTVn2Mz5p2j6SjGKdgvmUc2vMsSvKzuy',
+   * 'A3SmW61ZwxmNc26BbfKLbHkaNbmUQzexuj',
+   * 'A4ncaYtKRrD8YS2Mi82HbwGEE9DxqsbEr9']
+   * //下面构造这个content
+   * let content = {gateway:gateway,
+   *            members:members
+   *          }
+   * 
+   * 3.更新网关成员
+   * //提案类型
+   * let topic = 'gateway_update_member'
+   * //下面构造content
+   * let gateway = 'bitcoin'     //网关的名字
+   * let from = 'A3SmW61ZwxmNc26BbfKLbHkaNbmUQzexuj'   //要撤销的成员地址
+   * let to = 'A7w7Rx5bCerJFbfG5BKdQ77bPqfWeyrmgJ'     //要添加的成员地址
+   * //下面构造这个content
+   * let content = {gateway:gateway, from:from, to:to}
+   * 
+   * 4.网关撤销
+   * //提案类型
+   * let topic = 'gateway_revoke'     //这个参数较少，只需要网关的名字即可
+   * //下面构造content
+   * let gateway = 'bitcoin'     //网关的名字
+   * //下面构造这个content
+   * let content = {gateway:gateway}
+   * 
+   * ~~~
    */
   public async createProposal(
     title: string,
@@ -1080,19 +1154,76 @@ export default class AschAPI extends API {
   }
 
   /**
+   * 为理事会投票
+   * @param targetId 目标ID
+   */
+  public async voteForCouncil(targetId: string): Promise<object> {
+    let trx: Transaction = TransactionBuilder.voteForCouncil(targetId)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+  /**
+   * 激活理事会
+   * @param targetId 目标ID
+   */
+  public async activCouncil(targetId: string): Promise<object> {
+    let trx: Transaction = TransactionBuilder.activCouncil(targetId)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+  /**
+   * 增加理事会成员
+   * @param address 成员地址
+   * @param weight 权重
+   * @param m 
+   */
+  public async addMemberToCouncil(address: string, weight: string, m: number): Promise<object> {
+    let trx: Transaction = TransactionBuilder.addMemberToCouncil(address,weight,m)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+  /**
+   * 移除理事会成员
+   * @param address 成员地址
+   * @param m 
+   */
+  public async removeMemberFromCouncil(address: string, m: number): Promise<object> {
+    let trx: Transaction = TransactionBuilder.removeMemberFromCouncil(address,m)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+    /**
+   * 置换理事会成员
+   * @param from 将被替换成员
+   * @param to 新来成员
+   * @param weight 权重
+   * @param m 
+   */
+  public async replaceMemberFromCouncil(from: string, to: string, weight: string, m: number): Promise<object> {
+    let trx: Transaction = TransactionBuilder.replaceMemberFromCouncil(from, to, weight, m)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
+
+  /**
    * 注册合约
    * @param name 智能合约名称，全网唯一，3 ~ 32个字母或数字组成
-   * @param version 合约引擎版本，目前请填v1.0
    * @param desc 智能合约的描述，长度不超过255的字符串
    * @param code 智能合约代码，长度不超过16K
+   * @param version 合约引擎版本，目前请填v0.1
    * @param consumeOwnerEnergy 是否优先消耗合约所有者的能量
    * @param gasLimit 最大消耗的Gas, 10,000,000 > gasLimit > 0
    */
   public async registerContract(
     name: string,
-    version: string,
     desc: string,
     code: string,
+    version: string='v0.1',
     consumeOwnerEnergy: boolean=true,
     gasLimit: number=1000000
   ): Promise<object> {

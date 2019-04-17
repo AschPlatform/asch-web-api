@@ -5,6 +5,7 @@ __[asch-web - Developer Document](https://github.com/AschPlatform/asch-docs/blob
 asch-web是一个通过HTTP请求与ASCH节点进行通信的js库。asch-web提供常用的交易写操作API和常用的工具函数，诸如XAS转账，合约执行，账户创建，助记词，公钥和地址转和交易离线签名等等，asch-web受到Ethereum的[web3.js](https://github.com/ethereum/web3.js/)库的设计思想，提供统一的，无缝的开发体验。我们用核心思想对其进行了扩展，集成了ASCH常用的API，asch-web用typescript语言进行编写，可以build生成浏览器环境和node环境的js库，也可以直接在typescript项目中直接引用使用，对于DAapps与asch节点的交互提供了极大的方便。
 
 ## 兼容性
+
 - 支持Node.js v8及更高版本构建的版本
 - 支持Chrome浏览器环境
 
@@ -131,8 +132,30 @@ aschWeb.api
 
 ```
 
+## HTTP API的基本使用
+目前asch节点的api有两种类型，查询操作的api和写操作的api
+
+### 查询api的使用
+
+```javascript
+//查询账户详情
+let result = await aschWeb.api.getAccountDetail('AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb')
+console.log('result:' + JSON.stringify(result))
+
+```
+
+### 写操作api的使用(签名交易api)
+
+```javascript
+//发送XAS
+let result = await aschWeb.api.transferXAS(123456,to,'test transfer XAS')
+console.log('result:' + JSON.stringify(result))
+
+```
 
 ### 构建交易-->签名交易-->广播交易
+
+所有的写操作的api都需要：构建交易-->签名交易-->广播交易这3个过程，若不想用api里的方法，也可以如下使用
 
 1. [TransactionBuilder 生成未签名的交易](https://github.com/AschPlatform/asch-web/blob/contract-gen/src/builders/README.md)
 ```
@@ -195,36 +218,88 @@ result:
 ```
 
 
-### 智能合约基本使用
 
+
+## 智能合约使用
+
+
+#### 发布智能合约
 
 ```javascript
-const contract = await aschWeb.createContractFromName('crowdFundging_v1')
+let code ='<智能合约代码>'
+let result = await aschWeb.registerContract('crowdFundging_v2','a crowd funding contract',code)
+console.log('registerContract result:'+JSON.stringify(result))
 ```
 
-### 调用合约方法
+
+#### 创建智能合约实例
 
 ```javascript
-let result = await contract.call('getXXT', ['233'], 1000000, false)
+let contract = await aschWeb.createContractFromName('crowdFundging_v1')
+contract.gasLimit=1000000
+contract.enablePayGasInXAS=true
+```
+
+#### 调用合约方法（可见性为公开的普通方法）
+
+```javascript
+//基本使用
+let result = await contract.call('getXXT', ['233'])
 console.log('testContract result:' + JSON.stringify(result))
 
+//代理方法使用
+let result =await contract.getXXT('233')
+console.log('result:'+JSON.stringify(result))
+
 ```
 
-### 转账到合约
+#### 调用转账到合约（资产接收方法 @payable）
 
 ```javascript
-  contract.pay('XAS', '12345', contract.name, 1000000, false).
-    then(res => {
-      if (res.success) {
-        alert('调用成功')
-        //document.getElementById('result').innerHTML = JSON.stringify(res)
-      } else {
-       // alert(res.error)
-        console.error(res)
-      }
-    }).catch(err => {
-      alert(res.error)
-      console.error(err)
-    })
+//基本使用
+// 调用默认的默认向合约转账方法,方法名参数可以省略,此实例合约中对应crowdFunding函数(@payable({ isDefault: true }))
+let result =await contract.pay('XAS','8345667')
+console.log('result:'+JSON.stringify(result))
+//调用payInitialToken资产接收方法(@payable)
+let result =await contract.pay('kim.KIM','8345667', 'payInitialToken')
+console.log('result:'+JSON.stringify(result))
+
+//代理方法使用
+// 调用默认的默认向合约转账方法,方法名参数可以省略,此实例合约中对应crowdFunding函数(@payable({ isDefault: true }))
+let result =await contract.crowdFunding('XAS','8345667')
+console.log('result:'+JSON.stringify(result))
+//调用payInitialToken资产接收方法(@payable)
+let result =await contract.payInitialToken('kim.KIM','8345667')
+console.log('result:'+JSON.stringify(result))
+```
+
+
+#### 状态查询函数查询（@constant）
+
+```javascript
+//基本使用
+//状态查询函数查询
+let result =await contract.constant('getFunding','AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb')
+console.log('result:'+JSON.stringify(result))
+
+//代理方法使用
+//状态查询函数查询
+let result =await contract.getFunding('AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb')
+console.log('result:'+JSON.stringify(result))
 
 ```
+
+#### 简单状态查询
+
+```javascript
+//简单状态查询
+let result =await contract.queryStates('totalFundingToken')
+console.log('result:'+JSON.stringify(result))
+
+//代理方法使用
+//简单状态查询 get+状态名称(首字母大写)
+let result =await contract.getTotalFundingToken()
+console.log('result:'+JSON.stringify(result))
+
+```
+

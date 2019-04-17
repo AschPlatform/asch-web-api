@@ -113,7 +113,7 @@ export class TransactionBuilder {
    * @param m 决策权值最小值
    * @param updateInterval 更新间隔
    */
-  static setMultiAccount(name: string, members: Array<any>, min: number, max: number, m: number, updateInterval: number): Transaction {
+  static setCouncil(name: string, members: Array<any>, min: number, max: number, m: number, updateInterval: number): Transaction {
     return this.buildTransaction(6, [name, members, min, max, m, updateInterval])
   }
 
@@ -148,9 +148,9 @@ export class TransactionBuilder {
 
   /**
    * 给委托人投票
-   * @param delegates 受托人公钥数组,最多33个
+   * @param delegates 受托人数组,最多33个
    */
-  static voteDelegate(delegates: string[]): Transaction {
+  static voteDelegates(delegates: string[]): Transaction {
     return this.buildTransaction(11, delegates)
   }
 
@@ -234,7 +234,6 @@ export class TransactionBuilder {
    * 注册侧链DApp
    * @param name dapp名称
    * @param desc 描述
-   * @param tags 标签
    * @param link 链接
    * @param icon 图标
    * @param delegates 委托人
@@ -243,7 +242,6 @@ export class TransactionBuilder {
   static registerDapp(
     name: string,
     desc: string,
-    tags: string,
     link: string,
     icon: string,
     delegates: number,
@@ -317,6 +315,61 @@ export class TransactionBuilder {
    * @param topic 提案类型
    * @param content 内容
    * @param endHeight 提案结束高度
+   * ~~~
+   * 对不同提案类型给出不同的参数
+   * 1.新增网关
+   * //提案类型
+   * let topic = 'gateway_register'
+   * //下面构造content,对于新增网关提案，需要提供提案的名称，描述，最少成员，更新间隔，资产信息等
+   * let name = 'aschCoin'   //3-16位大小写字母数字
+   * let desc = 'test the gateway register'
+   * let minimumMembers = 3      //网关最少成员数，这个数值的范围应当在3-33之间的整数，
+   * let updateInterval = 8640   //更新频率，这个值应当是大于8640的
+   * let symbol = 'TEC'   //比如发行的币叫TEC
+   * let currencyDesc = 'some describes of currency'    //资产描述
+   * let precision = 1      //资产精度
+   * let currency = {symbol:symbol,
+   *            desc:currencyDesc,
+   *           precision:precision}
+   * //下面构造这个content
+   * let content = {name:name,
+   *           desc:desc,
+   *           minimumMembers:minimumMembers,
+   *           updateInterval:updateInterval,
+   *           currency:currency}
+   * 2. 网关初始化
+   * //提案类型
+   * let topic = 'gateway_init'
+   * //下面构造content
+   * let gateway = 'bitcoin'     //网关的名字
+   * let members = [             //初始网关的成员
+   * 'A5eTVn2Mz5p2j6SjGKdgvmUc2vMsSvKzuy',
+   * 'A3SmW61ZwxmNc26BbfKLbHkaNbmUQzexuj',
+   * 'A4ncaYtKRrD8YS2Mi82HbwGEE9DxqsbEr9']
+   * //下面构造这个content
+   * let content = {gateway:gateway,
+   *            members:members
+   *          }
+   * 
+   * 3.更新网关成员
+   * //提案类型
+   * let topic = 'gateway_update_member'
+   * //下面构造content
+   * let gateway = 'bitcoin'     //网关的名字
+   * let from = 'A3SmW61ZwxmNc26BbfKLbHkaNbmUQzexuj'   //要撤销的成员地址
+   * let to = 'A7w7Rx5bCerJFbfG5BKdQ77bPqfWeyrmgJ'     //要添加的成员地址
+   * //下面构造这个content
+   * let content = {gateway:gateway, from:from, to:to}
+   * 
+   * 4.网关撤销
+   * //提案类型
+   * let topic = 'gateway_revoke'     //这个参数较少，只需要网关的名字即可
+   * //下面构造content
+   * let gateway = 'bitcoin'     //网关的名字
+   * //下面构造这个content
+   * let content = {gateway:gateway}
+   * 
+   * ~~~
    */
   static createProposal(
     title: string,
@@ -391,6 +444,55 @@ export class TransactionBuilder {
   ): Transaction {
     return this.buildTransaction(403, [address, gateway, currency, amount, fee])
   }
+
+
+  /**
+   * 为理事会投票
+   * @param targetId 目标ID
+   */
+  static voteForCouncil(targetId: string): Transaction {
+    return this.buildTransaction(500, [targetId])
+  }
+
+  /**
+   * 激活理事会
+   * @param targetId 目标ID
+   */
+  static activCouncil(targetId: string): Transaction {
+    return this.buildTransaction(501, [targetId])
+  }
+
+  /**
+   * 增加理事会成员
+   * @param address 成员地址
+   * @param weight 权重
+   * @param m 
+   */
+  static addMemberToCouncil(address: string, weight: string, m: number): Transaction {
+    return this.buildTransaction(502, [address,weight,m])
+  }
+
+  /**
+   * 移除理事会成员
+   * @param address 成员地址
+   * @param m 
+   */
+  static removeMemberFromCouncil(address: string, m: number): Transaction {
+    return this.buildTransaction(503, [address, m])
+  }
+
+  /**
+   * 置换理事会成员
+   * @param from 将被替换成员
+   * @param to 新来成员
+   * @param weight 权重
+   * @param m 
+   */
+  static replaceMemberFromCouncil(from: string, to: string, weight: string, m: number): Transaction {
+    return this.buildTransaction(504, [from,to,weight,m])
+  }
+
+
 
   /**
    * 注册合约

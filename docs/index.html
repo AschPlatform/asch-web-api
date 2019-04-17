@@ -1063,6 +1063,15 @@ img { max-width: 100%; }
 			<a href="globals.html#calfee" class="tsd-kind-icon">cal<wbr>Fee</a>
 		</li>
 		<li class=" tsd-kind-function tsd-is-not-exported">
+			<a href="globals.html#checkaddress" class="tsd-kind-icon">check<wbr>Address</a>
+		</li>
+		<li class=" tsd-kind-function tsd-is-not-exported">
+			<a href="globals.html#checkpublickey" class="tsd-kind-icon">check<wbr>Public<wbr>Key</a>
+		</li>
+		<li class=" tsd-kind-function tsd-is-not-exported">
+			<a href="globals.html#checksecret" class="tsd-kind-icon">check<wbr>Secret</a>
+		</li>
+		<li class=" tsd-kind-function tsd-is-not-exported">
 			<a href="globals.html#convertbigintmembertostring" class="tsd-kind-icon">convert<wbr>Bigint<wbr>Member<wbr>ToString</a>
 		</li>
 		<li class=" tsd-kind-function tsd-is-not-exported">
@@ -1293,7 +1302,20 @@ aschWeb.api
     })
 
 
-</code></pre><h3 id="-">构建交易--&gt;签名交易--&gt;广播交易</h3>
+</code></pre><h2 id="http-api-">HTTP API的基本使用</h2>
+			<p>目前asch节点的api有两种类型，查询操作的api和写操作的api</p>
+			<h3 id="-api-">查询api的使用</h3>
+			<pre><code class="language-javascript"><span class="hljs-comment">//查询账户详情</span>
+<span class="hljs-keyword">let</span> result = <span class="hljs-keyword">await</span> aschWeb.api.getAccountDetail(<span class="hljs-string">'AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb'</span>)
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'result:'</span> + <span class="hljs-built_in">JSON</span>.stringify(result))
+</code></pre>
+			<h3 id="-api-api-">写操作api的使用(签名交易api)</h3>
+			<pre><code class="language-javascript"><span class="hljs-comment">//发送XAS</span>
+<span class="hljs-keyword">let</span> result = <span class="hljs-keyword">await</span> aschWeb.api.transferXAS(<span class="hljs-number">123456</span>,to,<span class="hljs-string">'test transfer XAS'</span>)
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'result:'</span> + <span class="hljs-built_in">JSON</span>.stringify(result))
+</code></pre>
+			<h3 id="-">构建交易--&gt;签名交易--&gt;广播交易</h3>
+			<p>所有的写操作的api都需要：构建交易--&gt;签名交易--&gt;广播交易这3个过程，若不想用api里的方法，也可以如下使用</p>
 			<ol>
 				<li><a href="https://github.com/AschPlatform/asch-web/blob/contract-gen/src/builders/README.md">TransactionBuilder 生成未签名的交易</a><pre><code><span class="hljs-keyword">let</span> trans = <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">TransactionBuilder</span>.</span></span>transfer<span class="hljs-constructor">XAS(1000,<span class="hljs-params">to</span>,'<span class="hljs-params">test</span>')</span>
 console.log('unsigned transcation:'+<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">JSON</span>.</span></span>stringify(trans))</code></pre></li>
@@ -1335,26 +1357,60 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 {
     <span class="hljs-string">"success"</span>: <span class="hljs-literal">true</span>,
     <span class="hljs-string">"transactionId"</span>: <span class="hljs-string">"15cab894a1c86b68c33e0c47e292fdb474cdca73d6337fd2c7f138c48d6e20e3"</span>
-}</code></pre><h3 id="-">智能合约基本使用</h3>
-			<pre><code class="language-javascript"><span class="hljs-keyword">const</span> contract = <span class="hljs-keyword">await</span> aschWeb.createContractFromName(<span class="hljs-string">'crowdFundging_v1'</span>)</code></pre>
-			<h3 id="-">调用合约方法</h3>
-			<pre><code class="language-javascript"><span class="hljs-keyword">let</span> result = <span class="hljs-keyword">await</span> contract.call(<span class="hljs-string">'getXXT'</span>, [<span class="hljs-string">'233'</span>], <span class="hljs-number">1000000</span>, <span class="hljs-literal">false</span>)
+}</code></pre><h2 id="-">智能合约使用</h2>
+			<h4 id="-">发布智能合约</h4>
+			<pre><code class="language-javascript"><span class="hljs-keyword">let</span> code =<span class="hljs-string">'&lt;智能合约代码&gt;'</span>
+<span class="hljs-keyword">let</span> result = <span class="hljs-keyword">await</span> aschWeb.registerContract(<span class="hljs-string">'crowdFundging_v2'</span>,<span class="hljs-string">'a crowd funding contract'</span>,code)
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'registerContract result:'</span>+<span class="hljs-built_in">JSON</span>.stringify(result))</code></pre>
+			<h4 id="-">创建智能合约实例</h4>
+			<pre><code class="language-javascript"><span class="hljs-keyword">let</span> contract = <span class="hljs-keyword">await</span> aschWeb.createContractFromName(<span class="hljs-string">'crowdFundging_v1'</span>)
+contract.gasLimit=<span class="hljs-number">1000000</span>
+contract.enablePayGasInXAS=<span class="hljs-literal">true</span></code></pre>
+			<h4 id="-">调用合约方法（可见性为公开的普通方法）</h4>
+			<pre><code class="language-javascript"><span class="hljs-comment">//基本使用</span>
+<span class="hljs-keyword">let</span> result = <span class="hljs-keyword">await</span> contract.call(<span class="hljs-string">'getXXT'</span>, [<span class="hljs-string">'233'</span>])
 <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'testContract result:'</span> + <span class="hljs-built_in">JSON</span>.stringify(result))
+
+<span class="hljs-comment">//代理方法使用</span>
+<span class="hljs-keyword">let</span> result =<span class="hljs-keyword">await</span> contract.getXXT(<span class="hljs-string">'233'</span>)
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'result:'</span>+<span class="hljs-built_in">JSON</span>.stringify(result))
 </code></pre>
-			<h3 id="-">转账到合约</h3>
-			<pre><code class="language-javascript">  contract.pay(<span class="hljs-string">'XAS'</span>, <span class="hljs-string">'12345'</span>, contract.name, <span class="hljs-number">1000000</span>, <span class="hljs-literal">false</span>).
-    then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> {
-      <span class="hljs-keyword">if</span> (res.success) {
-        alert(<span class="hljs-string">'调用成功'</span>)
-        <span class="hljs-comment">//document.getElementById('result').innerHTML = JSON.stringify(res)</span>
-      } <span class="hljs-keyword">else</span> {
-       <span class="hljs-comment">// alert(res.error)</span>
-        <span class="hljs-built_in">console</span>.error(res)
-      }
-    }).catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> {
-      alert(res.error)
-      <span class="hljs-built_in">console</span>.error(err)
-    })
+			<h4 id="-payable-">调用转账到合约（资产接收方法 @payable）</h4>
+			<pre><code class="language-javascript"><span class="hljs-comment">//基本使用</span>
+<span class="hljs-comment">// 调用默认的默认向合约转账方法,方法名参数可以省略,此实例合约中对应crowdFunding函数(@payable({ isDefault: true }))</span>
+<span class="hljs-keyword">let</span> result =<span class="hljs-keyword">await</span> contract.pay(<span class="hljs-string">'XAS'</span>,<span class="hljs-string">'8345667'</span>)
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'result:'</span>+<span class="hljs-built_in">JSON</span>.stringify(result))
+<span class="hljs-comment">//调用payInitialToken资产接收方法(@payable)</span>
+<span class="hljs-keyword">let</span> result =<span class="hljs-keyword">await</span> contract.pay(<span class="hljs-string">'kim.KIM'</span>,<span class="hljs-string">'8345667'</span>, <span class="hljs-string">'payInitialToken'</span>)
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'result:'</span>+<span class="hljs-built_in">JSON</span>.stringify(result))
+
+<span class="hljs-comment">//代理方法使用</span>
+<span class="hljs-comment">// 调用默认的默认向合约转账方法,方法名参数可以省略,此实例合约中对应crowdFunding函数(@payable({ isDefault: true }))</span>
+<span class="hljs-keyword">let</span> result =<span class="hljs-keyword">await</span> contract.crowdFunding(<span class="hljs-string">'XAS'</span>,<span class="hljs-string">'8345667'</span>)
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'result:'</span>+<span class="hljs-built_in">JSON</span>.stringify(result))
+<span class="hljs-comment">//调用payInitialToken资产接收方法(@payable)</span>
+<span class="hljs-keyword">let</span> result =<span class="hljs-keyword">await</span> contract.payInitialToken(<span class="hljs-string">'kim.KIM'</span>,<span class="hljs-string">'8345667'</span>)
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'result:'</span>+<span class="hljs-built_in">JSON</span>.stringify(result))</code></pre>
+			<h4 id="-constant-">状态查询函数查询（@constant）</h4>
+			<pre><code class="language-javascript"><span class="hljs-comment">//基本使用</span>
+<span class="hljs-comment">//状态查询函数查询</span>
+<span class="hljs-keyword">let</span> result =<span class="hljs-keyword">await</span> contract.constant(<span class="hljs-string">'getFunding'</span>,<span class="hljs-string">'AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb'</span>)
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'result:'</span>+<span class="hljs-built_in">JSON</span>.stringify(result))
+
+<span class="hljs-comment">//代理方法使用</span>
+<span class="hljs-comment">//状态查询函数查询</span>
+<span class="hljs-keyword">let</span> result =<span class="hljs-keyword">await</span> contract.getFunding(<span class="hljs-string">'AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb'</span>)
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'result:'</span>+<span class="hljs-built_in">JSON</span>.stringify(result))
+</code></pre>
+			<h4 id="-">简单状态查询</h4>
+			<pre><code class="language-javascript"><span class="hljs-comment">//简单状态查询</span>
+<span class="hljs-keyword">let</span> result =<span class="hljs-keyword">await</span> contract.queryStates(<span class="hljs-string">'totalFundingToken'</span>)
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'result:'</span>+<span class="hljs-built_in">JSON</span>.stringify(result))
+
+<span class="hljs-comment">//代理方法使用</span>
+<span class="hljs-comment">//简单状态查询 get+状态名称(首字母大写)</span>
+<span class="hljs-keyword">let</span> result =<span class="hljs-keyword">await</span> contract.getTotalFundingToken()
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'result:'</span>+<span class="hljs-built_in">JSON</span>.stringify(result))
 </code></pre>
 		</div>
 		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
@@ -1441,6 +1497,9 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#base58encode" class="tsd-kind-icon">base58<wbr>Encode</a></li>
 							<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#beginepochtime" class="tsd-kind-icon">begin<wbr>Epoch<wbr>Time</a></li>
 							<li class="tsd-kind-function"><a href="globals.html#calfee" class="tsd-kind-icon">cal<wbr>Fee</a></li>
+							<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#checkaddress" class="tsd-kind-icon">check<wbr>Address</a></li>
+							<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#checkpublickey" class="tsd-kind-icon">check<wbr>Public<wbr>Key</a></li>
+							<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#checksecret" class="tsd-kind-icon">check<wbr>Secret</a></li>
 							<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#convertbigintmembertostring" class="tsd-kind-icon">convert<wbr>Bigint<wbr>Member<wbr>ToString</a></li>
 							<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#createaccount" class="tsd-kind-icon">create<wbr>Account</a></li>
 							<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#fill" class="tsd-kind-icon">fill</a></li>
@@ -1501,7 +1560,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">Bytes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Uint8Array</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L21">utils.ts:21</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L21">utils.ts:21</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1511,7 +1570,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L18">asch-web.ts:18</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L18">asch-web.ts:18</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -1548,7 +1607,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">Callback<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L14">asch-web.ts:14</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L14">asch-web.ts:14</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -1593,7 +1652,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">ALPHABET<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz&quot;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L25">utils.ts:25</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L25">utils.ts:25</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1603,7 +1662,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">ALPHABET_<wbr>MAP<span class="tsd-signature-symbol">:</span> <a href="interfaces/objecttype.html" class="tsd-signature-type">ObjectType</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L27">utils.ts:27</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L27">utils.ts:27</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1613,7 +1672,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">BASE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;ALPHABET.length</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L28">utils.ts:28</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L28">utils.ts:28</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1623,7 +1682,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">CLIENT_<wbr>DRIFT_<wbr>SECONDS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">5</span><span class="tsd-signature-symbol"> =&nbsp;5</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L2">constants.ts:2</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L2">constants.ts:2</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1633,7 +1692,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">CONTRACT_<wbr>INITIALIZER_<wbr>METHOD<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"__init__"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;__init__&quot;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/contract/metadata.ts#L4">contract/metadata.ts:4</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/contract/metadata.ts#L4">contract/metadata.ts:4</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1643,7 +1702,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">EPOCHTIME<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> =&nbsp;new Date(Date.UTC(2016, 5, 27, 20, 0, 0, 0))</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L24">utils.ts:24</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L24">utils.ts:24</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1653,7 +1712,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">LEADER<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;ALPHABET.charAt(0)</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L29">utils.ts:29</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L29">utils.ts:29</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1663,7 +1722,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">LOCAL_<wbr>NET_<wbr>MAGIC<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"594fe0f3"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;594fe0f3&quot;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L3">constants.ts:3</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L3">constants.ts:3</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1673,7 +1732,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">MAIN_<wbr>NET_<wbr>MAGIC<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"5f5b3cf5"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;5f5b3cf5&quot;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L5">constants.ts:5</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L5">constants.ts:5</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1683,7 +1742,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">NORMAL_<wbr>PREFIX<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"A"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;A&quot;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L22">utils.ts:22</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L22">utils.ts:22</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1693,7 +1752,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">ONE_<wbr>XAS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">100000000</span><span class="tsd-signature-symbol"> =&nbsp;100000000</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L23">utils.ts:23</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L23">utils.ts:23</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1703,7 +1762,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">TEST_<wbr>NET_<wbr>MAGIC<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"594fe0f3"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;594fe0f3&quot;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L4">constants.ts:4</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L4">constants.ts:4</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1713,7 +1772,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">XAS_<wbr>PRECISION<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">100000000</span><span class="tsd-signature-symbol"> =&nbsp;100000000</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L1">constants.ts:1</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L1">constants.ts:1</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1723,7 +1782,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">delegates<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">101</span><span class="tsd-signature-symbol"> =&nbsp;101</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/time/slots.ts#L16">time/slots.ts:16</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/time/slots.ts#L16">time/slots.ts:16</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1733,7 +1792,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">10</span><span class="tsd-signature-symbol"> =&nbsp;10</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/time/slots.ts#L15">time/slots.ts:15</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/time/slots.ts#L15">time/slots.ts:15</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1750,7 +1809,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L265">utils.ts:265</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L265">utils.ts:265</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1776,7 +1835,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L292">utils.ts:292</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L292">utils.ts:292</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1799,7 +1858,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/time/slots.ts#L10">time/slots.ts:10</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/time/slots.ts#L10">time/slots.ts:10</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Date</span></h4>
@@ -1816,7 +1875,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L124">asch-fee.ts:124</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L139">asch-fee.ts:139</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1830,6 +1889,75 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+				<a name="checkaddress" class="tsd-anchor"></a>
+				<h3>check<wbr>Address</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+					<li class="tsd-signature tsd-kind-icon">check<wbr>Address<span class="tsd-signature-symbol">(</span>address<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/validation.ts#L12">validation.ts:12</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>address: <span class="tsd-signature-type">string</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+				<a name="checkpublickey" class="tsd-anchor"></a>
+				<h3>check<wbr>Public<wbr>Key</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+					<li class="tsd-signature tsd-kind-icon">check<wbr>Public<wbr>Key<span class="tsd-signature-symbol">(</span>publicKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/validation.ts#L8">validation.ts:8</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>publicKey: <span class="tsd-signature-type">string</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+				<a name="checksecret" class="tsd-anchor"></a>
+				<h3>check<wbr>Secret</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+					<li class="tsd-signature tsd-kind-icon">check<wbr>Secret<span class="tsd-signature-symbol">(</span>secret<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/validation.ts#L3">validation.ts:3</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>secret: <span class="tsd-signature-type">string</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
 				<a name="convertbigintmembertostring" class="tsd-anchor"></a>
 				<h3>convert<wbr>Bigint<wbr>Member<wbr>ToString</h3>
 				<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
@@ -1839,7 +1967,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/builders/index.ts#L7">builders/index.ts:7</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/builders/index.ts#L7">builders/index.ts:7</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1862,7 +1990,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L358">utils.ts:358</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L358">utils.ts:358</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <a href="interfaces/account.html" class="tsd-signature-type">Account</a></h4>
@@ -1879,7 +2007,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L99">utils.ts:99</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L99">utils.ts:99</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1912,7 +2040,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L168">utils.ts:168</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L168">utils.ts:168</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1942,7 +2070,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L384">utils.ts:384</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L384">utils.ts:384</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1968,7 +2096,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L131">utils.ts:131</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L131">utils.ts:131</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2004,7 +2132,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/time/format.ts#L47">time/format.ts:47</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/time/format.ts#L47">time/format.ts:47</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2027,7 +2155,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L345">utils.ts:345</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L345">utils.ts:345</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2050,7 +2178,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L368">utils.ts:368</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L368">utils.ts:368</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -2067,7 +2195,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L372">utils.ts:372</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L372">utils.ts:372</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2090,7 +2218,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L51">utils.ts:51</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L51">utils.ts:51</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2119,7 +2247,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/time/slots.ts#L1">time/slots.ts:1</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/time/slots.ts#L1">time/slots.ts:1</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2142,7 +2270,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L43">utils.ts:43</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L43">utils.ts:43</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2171,7 +2299,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L261">utils.ts:261</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L261">utils.ts:261</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2194,7 +2322,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L144">utils.ts:144</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L144">utils.ts:144</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2217,7 +2345,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/time/slots.ts#L49">time/slots.ts:49</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/time/slots.ts#L49">time/slots.ts:49</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2240,7 +2368,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/time/slots.ts#L43">time/slots.ts:43</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/time/slots.ts#L43">time/slots.ts:43</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -2257,7 +2385,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/time/slots.ts#L22">time/slots.ts:22</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/time/slots.ts#L22">time/slots.ts:22</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2280,7 +2408,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/time/slots.ts#L31">time/slots.ts:31</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/time/slots.ts#L31">time/slots.ts:31</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2303,7 +2431,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/time/slots.ts#L39">time/slots.ts:39</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/time/slots.ts#L39">time/slots.ts:39</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2326,7 +2454,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/time/slots.ts#L18">time/slots.ts:18</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/time/slots.ts#L18">time/slots.ts:18</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2349,7 +2477,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L422">utils.ts:422</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L422">utils.ts:422</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2375,7 +2503,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L326">utils.ts:326</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L326">utils.ts:326</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2398,7 +2526,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L450">utils.ts:450</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L450">utils.ts:450</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2421,7 +2549,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/builders/issue.ts#L3">builders/issue.ts:3</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/builders/issue.ts#L3">builders/issue.ts:3</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2450,7 +2578,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L444">utils.ts:444</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L444">utils.ts:444</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2473,7 +2601,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L117">utils.ts:117</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L117">utils.ts:117</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2499,7 +2627,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L39">utils.ts:39</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L39">utils.ts:39</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2522,7 +2650,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L416">utils.ts:416</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L416">utils.ts:416</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2545,7 +2673,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L106">utils.ts:106</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L106">utils.ts:106</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2571,7 +2699,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L196">utils.ts:196</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L196">utils.ts:196</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2605,7 +2733,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/time/format.ts#L3">time/format.ts:3</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/time/format.ts#L3">time/format.ts:3</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2628,7 +2756,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L184">utils.ts:184</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L184">utils.ts:184</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2658,7 +2786,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L156">utils.ts:156</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L156">utils.ts:156</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2681,7 +2809,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L388">utils.ts:388</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L388">utils.ts:388</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2707,7 +2835,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L401">utils.ts:401</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L401">utils.ts:401</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2730,7 +2858,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/builders/transfer.ts#L3">builders/transfer.ts:3</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/builders/transfer.ts#L3">builders/transfer.ts:3</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2762,7 +2890,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L219">utils.ts:219</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L219">utils.ts:219</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2789,7 +2917,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/utils.ts#L246">utils.ts:246</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/utils.ts#L246">utils.ts:246</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2825,7 +2953,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/builders/vote.ts#L3">builders/vote.ts:3</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/builders/vote.ts#L3">builders/vote.ts:3</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2850,7 +2978,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">URLS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L8">constants.ts:8</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L8">constants.ts:8</a></li>
 					</ul>
 				</aside>
 				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal">
@@ -2859,7 +2987,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<div class="tsd-signature tsd-kind-icon">accounts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L14">constants.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L14">constants.ts:14</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -2868,7 +2996,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/accounts/count&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L20">constants.ts:20</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L20">constants.ts:20</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -2878,7 +3006,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">deletates_<wbr>voted<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/accounts/delegates&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L21">constants.ts:21</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L21">constants.ts:21</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -2888,7 +3016,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">mock<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/data/home/accounts.json&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L15">constants.ts:15</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L15">constants.ts:15</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -2898,7 +3026,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">new<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/accounts/new&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L19">constants.ts:19</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L19">constants.ts:19</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -2908,7 +3036,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">open<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/accounts/open/&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L16">constants.ts:16</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L16">constants.ts:16</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -2918,7 +3046,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">open2<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/accounts/open2/&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L17">constants.ts:17</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L17">constants.ts:17</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -2928,7 +3056,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/accounts&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L18">constants.ts:18</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L18">constants.ts:18</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -2939,7 +3067,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<div class="tsd-signature tsd-kind-icon">blocks<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L31">constants.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L31">constants.ts:31</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -2948,7 +3076,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">detail<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/blocks/get&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L33">constants.ts:33</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L33">constants.ts:33</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -2958,7 +3086,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">full<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/blocks/full&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L39">constants.ts:39</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L39">constants.ts:39</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -2968,7 +3096,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">height<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/blocks/getHeight&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L34">constants.ts:34</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L34">constants.ts:34</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -2978,7 +3106,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">milestone<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/blocks/getMilestone&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L35">constants.ts:35</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L35">constants.ts:35</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -2988,7 +3116,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">mock<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/data/blockDetail/getblocks.json&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L32">constants.ts:32</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L32">constants.ts:32</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -2998,7 +3126,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">reward<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/blocks/getReward&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L36">constants.ts:36</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L36">constants.ts:36</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3008,7 +3136,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/blocks/getStatus&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L38">constants.ts:38</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L38">constants.ts:38</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3018,7 +3146,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">supply<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/blocks/getSupply&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L37">constants.ts:37</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L37">constants.ts:37</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3029,7 +3157,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<div class="tsd-signature tsd-kind-icon">delegates<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L42">constants.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L42">constants.ts:42</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3038,7 +3166,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/delegates/count&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L43">constants.ts:43</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L43">constants.ts:43</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3048,7 +3176,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">detail<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/delegates/get&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L45">constants.ts:45</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L45">constants.ts:45</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3058,7 +3186,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">forging_<wbr>status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/delegates/forging/status&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L47">constants.ts:47</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L47">constants.ts:47</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3068,7 +3196,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/delegates&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L46">constants.ts:46</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L46">constants.ts:46</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3078,7 +3206,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">voters<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/delegates/voters&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L44">constants.ts:44</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L44">constants.ts:44</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3089,7 +3217,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<div class="tsd-signature tsd-kind-icon">loder<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L56">constants.ts:56</a></li>
+							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L56">constants.ts:56</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3098,7 +3226,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/loader/status&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L57">constants.ts:57</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L57">constants.ts:57</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3108,7 +3236,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">status_<wbr>sync<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/loader/status/sync&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L58">constants.ts:58</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L58">constants.ts:58</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3119,7 +3247,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<div class="tsd-signature tsd-kind-icon">magics<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L135">constants.ts:135</a></li>
+							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L135">constants.ts:135</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3128,7 +3256,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">development<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;594fe0f3&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L136">constants.ts:136</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L136">constants.ts:136</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3138,7 +3266,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">production<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;5f5b3cf5&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L137">constants.ts:137</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L137">constants.ts:137</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3149,7 +3277,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<div class="tsd-signature tsd-kind-icon">peers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L50">constants.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L50">constants.ts:50</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3158,7 +3286,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">detail<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/peers/get&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L53">constants.ts:53</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L53">constants.ts:53</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3168,7 +3296,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/peers&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L51">constants.ts:51</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L51">constants.ts:51</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3178,7 +3306,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">version<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/peers/version&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L52">constants.ts:52</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L52">constants.ts:52</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3189,7 +3317,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<div class="tsd-signature tsd-kind-icon">server<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L9">constants.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L9">constants.ts:9</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3198,7 +3326,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">development<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;http://testnet.asch.io&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L10">constants.ts:10</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L10">constants.ts:10</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3208,7 +3336,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">production<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;http://mainnet.asch.io&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L11">constants.ts:11</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L11">constants.ts:11</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3218,7 +3346,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">test<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;http://testnet.asch.io&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L12">constants.ts:12</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L12">constants.ts:12</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3229,7 +3357,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<div class="tsd-signature tsd-kind-icon">transactions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L24">constants.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L24">constants.ts:24</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3238,7 +3366,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">mock<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/data/home/transactions.json&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L25">constants.ts:25</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L25">constants.ts:25</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3248,7 +3376,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">uncomfirmed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/transactions/unconfirmed&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L27">constants.ts:27</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L27">constants.ts:27</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3258,7 +3386,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">uncomfirmed_<wbr>detail<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/transactions/unconfirmed/get&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L28">constants.ts:28</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L28">constants.ts:28</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3268,7 +3396,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/transactions&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L26">constants.ts:26</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L26">constants.ts:26</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -3279,7 +3407,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 					<div class="tsd-signature tsd-kind-icon">v2<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L63">constants.ts:63</a></li>
+							<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L63">constants.ts:63</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal">
@@ -3288,7 +3416,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">accounts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L65">constants.ts:65</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L65">constants.ts:65</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3297,7 +3425,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">balances<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/balances/:address&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L67">constants.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L67">constants.ts:67</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3307,7 +3435,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">detail<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/accounts/:address&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L66">constants.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L66">constants.ts:66</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3317,7 +3445,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">pledges<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/pledges&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L68">constants.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L68">constants.ts:68</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3328,7 +3456,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">agents<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L107">constants.ts:107</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L107">constants.ts:107</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3337,7 +3465,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">clienteles<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;api/v2/agents/:name/clienteles&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L109">constants.ts:109</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L109">constants.ts:109</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3347,7 +3475,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">group<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;api/v2/groups/:address&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L110">constants.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L110">constants.ts:110</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3357,7 +3485,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/agents&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L108">constants.ts:108</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L108">constants.ts:108</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3368,7 +3496,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">blocks<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L87">constants.ts:87</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L87">constants.ts:87</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3377,7 +3505,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">detail<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/blocks/:idOrHeight&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L89">constants.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L89">constants.ts:89</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3387,7 +3515,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/blocks&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L88">constants.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L88">constants.ts:88</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3398,7 +3526,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">chains<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L112">constants.ts:112</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L112">constants.ts:112</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3407,7 +3535,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;api/v2/chains&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L113">constants.ts:113</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L113">constants.ts:113</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3418,7 +3546,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">contracts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L123">constants.ts:123</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L123">constants.ts:123</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3427,7 +3555,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">code<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/contracts/:name/code&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L126">constants.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L126">constants.ts:126</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3437,7 +3565,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">constants_<wbr>method<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/contracts/:name/constant/:method&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L130">constants.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L130">constants.ts:130</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3447,7 +3575,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">detail<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/contracts/:name&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L125">constants.ts:125</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L125">constants.ts:125</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3457,7 +3585,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/contracts/&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L124">constants.ts:124</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L124">constants.ts:124</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3467,7 +3595,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">metadata<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/contracts/:name/metadata&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L127">constants.ts:127</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L127">constants.ts:127</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3477,7 +3605,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">results<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/contracts/:name/results/:tid&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L129">constants.ts:129</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L129">constants.ts:129</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3487,7 +3615,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">states<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/contracts/:name/states/:path&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L128">constants.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L128">constants.ts:128</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3498,7 +3626,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">gateways<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L97">constants.ts:97</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L97">constants.ts:97</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3507,7 +3635,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">account_<wbr>all<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/gateways/accounts/:address&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L102">constants.ts:102</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L102">constants.ts:102</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3517,7 +3645,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">account_<wbr>one<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/gateways/:name/accounts/:address&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L103">constants.ts:103</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L103">constants.ts:103</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3527,7 +3655,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">currencies_<wbr>all<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/gateways/currencies&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L100">constants.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L100">constants.ts:100</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3537,7 +3665,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">currencies_<wbr>one<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/gateways/:name/currencies&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L101">constants.ts:101</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L101">constants.ts:101</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3547,7 +3675,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">deposits<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/gateways/deposits/:address/:currency&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L104">constants.ts:104</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L104">constants.ts:104</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3557,7 +3685,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/gateways&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L98">constants.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L98">constants.ts:98</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3567,7 +3695,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">validators<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/gateways/:name/validators&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L99">constants.ts:99</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L99">constants.ts:99</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3577,7 +3705,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">withdrawals<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/gateways/withdrawals/:address/:currency&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L105">constants.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L105">constants.ts:105</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3588,7 +3716,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">proposals<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L91">constants.ts:91</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L91">constants.ts:91</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3597,7 +3725,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">detail<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/proposals/:id&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L93">constants.ts:93</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L93">constants.ts:93</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3607,7 +3735,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/proposals&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L92">constants.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L92">constants.ts:92</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3618,7 +3746,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">transactions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L71">constants.ts:71</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L71">constants.ts:71</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3627,7 +3755,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">detail<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/transactions/:tid&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L79">constants.ts:79</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L79">constants.ts:79</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3642,7 +3770,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/transactions&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L75">constants.ts:75</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L75">constants.ts:75</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3658,7 +3786,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">transfers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L81">constants.ts:81</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L81">constants.ts:81</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3667,7 +3795,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/transfers&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L85">constants.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L85">constants.ts:85</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3683,7 +3811,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<div class="tsd-signature tsd-kind-icon">uia<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L115">constants.ts:115</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L115">constants.ts:115</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -3692,7 +3820,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">assets_<wbr>all<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/uia/assets&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L119">constants.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L119">constants.ts:119</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3702,7 +3830,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">assets_<wbr>detail<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/uia/assets/:name&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L120">constants.ts:120</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L120">constants.ts:120</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3712,7 +3840,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">assets_<wbr>one<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/uia/issuers/:address/assets&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L118">constants.ts:118</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L118">constants.ts:118</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3722,7 +3850,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">balances<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/uia/balances/:address&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L121">constants.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L121">constants.ts:121</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3732,7 +3860,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">issuers_<wbr>detail<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/uia/issuers/:address&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L117">constants.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L117">constants.ts:117</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3742,7 +3870,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 							<div class="tsd-signature tsd-kind-icon">issuers_<wbr>list<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/api/v2/uia/issuers&quot;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/constants.ts#L116">constants.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/constants.ts#L116">constants.ts:116</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -3755,7 +3883,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 				<div class="tsd-signature tsd-kind-icon">fee<wbr>Func<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L3">asch-fee.ts:3</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L3">asch-fee.ts:3</a></li>
 					</ul>
 				</aside>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
@@ -3768,7 +3896,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L4">asch-fee.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L4">asch-fee.ts:4</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3791,7 +3919,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L44">asch-fee.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L44">asch-fee.ts:44</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3814,7 +3942,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L59">asch-fee.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L59">asch-fee.ts:59</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3837,7 +3965,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L62">asch-fee.ts:62</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L62">asch-fee.ts:62</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3860,7 +3988,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L65">asch-fee.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L65">asch-fee.ts:65</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3883,7 +4011,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L68">asch-fee.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L68">asch-fee.ts:68</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3906,7 +4034,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L47">asch-fee.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L47">asch-fee.ts:47</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3929,7 +4057,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L50">asch-fee.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L50">asch-fee.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3952,7 +4080,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L53">asch-fee.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L53">asch-fee.ts:53</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3975,7 +4103,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L56">asch-fee.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L56">asch-fee.ts:56</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3998,7 +4126,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L7">asch-fee.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L7">asch-fee.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4021,7 +4149,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L71">asch-fee.ts:71</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L71">asch-fee.ts:71</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4044,7 +4172,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L74">asch-fee.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L74">asch-fee.ts:74</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4067,7 +4195,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L77">asch-fee.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L77">asch-fee.ts:77</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4090,7 +4218,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L80">asch-fee.ts:80</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L80">asch-fee.ts:80</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4113,7 +4241,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L83">asch-fee.ts:83</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L83">asch-fee.ts:83</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4136,7 +4264,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L86">asch-fee.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L86">asch-fee.ts:86</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4159,7 +4287,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L23">asch-fee.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L23">asch-fee.ts:23</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4182,7 +4310,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L89">asch-fee.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L89">asch-fee.ts:89</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4205,7 +4333,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L92">asch-fee.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L92">asch-fee.ts:92</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4228,7 +4356,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L95">asch-fee.ts:95</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L95">asch-fee.ts:95</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4251,7 +4379,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L26">asch-fee.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L26">asch-fee.ts:26</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4274,7 +4402,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L98">asch-fee.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L98">asch-fee.ts:98</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4297,7 +4425,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L101">asch-fee.ts:101</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L101">asch-fee.ts:101</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4320,7 +4448,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L104">asch-fee.ts:104</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L104">asch-fee.ts:104</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4343,7 +4471,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L107">asch-fee.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L107">asch-fee.ts:107</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4366,7 +4494,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L110">asch-fee.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L110">asch-fee.ts:110</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4389,7 +4517,122 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L29">asch-fee.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L29">asch-fee.ts:29</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>trs: <a href="interfaces/transaction.html" class="tsd-signature-type">Transaction</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+					<a name="feefuncmap.500" class="tsd-anchor"></a>
+					<h3>500</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">500<span class="tsd-signature-symbol">(</span>trs<span class="tsd-signature-symbol">: </span><a href="interfaces/transaction.html" class="tsd-signature-type">Transaction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L113">asch-fee.ts:113</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>trs: <a href="interfaces/transaction.html" class="tsd-signature-type">Transaction</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+					<a name="feefuncmap.501" class="tsd-anchor"></a>
+					<h3>501</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">501<span class="tsd-signature-symbol">(</span>trs<span class="tsd-signature-symbol">: </span><a href="interfaces/transaction.html" class="tsd-signature-type">Transaction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L116">asch-fee.ts:116</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>trs: <a href="interfaces/transaction.html" class="tsd-signature-type">Transaction</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+					<a name="feefuncmap.502" class="tsd-anchor"></a>
+					<h3>502</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">502<span class="tsd-signature-symbol">(</span>trs<span class="tsd-signature-symbol">: </span><a href="interfaces/transaction.html" class="tsd-signature-type">Transaction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L119">asch-fee.ts:119</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>trs: <a href="interfaces/transaction.html" class="tsd-signature-type">Transaction</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+					<a name="feefuncmap.503" class="tsd-anchor"></a>
+					<h3>503</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">503<span class="tsd-signature-symbol">(</span>trs<span class="tsd-signature-symbol">: </span><a href="interfaces/transaction.html" class="tsd-signature-type">Transaction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L122">asch-fee.ts:122</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>trs: <a href="interfaces/transaction.html" class="tsd-signature-type">Transaction</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+					<a name="feefuncmap.504" class="tsd-anchor"></a>
+					<h3>504</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">504<span class="tsd-signature-symbol">(</span>trs<span class="tsd-signature-symbol">: </span><a href="interfaces/transaction.html" class="tsd-signature-type">Transaction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L125">asch-fee.ts:125</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4412,7 +4655,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L32">asch-fee.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L32">asch-fee.ts:32</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4435,7 +4678,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L113">asch-fee.ts:113</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L128">asch-fee.ts:128</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4458,7 +4701,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L116">asch-fee.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L131">asch-fee.ts:131</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4481,7 +4724,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L119">asch-fee.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L134">asch-fee.ts:134</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4504,7 +4747,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L35">asch-fee.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L35">asch-fee.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4527,7 +4770,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L38">asch-fee.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L38">asch-fee.ts:38</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4550,7 +4793,7 @@ console.log('signed transcation:'+<span class="hljs-module-access"><span class="
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-fee.ts#L41">asch-fee.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-fee.ts#L41">asch-fee.ts:41</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>

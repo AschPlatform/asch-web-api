@@ -916,6 +916,9 @@ img { max-width: 100%; }
 					<a href="aschweb.html#constructor" class="tsd-kind-icon">constructor</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
+					<a href="aschweb.html#address" class="tsd-kind-icon">address</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="aschweb.html#api" class="tsd-kind-icon">api</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -926,6 +929,9 @@ img { max-width: 100%; }
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="aschweb.html#provider" class="tsd-kind-icon">provider</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class">
+					<a href="aschweb.html#publickey" class="tsd-kind-icon">public<wbr>Key</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="aschweb.html#secondsecret" class="tsd-kind-icon">second<wbr>Secret</a>
@@ -965,6 +971,9 @@ img { max-width: 100%; }
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="aschweb.html#fullsign" class="tsd-kind-icon">full<wbr>Sign</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="aschweb.html#registercontract" class="tsd-kind-icon">register<wbr>Contract</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="aschweb.html#sethttpprovider" class="tsd-kind-icon">set<wbr>Http<wbr>Provider</a>
@@ -1008,10 +1017,12 @@ img { max-width: 100%; }
 					<section class="tsd-index-section ">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="aschweb.html#address" class="tsd-kind-icon">address</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="aschweb.html#api" class="tsd-kind-icon">api</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="aschweb.html#defaultaccount" class="tsd-kind-icon">default<wbr>Account</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="aschweb.html#injectpromise" class="tsd-kind-icon">inject<wbr>Promise</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="aschweb.html#provider" class="tsd-kind-icon">provider</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="aschweb.html#publickey" class="tsd-kind-icon">public<wbr>Key</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="aschweb.html#secondsecret" class="tsd-kind-icon">second<wbr>Secret</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="aschweb.html#secret" class="tsd-kind-icon">secret</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="aschweb.html#aschcontract" class="tsd-kind-icon">Asch<wbr>Contract</a></li>
@@ -1030,6 +1041,7 @@ img { max-width: 100%; }
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschweb.html#createcontractfrommeta" class="tsd-kind-icon">create<wbr>Contract<wbr>From<wbr>Meta</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschweb.html#createcontractfromname" class="tsd-kind-icon">create<wbr>Contract<wbr>From<wbr>Name</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschweb.html#fullsign" class="tsd-kind-icon">full<wbr>Sign</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschweb.html#registercontract" class="tsd-kind-icon">register<wbr>Contract</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschweb.html#sethttpprovider" class="tsd-kind-icon">set<wbr>Http<wbr>Provider</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschweb.html#setprovider" class="tsd-kind-icon">set<wbr>Provider</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="aschweb.html#setsecondsecret" class="tsd-kind-icon">set<wbr>Second<wbr>Secret</a></li>
@@ -1052,7 +1064,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L36">asch-web.ts:36</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L38">asch-web.ts:38</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1075,12 +1087,22 @@ img { max-width: 100%; }
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Properties</h2>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="address" class="tsd-anchor"></a>
+				<h3>address</h3>
+				<div class="tsd-signature tsd-kind-icon">address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L35">asch-web.ts:35</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 				<a name="api" class="tsd-anchor"></a>
 				<h3>api</h3>
 				<div class="tsd-signature tsd-kind-icon">api<span class="tsd-signature-symbol">:</span> <a href="aschapi.html" class="tsd-signature-type">AschAPI</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L35">asch-web.ts:35</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L37">asch-web.ts:37</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1090,7 +1112,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">default<wbr>Account<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L31">asch-web.ts:31</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L31">asch-web.ts:31</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1100,7 +1122,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">inject<wbr>Promise<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L36">asch-web.ts:36</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L38">asch-web.ts:38</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1110,7 +1132,17 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">provider<span class="tsd-signature-symbol">:</span> <a href="provider.html" class="tsd-signature-type">Provider</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L34">asch-web.ts:34</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L36">asch-web.ts:36</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="publickey" class="tsd-anchor"></a>
+				<h3>public<wbr>Key</h3>
+				<div class="tsd-signature tsd-kind-icon">public<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L34">asch-web.ts:34</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1120,7 +1152,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">second<wbr>Secret<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L33">asch-web.ts:33</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L33">asch-web.ts:33</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1130,7 +1162,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">secret<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L32">asch-web.ts:32</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L32">asch-web.ts:32</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1140,7 +1172,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Asch<wbr>Contract<span class="tsd-signature-symbol">:</span> <a href="aschcontract.html" class="tsd-signature-type">AschContract</a><span class="tsd-signature-symbol"> =&nbsp;AschContract</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L28">asch-web.ts:28</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L28">asch-web.ts:28</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1150,7 +1182,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Asch<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;/Users/kimziv/Documents/kzworks1/asch-web/src/type&quot;</span><span class="tsd-signature-symbol"> =&nbsp;AschType</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L27">asch-web.ts:27</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L27">asch-web.ts:27</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1160,7 +1192,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Constants<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;/Users/kimziv/Documents/kzworks1/asch-web/src/constants&quot;</span><span class="tsd-signature-symbol"> =&nbsp;Constants</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L25">asch-web.ts:25</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L25">asch-web.ts:25</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1170,7 +1202,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">HTTPProvider<span class="tsd-signature-symbol">:</span> <a href="httpprovider.html" class="tsd-signature-type">HTTPProvider</a><span class="tsd-signature-symbol"> =&nbsp;HTTPProvider</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L22">asch-web.ts:22</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L22">asch-web.ts:22</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1180,7 +1212,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Network<span class="tsd-signature-symbol">:</span> <a href="../enums/network.html" class="tsd-signature-type">Network</a><span class="tsd-signature-symbol"> =&nbsp;Network</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L23">asch-web.ts:23</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L23">asch-web.ts:23</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1190,7 +1222,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Provider<span class="tsd-signature-symbol">:</span> <a href="provider.html" class="tsd-signature-type">Provider</a><span class="tsd-signature-symbol"> =&nbsp;Provider</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L21">asch-web.ts:21</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L21">asch-web.ts:21</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1200,7 +1232,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Transaction<wbr>Builder<span class="tsd-signature-symbol">:</span> <a href="transactionbuilder.html" class="tsd-signature-type">TransactionBuilder</a><span class="tsd-signature-symbol"> =&nbsp;TransactionBuilder</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L24">asch-web.ts:24</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L24">asch-web.ts:24</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1210,7 +1242,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Utils<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;/Users/kimziv/Documents/kzworks1/asch-web/src/utils&quot;</span><span class="tsd-signature-symbol"> =&nbsp;Utils</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L26">asch-web.ts:26</a></li>
+						<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L26">asch-web.ts:26</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -1227,7 +1259,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L123">asch-web.ts:123</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L155">asch-web.ts:155</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1255,7 +1287,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L131">asch-web.ts:131</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L163">asch-web.ts:163</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1285,7 +1317,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L78">asch-web.ts:78</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L89">asch-web.ts:89</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1306,6 +1338,67 @@ img { max-width: 100%; }
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="registercontract" class="tsd-anchor"></a>
+				<h3>register<wbr>Contract</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">register<wbr>Contract<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, desc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, code<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, version<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, consumeOwnerEnergy<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span>, gasLimit<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L138">asch-web.ts:138</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>发布智能合约</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>name: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>智能合约名称，全网唯一，3 ~ 32个字母或数字组成</p>
+								</div>
+							</li>
+							<li>
+								<h5>desc: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>智能合约的描述，长度不超过255的字符串</p>
+								</div>
+							</li>
+							<li>
+								<h5>code: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>智能合约代码，长度不超过16K</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> version: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;v0.1&quot;</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>合约引擎版本，目前请填v0.1</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> consumeOwnerEnergy: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>是否优先消耗合约所有者的能量</p>
+								</div>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> gasLimit: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1000000</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>最大消耗的Gas, 10,000,000 &gt; gasLimit &gt; 0</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 				<a name="sethttpprovider" class="tsd-anchor"></a>
 				<h3>set<wbr>Http<wbr>Provider</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1315,7 +1408,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L60">asch-web.ts:60</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L71">asch-web.ts:71</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1341,7 +1434,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L55">asch-web.ts:55</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L66">asch-web.ts:66</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1364,7 +1457,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L70">asch-web.ts:70</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L81">asch-web.ts:81</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1387,7 +1480,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L66">asch-web.ts:66</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L77">asch-web.ts:77</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1410,7 +1503,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/832d57d/src/asch-web.ts#L82">asch-web.ts:82</a></li>
+								<li>Defined in <a href="https://github.com/AschPlatform/asch-web/blob/2341265/src/asch-web.ts#L93">asch-web.ts:93</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>

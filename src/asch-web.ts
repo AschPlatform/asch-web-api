@@ -31,6 +31,8 @@ export default class AschWeb {
   public defaultAccount: any
   public secret: string //12个助记词或者私钥
   public secondSecret: string
+  public readonly publicKey:string
+  public readonly address:string
   public provider: Provider
   public api: AschAPI
   private injectPromise: any
@@ -40,8 +42,17 @@ export default class AschWeb {
     this.secret = secret
     this.secondSecret = secondSecret
     this.api = new AschAPI(this)
-    // this.utils = utils
-    this.defaultAccount = { address: '' }
+    if(secret && secret.length>0){
+      let publicKey=Utils.getKeys(secret).publicKey
+      this.publicKey=publicKey
+      let address=Utils.getAddress(publicKey)
+      this.address =address
+      this.defaultAccount = { address: address, publicKey: publicKey}
+    }else{
+      this.publicKey=''
+      this.address =''
+      this.defaultAccount = { address: '', publicKey: ''}
+    }
     this.injectPromise = Utils.promiseInjector(this)
   }
 
@@ -113,6 +124,27 @@ export default class AschWeb {
   //     return Promise.reject(ex)
   //   }
   // }
+
+
+  /**
+   * 发布智能合约
+   * @param name 智能合约名称，全网唯一，3 ~ 32个字母或数字组成
+   * @param desc 智能合约的描述，长度不超过255的字符串
+   * @param code 智能合约代码，长度不超过16K
+   * @param version 合约引擎版本，目前请填v0.1
+   * @param consumeOwnerEnergy 是否优先消耗合约所有者的能量
+   * @param gasLimit 最大消耗的Gas, 10,000,000 > gasLimit > 0
+   */
+  public registerContract(
+    name: string,
+    desc: string,
+    code: string,
+    version: string='v0.1',
+    consumeOwnerEnergy: boolean=true,
+    gasLimit: number=1000000
+    ): Promise<object> {
+    return this.api.registerContract(name,desc,code,version,consumeOwnerEnergy,gasLimit)
+  }
 
 
   /**
