@@ -1143,6 +1143,19 @@ export default class AschAPI extends API {
     return this.broadcastTransaction(trx)
   }
 
+    /**
+   * 置换理事会成员
+   * @param from 将被替换成员
+   * @param to 新来成员
+   * @param weight 权重
+   * @param m 
+   */
+  public async replaceMemberFromCouncil(from: string, to: string, weight: string, m: number): Promise<object> {
+    let trx: Transaction = TransactionBuilder.replaceMemberFromCouncil(from, to, weight, m)
+    trx = await this.aschWeb.sign(trx)
+    return this.broadcastTransaction(trx)
+  }
+
 
   /**
    * 注册合约

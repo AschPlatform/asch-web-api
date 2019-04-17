@@ -429,6 +429,19 @@ export class TransactionBuilder {
   }
 
   /**
+   * 置换理事会成员
+   * @param from 将被替换成员
+   * @param to 新来成员
+   * @param weight 权重
+   * @param m 
+   */
+  static replaceMemberFromCouncil(from: string, to: string, weight: string, m: number): Transaction {
+    return this.buildTransaction(504, [from,to,weight,m])
+  }
+
+
+
+  /**
    * 注册合约
    * @param name 智能合约名称，全网唯一，3 ~ 32个字母或数字组成
    * @param version 合约引擎版本，目前请填v1.0
