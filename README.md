@@ -253,7 +253,7 @@ console.log('result:'+JSON.stringify(result))
 
 ```
 
-#### 调用转账到合约（资产接收方法）
+#### 调用转账到合约（资产接收方法 @payable）
 
 ```javascript
 //基本使用
