@@ -692,7 +692,7 @@ export default class AschAPI extends API {
    * @param recipientId 接收者地址
    * @param message 转账备注 
    */
-  public async transferXAS(amount: number, recipientId: string, message: string): Promise<object> {
+  public async transferXAS(amount: number, recipientId: string, message: string=''): Promise<object> {
     let trx: Transaction = TransactionBuilder.transferXAS(amount, recipientId, message)
     trx = await this.aschWeb.sign(trx)
     //console.log('+++++transaction:' + JSON.stringify(trx))
@@ -711,7 +711,7 @@ export default class AschAPI extends API {
 
   /**
    * 设置二级密码
-   * @param secondPwd 二级密码(加密后publickey)
+   * @param secondPwd 二级密码
    */
   public async setSecondPassword(secondPwd: string): Promise<object> {
     let trx: Transaction = TransactionBuilder.setSecondPassword(secondPwd)
@@ -884,7 +884,7 @@ export default class AschAPI extends API {
     symbol: string,
     amount: string,
     recipientId: string,
-    message: string
+    message: string=''
   ): Promise<object> {
     let trx: Transaction = TransactionBuilder.transferAsset(symbol, amount, recipientId, message)
     trx = await this.aschWeb.sign(trx)
