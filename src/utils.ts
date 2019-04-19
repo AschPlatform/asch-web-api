@@ -141,6 +141,21 @@ function fullSign(unsignedTrx: Transaction, secret: string, secondSecret: string
   return trx
 }
 
+// /**
+//  * 所有扩展交易二进制数据签名
+//  * @param unsignedTrx
+//  */
+// function fullSignBytes(bytes: Bytes, secret: string): string {
+//   let keys: Keys = getKeys(secret)
+//   let trx = fill(unsignedTrx, secret)
+//   trx = sign(unsignedTrx, secret)
+//   if (secondSecret != null && secondSecret.length > 0) {
+//     trx = secondSign(trx, secondSecret)
+//   }
+//   // trx.id = new Buffer(getId(trx)).toString('hex')
+//   return trx
+// }
+
 function getKeys(secret: string): Keys {
   let hash = sha256Bytes(new Buffer(secret))
   //console.log('get keys hash:'+hash)
@@ -205,7 +220,7 @@ function signBytes(bytes: Bytes, secretKey: Bytes): string {
      secretKey = fromHex(secretKey)
     }
   }
-  console.log('secretKey:' + secretKey)
+  // console.log('secretKey:' + secretKey)
   let hash = sha256Bytes(bytes)
   console.log('hash:' + hash)
   let signature = nacl.sign.detached(hash, secretKey)

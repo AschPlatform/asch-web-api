@@ -15,7 +15,7 @@ type CallbackType = (
   trx: Transaction
 ) => { signatures: string[]; secondSignature?: string; senderPublicKey: string }
 
-type Callback = (err: any, trx?: Transaction) => Transaction | undefined
+type Callback = (err: any, trx?: Transaction | string) => Transaction | string | undefined
 
 export default class AschWeb {
   static Provider = Provider
@@ -27,33 +27,32 @@ export default class AschWeb {
   static AschType = AschType
   static AschContract = AschContract
 
-  // utils: any
   public defaultAccount: any
   public secret: string //12个助记词或者私钥
   public secondSecret: string
-  public readonly publicKey:string
-  public readonly address:string
+  public readonly publicKey: string
+  public readonly address: string
   public provider: Provider
   public api: AschAPI
-  private injectPromise: any
+  // private injectPromise: any
 
   constructor(provider: Provider, secret: string, secondSecret: string = '') {
     this.provider = provider
     this.secret = secret
     this.secondSecret = secondSecret
     this.api = new AschAPI(this)
-    if(secret && secret.length>0){
-      let publicKey=Utils.getKeys(secret).publicKey
-      this.publicKey=publicKey
-      let address=Utils.getAddress(publicKey)
-      this.address =address
-      this.defaultAccount = { address: address, publicKey: publicKey}
-    }else{
-      this.publicKey=''
-      this.address =''
-      this.defaultAccount = { address: '', publicKey: ''}
+    if (secret && secret.length > 0) {
+      let publicKey = Utils.getKeys(secret).publicKey
+      this.publicKey = publicKey
+      let address = Utils.getAddress(publicKey)
+      this.address = address
+      this.defaultAccount = { address: address, publicKey: publicKey }
+    } else {
+      this.publicKey = ''
+      this.address = ''
+      this.defaultAccount = { address: '', publicKey: '' }
     }
-    this.injectPromise = Utils.promiseInjector(this)
+    // this.injectPromise = Utils.promiseInjector(this)
   }
 
   // getHost(): string {
@@ -97,7 +96,8 @@ export default class AschWeb {
     callback?: Callback
   ) {
     if (!callback) {
-      return this.injectPromise(this.sign, unsignedTrx, secret, secondSecret)
+      let injectPromise: any = Utils.promiseInjector(this)
+      return injectPromise(this.sign, unsignedTrx, secret, secondSecret)
     }
     try {
       const trx: Transaction = Utils.fullSign(unsignedTrx, secret, secondSecret)
@@ -106,6 +106,30 @@ export default class AschWeb {
       callback(ex)
     }
   }
+
+  /**
+   * 对扩展非交易二进制数据进行签名
+   * @param bytes 字节数组或者16进制字符串
+   * @param secret 
+   * @param callback 
+   */
+  public signBytes(
+    bytes: string | Uint8Array,
+    secret: string = this.secret,
+    callback?: Callback
+  ) {
+    if (!callback) {
+      let injectPromise: any = Utils.promiseInjector(this)
+      return injectPromise(this.signBytes, bytes, secret)
+    }
+    try {
+      const signature: string = Utils.signBytes(bytes, secret)
+      return callback(null, signature)
+    } catch (ex) {
+      callback(ex)
+    }
+  }
+
 
   // public sign(
   //   unsignedTrx: Transaction,
@@ -139,11 +163,11 @@ export default class AschWeb {
     name: string,
     desc: string,
     code: string,
-    version: string='v0.1',
-    consumeOwnerEnergy: boolean=true,
-    gasLimit: number=1000000
-    ): Promise<object> {
-    return this.api.registerContract(name,desc,code,version,consumeOwnerEnergy,gasLimit)
+    version: string = 'v0.1',
+    consumeOwnerEnergy: boolean = true,
+    gasLimit: number = 1000000
+  ): Promise<object> {
+    return this.api.registerContract(name, desc, code, version, consumeOwnerEnergy, gasLimit)
   }
 
 
@@ -152,7 +176,7 @@ export default class AschWeb {
    * @param name 
    * @param metadata 
    */
-  public createContractFromMeta(contractJson: ObjectType): AschContract {
+  public createContractFromJson(contractJson: ObjectType): AschContract {
     return new AschContract(contractJson, this.api)
   }
 
@@ -164,7 +188,7 @@ export default class AschWeb {
     try {
       return this.api.getContractDetail(name).then((res: ObjectType) => {
         if (res && res.contract) {
-          return Promise.resolve(this.createContractFromMeta(res.contract))
+          return Promise.resolve(this.createContractFromJson(res.contract))
         } else {
           return Promise.reject(`contract get error`)
         }
