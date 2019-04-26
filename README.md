@@ -303,3 +303,45 @@ console.log('result:'+JSON.stringify(result))
 
 ```
 
+#### 合约函数执行结果查询
+
+```javascript
+//合约函数执行结果查询，传入交易ID
+let result =await contract.getResultOfContract('e7f9d71cbb92fa8ff545a8353f10813da90b20303bb1c97bb4e373b4eb0e66d6')
+console.log('result:'+JSON.stringify(result))
+
+
+```
+返回结果:
+
+```json
+{
+	"success": true,
+	"result": {
+		"gas": 2721,
+		"error": "",
+		"stateChangesHash": "12c5f0d424831206219852d587630b4345326be68622ee46950d95c6fbab095f",
+		"tid": "e7f9d71cbb92fa8ff545a8353f10813da90b20303bb1c97bb4e373b4eb0e66d6",
+		"data": null,
+		"contractId": 7,
+		"success": true,
+		"transaction": {
+			"id": "e7f9d71cbb92fa8ff545a8353f10813da90b20303bb1c97bb4e373b4eb0e66d6",
+			"type": 602,
+			"timestamp": 89217523,
+			"senderId": "AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb",
+			"senderPublicKey": "744aa1098be936488f5178865422c4f383914fdb47fecea602e397420f2742d5",
+			"requestorId": null,
+			"fee": 0,
+			"signatures": ["358d1cbb70616c38d37981f29cecde0e32d8f62877ec9db391196896f22df2f7fc5ab61583bade0de6dc4786bb2bd60d4c02ae421bf3aff6f2c6cb6400d9f90d"],
+			"secondSignature": null,
+			"args": [1000000, true, "crowdFundging_v1", "", "12345667", "XAS"],
+			"height": 128568,
+			"message": "",
+			"mode": 0,
+			"_version_": 1
+		}
+	}
+}
+
+```

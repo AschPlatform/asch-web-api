@@ -321,13 +321,13 @@ async function testAddFunction() {
         // console.log('result:'+JSON.stringify(result))
         // let result =await contract.getFunding('AdbL9HkeL5CPHmuVn8jMJSHtdeTHL6QXb')
         // console.log('result:'+JSON.stringify(result))
-        let result =await contract.getTotalFundingToken()
-        console.log('result:'+JSON.stringify(result))
+        // let result =await contract.getTotalFundingToken()
+        // console.log('result:'+JSON.stringify(result))
         // // 调用默认的默认向合约转账方法,方法名参数可以省略,此实例合约中对应crowdFunding函数(@payable({ isDefault: true }))
         //   result =await contract.crowdFunding('XAS','8345667')
         // console.log('result:'+JSON.stringify(result))
         // //调用payInitialToken资产接收方法(@payable)
-        //   result =await contract.payInitialToken('kim.KIM','8345667')
+        // let  result =await contract.payInitialToken('kim.KIM','8345667')
         // console.log('result:'+JSON.stringify(result))
         // contract.addPayableMethod('payInitialToken')
         // let result =await contract.payInitialToken('kim.KIM','5000000000000')
@@ -346,6 +346,9 @@ async function testAddFunction() {
         // let result =await contract.getTotalFundingToken()
         // console.log('result:'+JSON.stringify(result))
 
+        let result =await contract.getResultOfContract('e7f9d71cbb92fa8ff545a8353f10813da90b20303bb1c97bb4e373b4eb0e66d6')
+        console.log('result:'+JSON.stringify(result))
+
         // let result =await demoContract.payInitialToken('10001234567','kim.KIM')
         // console.log('result:'+JSON.stringify(result))
 
@@ -360,10 +363,10 @@ async function testAddFunction() {
 
     return null
 }
-testApi()
+// testApi()
 // testContractGen()
 //testContract()
-// testAddFunction()
+testAddFunction()
 //    var name = "foo";
 // Implement it
 // var func = new Function("return function " + name + "(){ console.log('hi there!'); };")();
