@@ -542,6 +542,7 @@ export class TransactionBuilder {
    * 转账到合约
    * @param currency 转账资产名称
    * @param amount 转账金额
+   * @param extraArgs 额外参数
    * @param nameOrAddress 合约名称或者地址
    * @param methodName payable方法名称, 若为undefined, null或者''，则调用默认的payable方法
    * @param gasLimit 最大消耗的Gas, 10,000,000 > gasLimit > 0
@@ -550,18 +551,33 @@ export class TransactionBuilder {
   static payContract(
     currency: string,
     amount: number|string,
-    nameOrAddress: string,
+    extraArgs: Array<any>,
+    nameOrAddress?: string,
     methodName?: string,
     gasLimit: number = 100000,
     enablePayGasInXAS: boolean = true
   ): Transaction {
-    return this.buildTransaction(602, [
-      gasLimit,
-      enablePayGasInXAS,
-      nameOrAddress,
-      (methodName && methodName.length > 0) ? methodName : '',
-      amount,
-      currency
-    ])
+    if(extraArgs && extraArgs.length>0)
+    {
+      return this.buildTransaction(602, [
+        gasLimit,
+        enablePayGasInXAS,
+        nameOrAddress,
+        (methodName && methodName.length > 0) ? methodName : '',
+        amount,
+        currency,
+        extraArgs
+      ])
+    }else{
+      return this.buildTransaction(602, [
+        gasLimit,
+        enablePayGasInXAS,
+        nameOrAddress,
+        (methodName && methodName.length > 0) ? methodName : '',
+        amount,
+        currency
+      ])
+    }
   }
+
 }

@@ -81,7 +81,11 @@ export class AschContract {
     
     methods.forEach(method => {
         if(method.public && !method.constant && method.payable && !method.isConstructor){
-          this.addPayMethod(method)
+          if(method.defaultPayable){
+            this.addPayDefaultMethod(method)
+          }else{
+            this.addPayMethod(method)
+          }
         }else if(method.public && !method.constant && !method.payable && !method.isConstructor){
           this.addCallMethod(method)
         }else if(method.public && method.constant){
@@ -104,11 +108,27 @@ export class AschContract {
     if (!this.hasOwnProperty(methodData.name)) {
       this[methodData.name] = (
         currency: string,
-        amount: string
+        amount: string,
+        args: Array<any>
         // gasLimit: number = 1000000,
         // enablePayGasInXAS: boolean = true
       ): Promise<object> => {
-        return this.pay(currency, amount, methodData.name, this.gasLimit, this.enablePayGasInXAS)
+        return this.pay(currency, amount, args,  methodData.name, this.gasLimit, this.enablePayGasInXAS)
+      }
+    } else {
+      console.log('already has the method:' + methodData.name)
+    }
+  }
+
+  public addPayDefaultMethod(methodData: MethodMetadata): void {
+    if (!this.hasOwnProperty(methodData.name)) {
+      this[methodData.name] = (
+        currency: string,
+        amount: string,
+        // gasLimit: number = 1000000,
+        // enablePayGasInXAS: boolean = true
+      ): Promise<object> => {
+        return this.payDefault(currency, amount, this.gasLimit, this.enablePayGasInXAS)
       }
     } else {
       console.log('already has the method:' + methodData.name)
@@ -221,44 +241,37 @@ export class AschContract {
     }
   }
 
-  // /**
-  //  * 转账到合约
-  //  * @param currency 
-  //  * @param amount
-  //  * @param receiverPath
-  //  * @param gasLimit
-  //  * @param enablePayGasInXAS
-  //  * @deprecated
-  //  */
-  // public async pay(
-  //   currency: string,
-  //   amount: string,
-  //   receiverPath: string,
-  //   gasLimit: number,
-  //   enablePayGasInXAS: boolean
-  // ): Promise<object> {
-  //   try {
-  //     let pathPrefix = receiverPath.split('/')[0]
-  //     let pathSuffix = receiverPath.split('/')[1] || ''
-  //     let method: MethodMetadata | undefined = this.metadataManager.getMethod(pathSuffix)
-  //     // let method: Method | undefined = this.methods.get(pathSuffix)
-  //     if (
-  //       (pathSuffix && method && method.public && method.payable) ||
-  //       (!pathSuffix && pathPrefix === this.name)
-  //     ) {
-  //       return this.api.payContract(currency, amount, receiverPath, gasLimit, enablePayGasInXAS)
-  //     } else {
-  //       return Promise.reject(`contract has no method called ${method ? method.name : ''}`)
-  //     }
-  //   } catch (e) {
-  //     return Promise.reject(e)
-  //   }
-  // }
+  /**
+   * 合约默认接收方法
+   * @param currency 转账资产名称
+   * @param amount 转账金额
+   * @param gasLimit 最大消耗的Gas, 10,000,000 > gasLimit > 0
+   * @param enablePayGasInXAS 当调用者能量不足时，是否使用XAS支付Gas
+   */
+  public async payDefault(
+    currency: string,
+    amount: string,
+    gasLimit: number = this.gasLimit,
+    enablePayGasInXAS: boolean = this.enablePayGasInXAS
+  ): Promise<object> {
+    try {
+       
+      // let method: MethodMetadata | undefined = this.metadataManager.getMethod(methodName)
+      // if (method && method.public && method.payable) {
+     return this.api.payDefaultContract(currency, amount, this.name, gasLimit, enablePayGasInXAS)
+      // } else {
+        // return Promise.reject(`contract has no method called ${method ? method.name : ''}`)
+      // }
+    } catch (e) {
+      return Promise.reject(e)
+    }
+  }
 
   /**
    * 转账到合约
    * @param currency 转账资产名称
    * @param amount 转账金额
+   * @param extraArgs 额外参数
    * @param methodName payable方法名字，当methodName=''时，调用默认payable方法
    * @param gasLimit 最大消耗的Gas, 10,000,000 > gasLimit > 0
    * @param enablePayGasInXAS 当调用者能量不足时，是否使用XAS支付Gas
@@ -266,16 +279,17 @@ export class AschContract {
   public async pay(
     currency: string,
     amount: string,
-    methodName?: string,
+    extraArgs: Array<any>,
+    methodName: string,
     gasLimit: number = this.gasLimit,
     enablePayGasInXAS: boolean = this.enablePayGasInXAS
   ): Promise<object> {
     try {
-      if (!methodName || methodName.length==0)
-        return this.api.payContract(currency, amount, this.name, '', gasLimit, enablePayGasInXAS)
+      // if (!methodName || methodName.length==0)
+      //   return this.api.payContract(currency, amount, extraArgs, this.name, '', gasLimit, enablePayGasInXAS)
       let method: MethodMetadata | undefined = this.metadataManager.getMethod(methodName)
       if (method && method.public && method.payable) {
-        return this.api.payContract(currency, amount, this.name, methodName, gasLimit, enablePayGasInXAS)
+        return this.api.payContract(currency, amount, extraArgs, this.name, methodName, gasLimit, enablePayGasInXAS)
       } else {
         return Promise.reject(`contract has no method called ${method ? method.name : ''}`)
       }
@@ -327,6 +341,22 @@ export class AschContract {
         //return this.api.get(`${this.name}/states/${path}`)
       } else {
         return Promise.reject(`path is required`)
+      }
+    } catch (e) {
+      return Promise.reject(e)
+    }
+  }
+
+  /**
+   * 查询智能合约执行结果
+   * @param tid 执行合约的交易Id
+   */
+  public async getResultOfContract(tid: string): Promise<object>{
+    try {
+      if (tid && tid.length>0) {
+        return this.api.getResultOfContract(this.name, tid)
+      } else {
+        return Promise.reject(`tid is required`)
       }
     } catch (e) {
       return Promise.reject(e)

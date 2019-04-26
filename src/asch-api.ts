@@ -793,7 +793,7 @@ export default class AschAPI extends API {
 
   /**
    * 给委托人投票
-   * @param delegates 受托人公钥数组,最多33个
+   * @param delegates 受托人昵称数组,最多33个
    */
   public async voteDelegates(delegates: string[]): Promise<object> {
     let trx: Transaction = TransactionBuilder.voteDelegates(delegates)
@@ -803,7 +803,7 @@ export default class AschAPI extends API {
 
   /**
    * 撤销受托人投票
-   * @param delegates 受托人数组,最多33个
+   * @param delegates 受托人昵称数组,最多33个
    */
   public async cleanVote(delegates: string[]): Promise<object> {
     let trx: Transaction = TransactionBuilder.cleanVote(delegates)
@@ -1266,9 +1266,38 @@ export default class AschAPI extends API {
   }
 
   /**
+   * 合约默认接收方法
+   * @param currency 转账资产名称
+   * @param amount 转账金额
+   * @param nameOrAddress 合约名称或者地址
+   * @param gasLimit 最大消耗的Gas, 10,000,000 > gasLimit > 0
+   * @param enablePayGasInXAS 当调用者能量不足时，是否使用XAS支付Gas
+   */
+  public async payDefaultContract(
+    currency: string,
+    amount: number|string,
+    nameOrAddress: string,
+    gasLimit: number=100000,
+    enablePayGasInXAS: boolean=true
+  ): Promise<object> {
+    let trx: Transaction =TransactionBuilder.payContract(
+      currency,
+      amount,
+      [],
+      nameOrAddress,
+      '',
+      gasLimit,
+      enablePayGasInXAS)
+    trx = await this.aschWeb.sign(trx)
+    console.log('payContract:'+JSON.stringify(trx))
+    return this.broadcastTransaction(trx)
+  }
+
+  /**
    * 转账到合约
    * @param currency 转账资产名称
    * @param amount 转账金额
+   * @param extraArgs 额外参数
    * @param nameOrAddress 合约名称或者地址
    * @param methodName payable方法名称, 若为undefined, null或者''，则调用默认的payable方法
    * @param gasLimit 最大消耗的Gas, 10,000,000 > gasLimit > 0
@@ -1277,14 +1306,16 @@ export default class AschAPI extends API {
   public async payContract(
     currency: string,
     amount: number|string,
+    extraArgs: Array<any>,
     nameOrAddress: string,
-    methodName?:string,
+    methodName:string,
     gasLimit: number=100000,
     enablePayGasInXAS: boolean=true
   ): Promise<object> {
     let trx: Transaction =TransactionBuilder.payContract(
       currency,
       amount,
+      extraArgs,
       nameOrAddress,
       methodName,
       gasLimit,

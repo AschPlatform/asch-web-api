@@ -1,6 +1,6 @@
 {
   "name": "asch-web",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Asch typscript library, support typescript, node and web(browser) ports",
   "keywords": [
     "asch",
