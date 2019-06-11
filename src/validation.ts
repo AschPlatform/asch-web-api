@@ -1,7 +1,7 @@
-
+import * as Bip39 from 'bip39'
 
 function checkSecret(secret: string): boolean{
-    return (secret!=null && secret.length>0)
+    return Bip39.validateMnemonic(secret) && (secret!=null && secret.length>0)
 }
 
 

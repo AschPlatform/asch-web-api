@@ -4,7 +4,7 @@ import { Transaction, ObjectType } from './type'
 import { Provider, HTTPProvider, Network } from './providers'
 import { AschContract } from './asch-contract'
 import { ContractMetadataObject } from './contract/metadata'
-
+import * as Validation from './validation'
 import { TransactionBuilder } from './builders'
 import * as Constants from './constants'
 import * as Utils from './utils'
@@ -100,8 +100,12 @@ export default class AschWeb {
       return injectPromise(this.sign, unsignedTrx, secret, secondSecret)
     }
     try {
-      const trx: Transaction = Utils.fullSign(unsignedTrx, secret, secondSecret)
-      return callback(null, trx)
+      if(Validation.checkSecret(secret)){
+        const trx: Transaction = Utils.fullSign(unsignedTrx, secret, secondSecret)
+        return callback(null, trx)
+      }else{
+        return callback('error: the secret is wrong.')
+      }
     } catch (ex) {
       callback(ex)
     }

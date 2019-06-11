@@ -4,6 +4,7 @@ import * as RIPEMD160 from 'ripemd160'
 import * as nacl from 'tweetnacl'
 import * as ByteBuffer from 'bytebuffer'
 import * as Format from './time/format'
+import * as Validation from './validation'
 // import { Buffer } from '../node_modules/buffer/'
 // import * as libBuffer from 'buffer'
 
