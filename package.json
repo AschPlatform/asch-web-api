@@ -139,7 +139,7 @@
     "@types/bip39": "=2.4.1",
     "@types/bytebuffer": "^5.0.40",
     "@types/ripemd160": "=2.0.0",
-    "axios": "=0.18.0",
+    "axios": "=0.21.1",
     "bip39": "=2.5.0",
     "bitcoin-ts": "^1.4.0",
     "buffer": "^5.2.1",
